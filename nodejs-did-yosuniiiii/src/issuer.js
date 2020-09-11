@@ -188,7 +188,7 @@ module.exports = function (app){
 
       // ########### differnt way 2)###########
       for (var key in issuer.schema) {
-        console.log("attr:" + key + ", value:" + issuer.schema[key]);
+        console.log("=>:" + key + ", value:" + issuer.schema[key]);
       };
 
       
