@@ -11,7 +11,6 @@
     "url": "git+https://github.com/dygksquf5/yosuniiiii-DID.git"
   },
   "license": "MIT",
-  
   "dependencies": {
     "body-parser": "^1.19.0",
     "cryptiles": "^4.1.1",
