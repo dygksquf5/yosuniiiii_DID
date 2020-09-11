@@ -10,7 +10,7 @@ function gotoId () {
   navigation.navigate('Id');
 }
 
-
+//두번째 테스트 입니다 !!! //// 
 
 function HomeScreen () {
   var [showIdView, setIdView] = useState(true)
