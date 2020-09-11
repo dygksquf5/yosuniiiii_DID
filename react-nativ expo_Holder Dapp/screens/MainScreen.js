@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Text, View, Image, StyleSheet, Linking, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { BarCodeScanner, Permissions } from 'expo-barcode-scanner';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+
 
 function gotoId () {
   navigation.navigate('Id');
@@ -53,28 +54,54 @@ function HomeScreen () {
   
 }
 
+export default function App() {
+
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
+
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
+
 function QrScreen() {
   return (
-  <View style={{backgroundColor: 'white', flex:1, justifyContent: 'center', alignItems: 'center'}}>
-    {/* <BarCodeScanner
-        containerStyle={{ backgroundColor: '#FFF' }}
-        onRead={this.ifScaned}
-        reactivate={true}
-        permissionDialogMessage="Need Permission To Access Camera"
-        reactivateTimeout={10}
-        showMarker={true}
-        markerStyle={{ borderColor: '#FFF', borderRadius: 10 }}
-        /> */}
-  </View>
+  // <View style={{backgroundColor: 'white', flex:1, justifyContent: 'center', alignItems: 'center'}}>
+        <View
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+      }}>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+
+      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+    </View>
+
+  // </View>
   );
       }
 const Tab = createBottomTabNavigator();
 
-export default function App() {
 
-  // ifScaned = e => {
-  //   Linking.openURL(e.data).catch(err => Alert.alert("Invalid QRCode", e.data)); 
-  // }
   
 
   return (
