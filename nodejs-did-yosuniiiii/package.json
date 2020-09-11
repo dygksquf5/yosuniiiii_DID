@@ -1,0 +1,41 @@
+{
+  "name": "nodejs-did-yosuniiiii",
+  "version": "1.0.0",
+  "description": "Nodejs-did- team-project with open source Hyperledger-indy",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dygksquf5/yosuniiiii-DID.git"
+  },
+  "license": "MIT",
+  
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cryptiles": "^4.1.1",
+    "express": "^4.17.1",
+    "home-dir": "^1.0.0",
+    "indy-sdk": "^1.14.0",
+    "mkdirp": "^0.5.1",
+    "node-fetch": "^2.6.0",
+    "readline-sync": "^1.4.10",
+    "sleep": "^6.1.0",
+    "cookie-parser": "*",
+    "ejs": "*",
+    "express-session": "*",
+    "upper-case": "*",
+    "mysql2": "*",
+    "bootstrap": "4.5.0",
+    "jquery": "3.5.1",
+    "sqlite3": "*"
+  },
+  "devDependencies": {
+    "browser-sync": "2.26.7",
+    "del": "5.1.0",
+    "gulp": "4.0.2",
+    "merge-stream": "2.0.0",
+    "nodemon": "^2.0.4"
+  }
+}
