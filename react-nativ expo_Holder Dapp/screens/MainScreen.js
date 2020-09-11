@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 
+ //test###### // 
 function gotoId () {
   navigation.navigate('Id');
 }
