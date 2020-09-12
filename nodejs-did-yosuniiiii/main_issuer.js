@@ -13,7 +13,6 @@ var app = express();
 app.set("views",__dirname + "/views");
 app.set("view engine", "ejs");
 app.set("ejs", ejs.renderFile);
-app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 
 

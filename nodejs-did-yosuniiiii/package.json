@@ -28,7 +28,8 @@
     "mysql2": "*",
     "bootstrap": "4.5.0",
     "jquery": "3.5.1",
-    "sqlite3": "*"
+    "sqlite3": "*",
+    "method-override": "^3.0.0"
   },
   "devDependencies": {
     "browser-sync": "2.26.7",

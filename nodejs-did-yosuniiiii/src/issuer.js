@@ -29,6 +29,8 @@ const db = new sqlite3.Database("issuer.db");
 
 
 module.exports = function (app){
+  app.use(bodyParser.json());
+
  
 
   app.get("/", async function(req,res){
@@ -36,7 +38,7 @@ module.exports = function (app){
   log("Set protocol version 2");
   await indy.setProtocolVersion(2);
 
-    res.render("issuer_log.ejs");
+    res.render("issuer_login.ejs");
   });
 
 
@@ -49,12 +51,12 @@ module.exports = function (app){
     req.session.password = password;
 
   
-    res.redirect("main");
+    res.redirect("/main");
 
   });
 
 
-  app.get("/main", async function(req,rea){
+  app.get("/main", async function(req,res){
 
 
     log("Issuer Open connections to ledger");
@@ -62,7 +64,7 @@ module.exports = function (app){
     //# login infomation! 
 
 
-      const poolName = issuer + "-pool-sandbox";
+      const poolName = "issuer" + "-pool-sandbox";
 
       const poolGenesisTxnPath = await util.getPoolGenesisTxnPath(poolName);
 
@@ -90,7 +92,7 @@ module.exports = function (app){
     const walletCredentials = { key: 'issuer' + ".wallet_key" };
     issuer.wallet= await indy.openWallet(walletConfig, walletCredentials);
 
-      // issuer.wallet = await createAndOpenWallet("issuer");
+    //   // issuer.wallet = await createAndOpenWallet("issuer");
 
     log("Issuer Create DID");
     issuer.did = await createAndStoreMyDid(
@@ -107,7 +109,6 @@ module.exports = function (app){
           console.log("saved on Database");
         };
       });
-
 
       const sql = ('SELECT * FROM DID');
       db.get(sql, (err,row) => {
