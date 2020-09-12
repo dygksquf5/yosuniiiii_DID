@@ -25,28 +25,44 @@ const { error } = require("jquery");
 const { json } = require("body-parser");
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("issuer.db");
+
+
+
 module.exports = function (app){
-  app.use(bodyParser.json());
  
-
-
 
   app.get("/", async function(req,res){
       //Main code starts here
   log("Set protocol version 2");
   await indy.setProtocolVersion(2);
 
-    res.render("issuer_1.ejs");
+    res.render("issuer_log.ejs");
   });
 
-  app.post("/No1",urlencodedParser, async function(req,res){
+
+  app.post("/log", urlencodedParser, async function(req,res) {
+    
+    var user_name = req.body.user_name;
+    var password = req.body.password;
+
+    req.session.user_name = user_name;
+    req.session.password = password;
+
+  
+    res.redirect("main");
+
+  });
+
+
+  app.get("/main", async function(req,rea){
+
 
     log("Issuer Open connections to ledger");
 
-    var name = req.body.name;
+    //# login infomation! 
 
 
-      const poolName = name + "-pool-sandbox";
+      const poolName = issuer + "-pool-sandbox";
 
       const poolGenesisTxnPath = await util.getPoolGenesisTxnPath(poolName);
 
@@ -69,51 +85,55 @@ module.exports = function (app){
     });
 
 
+    log("Issuer Open Wallet");
+    const walletConfig = { id: "issuer" + ".wallet" };
+    const walletCredentials = { key: 'issuer' + ".wallet_key" };
+    issuer.wallet= await indy.openWallet(walletConfig, walletCredentials);
+
+      // issuer.wallet = await createAndOpenWallet("issuer");
+
+    log("Issuer Create DID");
+    issuer.did = await createAndStoreMyDid(
+      issuer.wallet,
+      "000000000000000000000000Steward1"
+    );
+    logKO("\tIssuer's DID is: " + issuer.did);
       
-        // issuer.poolHandle = await createAndOpenPoolHandle("issuer");
+      db.get('SELECT * FROM DID', function(err, row){
+        if (row.length != 0) {
+          console.log("already exist", `${row.DID}`);
+        }else {
+          db.run('INSERT INTO DID VALUES (?)', [issuer.did]);
+          console.log("saved on Database");
+        };
+      });
 
-      log("Issuer Open Wallet");
-      const walletConfig = { id: "issuer" + ".wallet" };
-      const walletCredentials = { key: 'issuer' + ".wallet_key" };
-      issuer.wallet= await indy.openWallet(walletConfig, walletCredentials);
 
-        // issuer.wallet = await createAndOpenWallet("issuer");
-
-      log("Issuer Create DID");
-      issuer.did = await createAndStoreMyDid(
-        issuer.wallet,
-        "000000000000000000000000Steward1"
-      );
-      logKO("\tIssuer's DID is: " + issuer.did);
-        
-        db.get('SELECT * FROM DID', function(err, row){
-          if (row.length != 0) {
-            console.log("already exist", `${row.DID}`);
-          }else {
-            db.run('INSERT INTO DID VALUES (?)', [issuer.did]);
-            console.log("saved on Database");
-          };
-
-          res.redirect("/No2");
-
-        });
+      const sql = ('SELECT * FROM DID');
+      db.get(sql, (err,row) => {
+        if (err){
+          return logKO(err.message);
+        }
+        const test =  `${row.DID}`;
+        console.log(test,"you have got DID successfully ");
+        const render_data = {
+          did : test
+        }
+        res.render("issuer_main.ejs", render_data)
+  
+      });
+  
   });
 
-  app.get("/No2", async function(req, res){
-    
-    const sql = ('SELECT * FROM DID');
-    db.get(sql, (err,row) => {
-      if (err){
-        return logKO(err.message);
-      }
-      const test =  `${row.DID}`;
-      console.log(test,"you have got DID successfully ");
-      const render_data = {
-        did : test
-      }
-      res.render("issuer_2.ejs", render_data)
+  app.post("/main",urlencodedParser, async function(req,res){
+      
 
-      });
+        // issuer.poolHandle = await createAndOpenPoolHandle("issuer");
+
+  });
+
+  app.get("/No2222", async function(req, res){
+    
   
   });
     
@@ -163,7 +183,7 @@ module.exports = function (app){
 
 
 
-  app.post("/No2" , urlencodedParser,async function(req,res){
+  app.post("/No2222" , urlencodedParser,async function(req,res){
 
     issuer.schemaId = req.body.schemaId;
 

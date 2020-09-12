@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issuer</title>  
+    <%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+
+    <div class="container mb-3">
+
+      <h2 class="mb-3">your DID : <%= did %></h2>
+
+
+      <textarea placeholder="your DID"></textarea> <br>
+      <button onclick="generateQR()">발급!</button>
+      <div id="qrcode"></div>
+
+    </div>
+  </body>
+  <script src="public/js/qrcode.min.js">
+
+
+  </script>
+  <script>
+      var qrdata = document.getElementById('qr-data');
+      var qrcode = new QRCode(document.getElementById('qrcode'));
+
+      function generateQR() {
+          var data = qrdata.value;
+
+          qrcode.makeCode(data);
+      }
+  </script>
+</html>
