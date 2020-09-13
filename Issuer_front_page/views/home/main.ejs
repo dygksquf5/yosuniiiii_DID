@@ -10,17 +10,37 @@
 
       <h2 class="mb-3">your DID </h2>
 
-      <div class="container">
-      <input type="text" placeholder="your DID"> <br> <br>
-      <button> 발급 !</button>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-default"> your DID </span>
+        </div>
+        <input type="text" class="form-control" aria-label="DID" aria-describedby="inputGroup-sizing-default">
+        <button class="btn btn-secondary" onclick="generateQR()"> 발급 !</button>
+      </div>
       <div id="qrcode"></div>
       </div>
-      
+
       <!-- 왜 안될까 ,, 왜 ,,....,,.. -->
       <script src="public/js/qr.js"></script>
       <script src="public/js/qrcode.js"></script>
 
+      <!-- <script>
+       var qrdata = document.getElementById('qr-data');
+       var qrcode = new QRCode(document.getElementById('qrcode'));
+
+        function generateQR() {
+            var data = qrdata.value;
+
+            qrcode.makeCode(data);
+        }
+
+      </script> -->
+
+
     </div>
   </body>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  
   
 </html>

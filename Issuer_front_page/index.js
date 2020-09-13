@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(methodOverride('_method'));
 
+
 //미들웨어
 app.use(cookieParser())
 app.use(session({

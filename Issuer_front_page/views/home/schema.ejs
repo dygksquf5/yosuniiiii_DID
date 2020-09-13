@@ -11,17 +11,24 @@
       <h2 class="mb-3">schema</h2>
 
     <form action="schemaa" method="POST">
-      <select id="list">
-        <option name="id"> 신분증 </option>
-        <option name="report"> 성적표 </option>
-        <option name="paper"> 증명서 </option>
-
-
-    </select>
-    <button type="submit">제 출 !</button>
+ 
+      <div class="input-group">
+        <select class="custom-select" id="list">
+          <option selected> Choose...! </option>
+          <option name="id"> 신분증 </option>
+          <option name="report"> 성적표 </option>
+          <option name="paper"> 증명서 </option>
+        </select>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="submit">제 출 !</button>
+        </div>
+      </div>
     </form>
+    
 
 
     </div>
   </body>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 </html>
