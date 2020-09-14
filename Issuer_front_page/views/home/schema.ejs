@@ -23,12 +23,36 @@
           <button class="btn btn-outline-secondary" type="submit">제 출 !</button>
         </div>
       </div>
-    </form>
-    
+    </form> <br><br>
+
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id=""> qrcode </span>
+      </div>
+      <input type="text" class="form-control" id="qr-data1" placeholder="Schema ID">
+      <input type="text" class="form-control" id="qr-data2" placeholder="CD ID">
+      <button class="btn btn-secondary" onclick="generateQR()"> 발급 !</button>
+    </div>
+    <div id="qrcode"></div>
 
 
     </div>
   </body>
+
+  <script type="text/javascript"></script>
+  <script src="../js/qrcode.min.js"></script>
+  <script>
+    var qrdata1 = document.getElementById("qr-data1");
+    var qrdata2 = document.getElementById("qr-data2");
+    var qrcode = new QRCode(document.getElementById("qrcode"));
+
+    function generateQR() {
+        var data = qrdata1.value + "\n" + qrdata2.value;
+
+        qrcode.makeCode(data);
+    }
+</script>
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 </html>

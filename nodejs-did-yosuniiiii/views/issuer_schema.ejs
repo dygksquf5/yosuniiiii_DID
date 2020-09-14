@@ -23,6 +23,21 @@
           <option value="Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"> 신분증 </option>
           <option value="something:)"> 성적표 </option>
           <option value="something : )"> 증명서 </option>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default"> your DID </span>
+            </div>
+            <textarea id="qr-data" class="form-control" placeholder=" Schema ID : \n CDID ""></textarea>
+            <button class="btn btn-secondary" onclick="generateQR()"> 발급 !</button>
+          </div>
+          <div id="qrcode"></div>
+          </div>
+    
+
+
+
+          
   
   
       </select>
@@ -34,4 +49,17 @@
   
     
 </body>
+
+<script type="text/javascript"></script>
+<script src="../js/qrcode.min.js"></script>
+<script>
+  var qrdata = document.getElementById("qr-data");
+  var qrcode = new QRCode(document.getElementById("qrcode"));
+
+  function generateQR() {
+      var data = qrdata.value;
+
+      qrcode.makeCode(data);
+  }
+</script>
 </html>
