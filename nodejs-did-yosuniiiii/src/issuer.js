@@ -273,12 +273,21 @@ module.exports = function (app){
       //
 
       
-      res.redirect("/No2");
+      res.redirect("/No3");
 
   });
 
 
 
+  app.get("/No3", async function(req,res){
+
+    const render_data = {
+      schemaId : issuer.schemaId,
+      credDefId : issuer.credDefId,
+    };
+
+    res.render("issuer_schema_2.ejs", render_data);
+  });
 
   // app.post("/No22222" , urlencodedParser,async function(req,res){
 

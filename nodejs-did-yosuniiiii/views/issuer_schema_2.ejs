@@ -35,8 +35,8 @@
   <div class="input-group-prepend">
     <span class="input-group-text" id=""> qrcode </span>
   </div>
-  <input type="text" class="form-control" id="qr-data1" placeholder="Schema ID">
-  <input type="text" class="form-control" id="qr-data2" placeholder="CD ID">
+  <input type="text" class="form-control" id="qr-data1" placeholder="<%= schemaId %>" >
+  <input type="text" class="form-control" id="qr-data2" placeholder="<%= credDefId %>">
   <button class="btn btn-secondary" onclick="generateQR()"> 발급 !</button>
 </div>
 <div id="qrcode"></div>
@@ -45,8 +45,8 @@
 </div>
 </body>
 
-<script type="text/javascript"></script>
-<script src="../public/js/qrcode.min.js"></script>
+<!-- <script type="text/javascript"></script> -->
+<script src="../js/qrcode.min.js"></script>
 <script>
 var qrdata1 = document.getElementById("qr-data1");
 var qrdata2 = document.getElementById("qr-data2");
