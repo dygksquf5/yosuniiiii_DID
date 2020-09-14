@@ -25,28 +25,46 @@ const { error } = require("jquery");
 const { json } = require("body-parser");
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("issuer.db");
+
+
+
 module.exports = function (app){
   app.use(bodyParser.json());
+
  
-
-
 
   app.get("/", async function(req,res){
       //Main code starts here
   log("Set protocol version 2");
   await indy.setProtocolVersion(2);
 
-    res.render("issuer_1.ejs");
+    res.render("issuer_login.ejs");
   });
 
-  app.post("/No1",urlencodedParser, async function(req,res){
+
+  app.post("/log", urlencodedParser, async function(req,res) {
+    
+    var user_name = req.body.user_name;
+    var password = req.body.password;
+
+    req.session.user_name = user_name;
+    req.session.password = password;
+
+  
+    res.redirect("/main");
+
+  });
+
+
+  app.get("/main", async function(req,res){
+
 
     log("Issuer Open connections to ledger");
 
-    var name = req.body.name;
+    //# login infomation! 
 
 
-      const poolName = name + "-pool-sandbox";
+      const poolName = "issuer" + "-pool-sandbox";
 
       const poolGenesisTxnPath = await util.getPoolGenesisTxnPath(poolName);
 
@@ -69,52 +87,56 @@ module.exports = function (app){
     });
 
 
+    log("Issuer Open Wallet");
+    const walletConfig = { id: "issuer" + ".wallet" };
+    const walletCredentials = { key: 'issuer' + ".wallet_key" };
+    issuer.wallet= await indy.openWallet(walletConfig, walletCredentials);
+
+    //   // issuer.wallet = await createAndOpenWallet("issuer");
+
+    log("Issuer Create DID");
+    issuer.did = await createAndStoreMyDid(
+      issuer.wallet,
+      "000000000000000000000000Steward1"
+    );
+    logKO("\tIssuer's DID is: " + issuer.did);
       
-        // issuer.poolHandle = await createAndOpenPoolHandle("issuer");
+      db.get('SELECT * FROM DID', function(err, row){
+        if (row.length != 0) {
+          console.log("already exist", `${row.DID}`);
+        }else {
+          db.run('INSERT INTO DID VALUES (?)', [issuer.did]);
+          console.log("saved on Database");
+        };
+      });
 
-      log("Issuer Open Wallet");
-      const walletConfig = { id: "issuer" + ".wallet" };
-      const walletCredentials = { key: 'issuer' + ".wallet_key" };
-      issuer.wallet= await indy.openWallet(walletConfig, walletCredentials);
-
-        // issuer.wallet = await createAndOpenWallet("issuer");
-
-      log("Issuer Create DID");
-      issuer.did = await createAndStoreMyDid(
-        issuer.wallet,
-        "000000000000000000000000Steward1"
-      );
-      logKO("\tIssuer's DID is: " + issuer.did);
-        
-        db.get('SELECT * FROM DID', function(err, row){
-          if (row.length != 0) {
-            console.log("already exist", `${row.DID}`);
-          }else {
-            db.run('INSERT INTO DID VALUES (?)', [issuer.did]);
-            console.log("saved on Database");
-          };
-
-          res.redirect("/No2");
-
-        });
+      const sql = ('SELECT * FROM DID');
+      db.get(sql, (err,row) => {
+        if (err){
+          return logKO(err.message);
+        }
+        const test =  `${row.DID}`;
+        console.log(test,"you have got DID successfully ");
+        const render_data = {
+          did : test
+        }
+        res.render("issuer_main.ejs", render_data)
+  
+      });
+  
   });
+
+  // app.post("/main",urlencodedParser, async function(req,res){
+      
+
+// main_page app.post!!!!!!! input somthing that you want ~ 
+
+  // });
 
   app.get("/No2", async function(req, res){
     
-    const sql = ('SELECT * FROM DID');
-    db.get(sql, (err,row) => {
-      if (err){
-        return logKO(err.message);
-      }
-      const test =  `${row.DID}`;
-      console.log(test,"you have got DID successfully ");
-      const render_data = {
-        did : test
-      }
-      res.render("issuer_2.ejs", render_data)
+    res.render("issuer_schema.ejs");
 
-      });
-  
   });
     
  // ######################################done register schema to the ledger#######################################################################
@@ -161,112 +183,127 @@ module.exports = function (app){
 
 
 
+  app.post("/No2", urlencodedParser, async function(req,res){
+
+       issuer.schemaId = req.body.list;
 
 
-  app.post("/No2" , urlencodedParser,async function(req,res){
+      // logOK(issuer.schemaId);
 
-    issuer.schemaId = req.body.schemaId;
 
-    try {
+
+      //#############//
+
+
+      try {
     
-      logIssuer("Issuer gets schema from ledger");
-      issuer.schema = await getSchemaFromLedger(
-        issuer.poolHandle,
-        issuer.did,
-        issuer.schemaId
-      );
-
-
-
-      // ########### differnt way 1)###########
-      for (var i in issuer.schema) {
-        console.log(issuer.schema[i])
-        i = i+1  
-      };
-
-
-
-      // ########### differnt way 2)###########
-      for (var key in issuer.schema) {
-        console.log("=>:" + key + ", value:" + issuer.schema[key]);
-      };
-
-      
-       // ########### differnt way 3)###########
-
-      var test = JSON.stringify(issuer.schema);
-      logOK(test);
-
-
-
-
-
-
-
-      logIssuer("Issuer creates credential definition for schema");
-      {
-        const [
-          credDefId,
-          credDef
-        ] = await indy.issuerCreateAndStoreCredentialDef(
+        logIssuer("Issuer gets schema from ledger");
+        issuer.schema = await getSchemaFromLedger(
+          issuer.poolHandle,
+          issuer.did,
+          issuer.schemaId
+        );
+  
+  
+  
+        // ########### differnt way 1)###########
+        for (var i in issuer.schema) {
+          console.log(issuer.schema[i])
+          i = i+1  
+        };
+  
+  
+  
+        // ########### differnt way 2)###########
+        for (var key in issuer.schema) {
+          console.log("=>:" + key + ", value:" + issuer.schema[key]);
+        };
+  
+        
+         // ########### differnt way 3)###########
+  
+        var test = JSON.stringify(issuer.schema);
+        logOK(test);
+  
+  
+  
+  
+  
+  
+  
+        logIssuer("Issuer creates credential definition for schema");
+        {
+          const [
+            credDefId,
+            credDef
+          ] = await indy.issuerCreateAndStoreCredentialDef(
+            issuer.wallet,
+            issuer.did,
+            issuer.schema,
+            "Yosuniiiii_test_ID_credential",
+            "CL",
+            { support_revocation: false }
+          ); 
+          issuer.credDefId = credDefId;
+          issuer.credDef = credDef;
+        }
+        logIssuer("Issuer posts credential definition");
+        await postCredDefToLedger(
+          issuer.poolHandle,
           issuer.wallet,
           issuer.did,
-          issuer.schema,
-          "Yosuniiiii_test_ID_credential",
-          "CL",
-          { support_revocation: false }
-        ); 
-        issuer.credDefId = credDefId;
-        issuer.credDef = credDef;
-      }
-      logIssuer("Issuer posts credential definition");
-      await postCredDefToLedger(
-        issuer.poolHandle,
-        issuer.wallet,
-        issuer.did,
-        issuer.credDef
+          issuer.credDef
+        );
+      } catch(error) {
+        console.log("errerrrrrrrr", error);
+      };
+  
+  
+      logKO("\tSchemaId: " + issuer.schemaId);
+      logKO("\tCredential Defination ID: " + issuer.credDefId);
+  
+  
+      log(
+        "Issuer shares public data (schema ID, credential definition ID, ...) (via HTTP or other communication protocol) ..."
       );
-    } catch(error) {
-      console.log("errerrrrrrrr", error);
-    };
+  
 
+      // #########################################################
+      // there is a big question about .. do we need a QRcode for Scema and Credential definition? in here? 
+      //
 
-    logKO("\tSchemaId: " + issuer.schemaId);
-    logKO("\tCredential Defination ID: " + issuer.credDefId);
+      
+      res.redirect("/No2");
 
-
-    log(
-      "Issuer shares public data (schema ID, credential definition ID, ...) (via HTTP or other communication protocol) ..."
-    );
-
-    res.redirect("/No3");
   });
 
 
 
 
-// ######## post done 
-// ######## post done 
-// ######## post done 
-// ######## post done 
-// ######## post done 
-// ######## post done !!!!
+  // app.post("/No22222" , urlencodedParser,async function(req,res){
+
+
+  //   res.redirect("/No3");
+  // });
+
+
+
 
 
   app.get("/No3", async function(req,res){
       
-    const sql = ('SELECT * FROM DID');
-    db.get(sql, (err,row) => {
-      if (err){
-        return logKO(err.message);
-      }
-      const test =  `${row.DID}`;
-      const render_data = {
-        did : test
-      }
+  //   const sql = ('SELECT * FROM DID');
+  //   db.get(sql, (err,row) => {
+  //     if (err){
+  //       return logKO(err.message);
+  //     }
+  //     const test =  `${row.DID}`;
+  //     const render_data = {
+  //       did : test
+  //     }
 
-    res.render("issuer_3.ejs", render_data);
-  });
+  //   res.render("issuer_3.ejs", render_data);
+  // });
 });
 
 
