@@ -18,31 +18,28 @@
       <form action="/No2" method="POST">
         
         <!-- in the select form, if you choose the first one, the value of first one will input in name="list",  -->
-
+        <div class="input-group">
         <select name="list">
           <option value="Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"> 신분증 </option>
           <option value="something:)"> 성적표 </option>
           <option value="something : )"> 증명서 </option>
 
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-default"> your DID </span>
-            </div>
-            <textarea id="qr-data" class="form-control" placeholder=" Schema ID : \n CDID ""></textarea>
-            <button class="btn btn-secondary" onclick="generateQR()"> 발급 !</button>
-          </div>
-          <div id="qrcode"></div>
-          </div>
-    
-
-
-
-          
-  
-  
       </select>
-      <button type="submit">제 출 !</button>
-      </form>
+      <button type="submit" class="btn btn-outline-secondary">제 출 !</button>
+      </div>
+      </form> <br><br>
+  
+      </div>
+
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id=""> qrcode </span>
+        </div>
+        <input type="text" class="form-control" id="qr-data1" placeholder="Schema ID">
+        <input type="text" class="form-control" id="qr-data2" placeholder="CD ID">
+        <button class="btn btn-secondary" onclick="generateQR()"> 발급 !</button>
+      </div>
+      <div id="qrcode"></div>
   
   
       </div>
@@ -50,14 +47,16 @@
     
 </body>
 
+
 <script type="text/javascript"></script>
 <script src="../js/qrcode.min.js"></script>
 <script>
-  var qrdata = document.getElementById("qr-data");
+  var qrdata1 = document.getElementById("qr-data1");
+  var qrdata2 = document.getElementById("qr-data2");
   var qrcode = new QRCode(document.getElementById("qrcode"));
 
   function generateQR() {
-      var data = qrdata.value;
+      var data = qrdata1.value + "\n" + qrdata2.value;
 
       qrcode.makeCode(data);
   }
