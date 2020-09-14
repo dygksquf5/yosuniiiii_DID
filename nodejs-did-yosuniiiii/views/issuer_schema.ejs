@@ -19,14 +19,15 @@
         
         <!-- in the select form, if you choose the first one, the value of first one will input in name="list",  -->
         <div class="input-group">
-        <select name="list">
+        <select class="custom-select" name="list">
           <option value="Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"> 신분증 </option>
           <option value="something:)"> 성적표 </option>
           <option value="something : )"> 증명서 </option>
-
-      </select>
+        </select>
+        <div class="input-group-append">
       <button type="submit" class="btn btn-outline-secondary">제 출 !</button>
       </div>
+    </div>
       </form> <br><br>
   
       </div>
@@ -61,4 +62,6 @@
       qrcode.makeCode(data);
   }
 </script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </html>
