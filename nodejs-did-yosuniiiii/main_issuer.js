@@ -10,7 +10,7 @@ var methodOverride = require('method-override');
 var app = express();
 
 // Other settings
-app.set("views",__dirname + "/views");
+// app.set("views",__dirname + "/views");
 app.set("view engine", "ejs");
 app.set("ejs", ejs.renderFile);
 app.use(methodOverride('_method'));
@@ -25,7 +25,7 @@ app.use(session({
 }));
 
 
-app.use(express.static("public"));
+app.use(express.static("/public"));
 
 // Routes
 require("./src/issuer")(app);
