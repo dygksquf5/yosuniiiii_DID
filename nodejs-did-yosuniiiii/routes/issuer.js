@@ -126,6 +126,24 @@ module.exports = function (app){
   
   });
 
+  app.get("/main2", async function(req,res){
+
+    const sql = ('SELECT * FROM DID');
+    db.get(sql, (err,row) => {
+      if (err){
+        return logKO(err.message);
+      }
+      const test =  `${row.DID}`;
+      console.log(test,"you have got DID successfully ");
+      const render_data = {
+        did : test
+      }
+      res.render("issuer_main_2.ejs", render_data)
+
+    });
+
+  });
+
   // app.post("/main",urlencodedParser, async function(req,res){
       
 
@@ -289,6 +307,7 @@ module.exports = function (app){
     res.render("issuer_schema_2.ejs", render_data);
   });
 
+
   // app.post("/No22222" , urlencodedParser,async function(req,res){
 
 
@@ -299,71 +318,126 @@ module.exports = function (app){
 
 
 
-  app.get("/No3", async function(req,res){
-      
-  //   const sql = ('SELECT * FROM DID');
-  //   db.get(sql, (err,row) => {
-  //     if (err){
-  //       return logKO(err.message);
-  //     }
-  //     const test =  `${row.DID}`;
-  //     const render_data = {
-  //       did : test
-  //     }
+  app.get("/No4", async function(req,res){
+    try{
+    logIssuer("Issuer creates credential offer");
+    issuer.credOffer = await indy.issuerCreateCredentialOffer(
+      issuer.wallet,
+      issuer.credDefId
+    );
 
-  //   res.render("issuer_3.ejs", render_data);
-  // });
+    log(
+      "Transfer credential offer from 'Issuer' to 'Prover' (via HTTP or other) ..."
+    );
+
+    
+    const tailsWriterConfig = {
+      base_dir: util.getPathToIndyClientHome() + "/tails",
+      uri_pattern: ""
+    };
+    const tailsWriter = await indy.openBlobStorageWriter(
+      "default",
+      tailsWriterConfig
+    );
+  
+
+
+    // you need a request from prover 
+    logIssuer("Issuer creates credential");
+    {
+      const credValues = {
+        gender: { raw: "male", encoded: "123456789123456789" },
+        age: {
+          raw: "28",
+          encoded: "28"
+        },
+        food: {raw: "pizzzaaaaa", encoded: "123456789123456789"},
+        name: { raw: "yosuniiiii", encoded: "123456789123456789" },
+        address: { raw: "Seoul", encoded: "123456789123456789" }
+      };
+      const [cred, _i, _d] = await indy.issuerCreateCredential(
+        issuer.wallet,
+        issuer.credOffer,
+        issuer.credReq,
+        credValues,
+        undefined,
+        tailsWriter
+      );
+      issuer.cred = cred;
+    }
+
+    for (var key in issuer.cred) {
+      console.log("=>:" + key + ", value:" + issuer.cred[key]);
+    };
+  }catch(error) {
+    console.log(error);
+  };
+  
+
+
+
+    res.render("issuer_schema_3.ejs")
+      
 });
 
 
 
 
 
-  app.post("EEEEEE", async function(req, res){
+  app.post("/No555555555555", async function(req, res){
 
 
   //Sending SchemaId to Prover
-  logKO("\tSchemaId: " + issuer.schemaId);
-  await sendToProver("schemaId", issuer.schemaId);
+
+
+  // logKO("\tSchemaId: " + issuer.schemaId);
+  // await sendToProver("schemaId", issuer.schemaId);
 
   //Sending CredDefId to Prover
-  logKO("\tCredential Defination ID: " + issuer.credDefId);
-  await sendToProver("credDefId", issuer.credDefId);
 
-  logIssuer("Issuer creates credential offer");
-  issuer.credOffer = await indy.issuerCreateCredentialOffer(
-    issuer.wallet,
-    issuer.credDefId
-  );
 
-  log(
-    "Transfer credential offer from 'Issuer' to 'Prover' (via HTTP or other) ..."
-  );
-  await sendToProver("credOffer", JSON.stringify(issuer.credOffer));
+  // logKO("\tCredential Defination ID: " + issuer.credDefId);
+  // await sendToProver("credDefId", issuer.credDefId);
 
-  logOK("\nWaiting for Credential Request from prover!");
-  while (issuer.credReq == undefined) {
-    await sleep(2000);
-  }
+    logIssuer("Issuer creates credential offer");
+    issuer.credOffer = await indy.issuerCreateCredentialOffer(
+      issuer.wallet,
+      issuer.credDefId
+    );
 
-  const tailsWriterConfig = {
-    base_dir: util.getPathToIndyClientHome() + "/tails",
-    uri_pattern: ""
-  };
-  const tailsWriter = await indy.openBlobStorageWriter(
-    "default",
-    tailsWriterConfig
-  );
+    logOK(issuer.credOffer);
+
+    log(
+      "Transfer credential offer from 'Issuer' to 'Prover' (via HTTP or other) ..."
+    );
+  // await sendToProver("credOffer", JSON.stringify(issuer.credOffer));
+
+  // logOK("\nWaiting for Credential Request from prover!");
+  // while (issuer.credReq == undefined) {
+  //   await sleep(2000);
+  // }
+
+  // const tailsWriterConfig = {
+  //   base_dir: util.getPathToIndyClientHome() + "/tails",
+  //   uri_pattern: ""
+  // };
+  // const tailsWriter = await indy.openBlobStorageWriter(
+  //   "default",
+  //   tailsWriterConfig
+  // );
+
+
   logIssuer("Issuer creates credential");
   {
     const credValues = {
-      sex: {
-        raw: "male",
-        encoded: "5944657099558967239210949258394887428692050081607692519917050"
+      age: {
+        raw: "28",
+        encoded: "28"
       },
-      name: { raw: "Alex", encoded: "1139481716457488690172217916278103335" },
-      height: { raw: "175", encoded: "175" },
-      age: { raw: "28", encoded: "28" }
+      address: { raw: "Seoul", encoded: "123456789123456789" },
+      food: {raw: "pizzzaaaaa", encoded: "123456789123456789"},
+      gender: { raw: "male", encoded: "123456789123456789" },
+      name: { raw: "yosuniiiii", encoded: "123456789123456789" }
     };
     const [cred, _i, _d] = await indy.issuerCreateCredential(
       issuer.wallet,
@@ -376,20 +450,31 @@ module.exports = function (app){
     issuer.cred = cred;
   }
 
-  logOK(issuer.cred);
-  logIssuer(
-    "Transfer credential from 'Issuer' to 'Prover' (via HTTP or other) ..."
-  );
-  await sendToProver("cred", JSON.stringify(issuer.cred));
-
-  issuer.cred = undefined;
+  //####################################### test #################################3 
+    for (var key in issuer.cred) {
+      console.log("=>:" + key + ", value:" + issuer.cred[key]);
+    };
+    //####################################### test #################################3 
 
 
 
+    logOK(issuer.cred);
 
-  readline.question(
-    "\n\nCredential successfully issued from issuer to prover, Press enter to terminate this session, delete issuer wallet, pool handle and teriminate program:"
-  );
+
+
+    logIssuer(
+      "Transfer credential from 'Issuer' to 'Prover' (via HTTP or other) ..."
+    );
+    // await sendToProver("cred", JSON.stringify(issuer.cred));
+
+    // issuer.cred = undefined;
+
+      res.redirect("/No4")
+
+
+  // readline.question(
+  //   "\n\nCredential successfully issued from issuer to prover, Press enter to terminate this session, delete issuer wallet, pool handle and teriminate program:"
+  // );
 
   // log("Issuer close and delete wallets");
   // await closeAndDeleteWallet(issuer.wallet, "issuer");
