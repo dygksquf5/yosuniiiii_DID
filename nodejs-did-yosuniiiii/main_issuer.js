@@ -25,10 +25,10 @@ app.use(session({
 }));
 
 
-app.use(express.static("/public"));
+app.use(express.static("public"));
 
 // Routes
-require("./src/issuer")(app);
+require("./routes/issuer")(app);
 
 app.listen(3000, function(){
     console.log("포트 3000번으로 서버 실행 ! 완 료 오오! 크크");
