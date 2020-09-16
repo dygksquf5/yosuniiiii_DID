@@ -10,10 +10,9 @@ var methodOverride = require('method-override');
 var app = express();
 
 // Other settings
-app.set("views",__dirname + "/views");
+// app.set("views",__dirname + "/views");
 app.set("view engine", "ejs");
 app.set("ejs", ejs.renderFile);
-app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 
 
@@ -29,7 +28,7 @@ app.use(session({
 app.use(express.static("public"));
 
 // Routes
-require("./src/issuer")(app);
+require("./routes/issuer")(app);
 
 app.listen(3000, function(){
     console.log("포트 3000번으로 서버 실행 ! 완 료 오오! 크크");

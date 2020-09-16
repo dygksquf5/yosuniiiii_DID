@@ -24,9 +24,12 @@ function HomeScreen () {
     <View style={styles.box}>
       <TouchableOpacity onPress={() => setIdView(showIdView = false)}>
       <Text style={{marginTop: 10, marginLeft: 10}}>나의 신분증</Text>  
-      <Text style={{marginTop: 150, marginLeft: 260}}>2022.04.18</Text>
+      <View>
+      <Text style={styles.date}>2022.04.18</Text>
+      </View>
       </TouchableOpacity>
     </View>
+    
     </View>
     </View>
     :
@@ -172,8 +175,11 @@ const styles = StyleSheet.create({
     box: {
       marginTop: 30,
       borderWidth:1,
-      width: 350,
-      height: 200,
-       
-    }
+      width: 320,
+      height: '60%',
+    },
+    date: {
+      marginTop: 170, 
+      marginLeft: 230,
+     }
 })
