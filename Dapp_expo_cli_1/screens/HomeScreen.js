@@ -8,6 +8,20 @@ const AppButton = ({onPress, title}) => (
 );
 
 export default class HomeScreen extends Component {
+
+state ={
+  username: []
+};
+
+getNage = async () => {
+  const username = await axios.get("http://192.168.0.8:5000/api");
+  console.log(username);
+  this.setState({username: username});
+}
+componentDidMount(){
+  this.username();
+}
+
   render() {
     return (
       <View
@@ -18,7 +32,9 @@ export default class HomeScreen extends Component {
           backgroundColor: 'white',
         }}>
           <View style={{marginBottom:200}}>
-        <Text style={styles.baseText}>본인 인증을 완료했어요 !</Text>
+        <Text style={styles.baseText}>
+        {username ? `Hello ${username}` : '님 ,본인 인증을 완료했어요 !'}
+        </Text>
 
         <AppButton onPress={this.gotoSecond} title={'확  인'} />
         {/* <Button onPress={this.gotoSecond} title="확인"></Button> */}

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 
+
 export default class SecondScreen extends Component {
   state = {
     code: '',
