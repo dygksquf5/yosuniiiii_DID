@@ -25,6 +25,7 @@ const { error } = require("jquery");
 const { json } = require("body-parser");
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("issuer.db");
+const axios = require("axios");
 
 
 
@@ -65,11 +66,8 @@ module.exports = function (app){
 
 
       const poolName = "issuer" + "-pool-sandbox";
-
       const poolGenesisTxnPath = await util.getPoolGenesisTxnPath(poolName);
-
       const poolConfig = { genesis_txn: poolGenesisTxnPath };
-
       issuer.poolHandle=await indy.openPoolLedger(poolName, poolConfig); 
 
       db.serialize(function() {
@@ -303,23 +301,14 @@ module.exports = function (app){
       schemaId : issuer.schemaId,
       credDefId : issuer.credDefId,
     };
-
     res.render("issuer_schema_2.ejs", render_data);
   });
 
 
-  // app.post("/No22222" , urlencodedParser,async function(req,res){
 
 
-  //   res.redirect("/No3");
-  // });
+  app.get("/No4" ,async function(req,res){
 
-
-
-
-
-  app.get("/No4", async function(req,res){
-    try{
     logIssuer("Issuer creates credential offer");
     issuer.credOffer = await indy.issuerCreateCredentialOffer(
       issuer.wallet,
@@ -328,9 +317,62 @@ module.exports = function (app){
 
     log(
       "Transfer credential offer from 'Issuer' to 'Prover' (via HTTP or other) ..."
-    );
+    );      
+    readline.question("sending!! ")
 
+    async function test(){
+
+      await axios.get("http://192.168.0.49:3001/api/credReq")
+      .then(response => issuer.credReq = response.data);
+
+      logOK(JSON.stringify(issuer.credReq));
+    };
+
+    test()
+
+    logOK("\nWaiting for Credential Request from prover!");
+    while (issuer.credReq == undefined) {
+      await sleep(2000);
+    }
+
+
+    // await sendToProver("credOffer", JSON.stringify(issuer.credOffer));
+    res.render("issuer_schema_3.ejs" )
+
+  });
+
+      //api for offer!!! //
+    app.get("/api/credOffer", async function(req,res){
     
+      res.send(JSON.stringify(issuer.credOffer));
+    });
+
+
+
+
+    app.post("/No4",function(req,res){
+      res.redirect("/No5")
+    })
+  
+    app.get("/No5", async function(req,res){
+
+
+    // async function test(){
+
+    //   await axios.get("http://192.168.0.49:3001/api/credReq")
+    //   .then(response => issuer.credReq = response.data);
+
+    //   logOK(JSON.stringify(issuer.credReq));
+    // };
+
+    // test()
+
+    // logOK("\nWaiting for Credential Request from prover!");
+    // while (issuer.credReq == undefined) {
+    //   await sleep(2000);
+    // }
+
+
     const tailsWriterConfig = {
       base_dir: util.getPathToIndyClientHome() + "/tails",
       uri_pattern: ""
@@ -340,7 +382,7 @@ module.exports = function (app){
       tailsWriterConfig
     );
   
-
+      //request from prover //
 
     // you need a request from prover 
     logIssuer("Issuer creates credential");
@@ -369,15 +411,42 @@ module.exports = function (app){
     for (var key in issuer.cred) {
       console.log("=>:" + key + ", value:" + issuer.cred[key]);
     };
-  }catch(error) {
-    console.log(error);
-  };
+
+    readline.question("seding!!!!! ")
+
+    res.render("issuer_schema_4.ejs")
+
+
+  });
+
+  app.get("/api/credential", async function(req,res){
+    
+    res.send(JSON.stringify(issuer.cred));
+  });
+
+
+
   
 
+  app.post("/No4", urlencodedParser, async function(req,res){
+    
+    
+      res.redirect("/No5");
+  })
 
 
-    res.render("issuer_schema_3.ejs")
-      
+    // check the crededtial offer !! ######## 
+
+      // for (var key in issuer.credOffer) {
+      //   console.log("=>:" + key + ", value:" + issuer.credOffer[key]);
+      // };      
+  
+  app.post("/No5", urlencodedParser,async function(req,res){
+
+
+
+    
+  
 });
 
 

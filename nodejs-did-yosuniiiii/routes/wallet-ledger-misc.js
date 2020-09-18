@@ -10,9 +10,17 @@ const ISSUER_COLOR = COLOR.CYAN;
 const PROVER_COLOR = COLOR.MAGENTA;
 const VERIFIER_COLOR = COLOR.YELLOW;
 
-const ISSUER_ADDRESS = "http://localhost:3000/issuer";
-const PROVER_ADDRESS = "http://localhost:3001/prover";
-const VERIFIER_ADDRESS = "http://localhost:2000/verifier";
+const ISSUER_ADDRESS = "http://192.168.0.49:3000/issuer";
+const PROVER_ADDRESS = "http://192.168.0.49:3001/prover";
+const VERIFIER_ADDRESS = "http://192.168.0.49:2000/verifier";
+
+
+
+
+
+
+
+
 
 // Logging Functions
 
