@@ -151,22 +151,26 @@ module.exports = function (app){
   app.get("/credential", async function(req, res){
 
 
-    res.render("prover_credential.ejs");
-  });
-  app.post("/credential",urlencodedParser, async function(req,res){
+    logOK("Waiting for issuer to send schema ID...");
+    while (prover.schemaId == undefined) {
+      await sleep(2000);
 
-    var schemaID = req.body.schemaID;
-    var credentialDefID = req.body.credentialDefID;
-    logOK("schemaID:",schemaID);
-    logOK("credentialDefID:", credentialDefID);
+    }
 
     prover.schemaId = schemaID;
     prover.credDefId = credentialDefID;
 
-    logOK("Waiting for issuer to send schema ID...");
-    while (prover.schemaId == undefined) {
-      await sleep(2000);
-    }
+
+
+      console.log(schemaId)
+
+    res.render("prover_credential.ejs");
+  });
+  app.post("/credential",urlencodedParser, async function(req,res){
+
+    // var schemaID = req.body.schemaID;
+    // var credentialDefID = req.body.credentialDefID;
+
 
     // logOK("Waiting for issuer to send credential definition ID...");
     // while (prover.credDefId == undefined) {
@@ -181,21 +185,29 @@ module.exports = function (app){
     );
 
   
+
+
     logOK("\n\n\n\n","got a schema ledger")
 
-      async function test (){
-        await axios.get("http://192.168.0.49:3000/api/credOffer")
-        .then(response => prover.credOffer = response.data);
 
-        // test type!! //
-          logKO(JSON.stringify(prover.credOffer));
+    });
+
+
+    app.get("/-------",async function(req,res){
+
+      // async function test (){
+      //   await axios.get("http://192.168.0.49:3000/api/credOffer")
+      //   .then(response => prover.credOffer = response.data);
+
+      //   // test type!! //
+      //     logKO(JSON.stringify(prover.credOffer));
         
 
-      };
+      // };
 
 
 // get offer !!! // 
-      test()
+      // test()
         logOK("Waiting  credential offer...");
       while (prover.credOffer == undefined) {
         await sleep(2000);
@@ -446,7 +458,10 @@ module.exports = function (app){
     res.status(200).send({ status: 200 });
   });
 
-    
+    app.post("/api",urlencodedParser,function(req,res){
+      prover.schemaId = req.body.schemaId
+      res.send("success!!!!")
+    });
 
 
 };

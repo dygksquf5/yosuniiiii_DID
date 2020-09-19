@@ -246,7 +246,6 @@ module.exports = function (app){
   
   
   
-  
         logIssuer("Issuer creates credential definition for schema");
         {
           const [
@@ -284,14 +283,17 @@ module.exports = function (app){
       );
   
 
-      // #########################################################
-      // there is a big question about .. do we need a QRcode for Scema and Credential definition? in here? 
-      //
-
       
       res.redirect("/No3");
 
   });
+
+
+
+
+
+
+
 
 
 
@@ -305,9 +307,14 @@ module.exports = function (app){
   });
 
 
+      // #########################################################
+      // there is a big question about .. do we need a QRcode for Scema and Credential definition? in here? 
+      //
 
 
-  app.get("/No4" ,async function(req,res){
+
+
+  app.get("/No44444" ,async function(req,res){
 
     logIssuer("Issuer creates credential offer");
     issuer.credOffer = await indy.issuerCreateCredentialOffer(
@@ -320,15 +327,15 @@ module.exports = function (app){
     );      
     readline.question("sending!! ")
 
-    async function test(){
+    // async function test(){
 
-      await axios.get("http://192.168.0.49:3001/api/credReq")
-      .then(response => issuer.credReq = response.data);
+    //   await axios.get("http://192.168.0.49:3001/api/credReq")
+    //   .then(response => issuer.credReq = response.data);
 
-      logOK(JSON.stringify(issuer.credReq));
-    };
+    //   logOK(JSON.stringify(issuer.credReq));
+    // };
 
-    test()
+    // test()
 
     logOK("\nWaiting for Credential Request from prover!");
     while (issuer.credReq == undefined) {
@@ -568,6 +575,9 @@ app.post("/issuer", (req, res) => {
   res.status(200).send({ status: 200 });
 });
 
+
+
+
 };
 // #########here
 
@@ -575,3 +585,5 @@ app.post("/issuer", (req, res) => {
 //   console.log("Issuer started on port 3000!");
 //   run();
 // });
+
+
