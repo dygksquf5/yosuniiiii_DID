@@ -7,6 +7,9 @@
   <title>Document</title>
   <%- include('../views/partials/head') %>
 
+  <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src="../js/axios.js"></script> -->
+
 
 
 
@@ -20,7 +23,7 @@
 
     <h2 class="mb-3">schema</h2>
 
-    <form action="/No4" method="POST">
+    <form action="" method="POST">
       <!-- in the select form, if you choose the first one, the value of first one will input in name="list", -->
 
       <div class="input-group">
@@ -36,45 +39,35 @@
       </div>
     </form> <br><br>
 
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id=""> qrcode </span>
+
+    <from action="/No3" method="POST">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id=""> qrcode </span>
+        </div>
+        <input type="text" class="form-control" id="qr-data1" value="<%= schemaId %>">
+        <input type="text" class="form-control" id="qr-data2" value="<%= credDefId %>">
+        <button type="submit" class="btn btn-secondary" onclick="generateQR()"> 발급 !</button>
       </div>
-      <input type="text" class="form-control" id="qr-data1" value="<%= schemaId %>">
-      <input type="text" class="form-control" id="qr-data2" value="<%= credDefId %>">
-      <button class="btn btn-secondary" onclick="generateQR()"> connect </button>
-    </div>
-    <div id="qrcode"></div>
+      <div id="qrcode"></div>
+      </from>
+
+    <!-- <section id="control-center">
+      <button id="get-btn"> get data </button>
+      <button id="post-btn"> post data </button>
+    </section>
+ -->
 
 
-    <div>
-      <button onclick="testtest()" > sending </button>
-    </div>
-
-
-
-    <div>
-      <a href="/No4"> GET CREDENTIAL </a>
-    </div>
+ <form action="/No3" method="POST">
+  <div>
+      <button  type="submit"   > 발급!!! </button>
+  </div>
+</form> 
 
 
   </div>
 </body>
-
-
-<script src="https://unpkg.com/axios/dist/axios.min.js">
-  import axios from "axios";
-
-  const schemaId_1 = document.getElementById("qr-data1");
-  const schemaId = schemaId_1.value;
-
-  async function testtest(){
-    await axios.post("http://192.168.0.32:3001/api",
-    schemaId)
-    .then(response => console.log(response.data))
-  };
-
-</script>
 
 <script type="text/javascript"></script>
 <script src="../js/qrcode.min.js"></script>
