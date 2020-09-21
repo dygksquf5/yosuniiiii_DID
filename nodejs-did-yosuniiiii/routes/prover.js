@@ -148,16 +148,18 @@ module.exports = function (app){
   
     });
 
-    app.post("/api",urlencodedParser,function(req,res){
-      prover.schemaId = req.body.schemaId
-      res.send("success!!!!")
-    });
+    // app.post("/api",urlencodedParser,function(req,res){
+    //   prover.schemaId = req.body.schemaId
+    //   res.send("success!!!!")
+    // });
 
-    app.get("/api",function(req,res){
-      res.send("success!!!get!")
-    });
+    // app.get("/api",function(req,res){
+    //   res.send("success!!!get!")
+    // });
 
     
+
+
   app.get("/credential", async function(req, res){
 
     res.render("prover_credential.ejs");
@@ -199,9 +201,21 @@ module.exports = function (app){
     app.get("/credential2",async function(req,res){
       res.render("prover_credential_2.ejs");
     });
+
+
+
+
+    app.post("/api/credReq",urlencodedParser, async function(req,res){
+      res.send(JSON.stringify(prover.credReq));
+    })
+
+
+
+  
     app.post("/credential2", urlencodedParser, async function(req,res){
-      async function test (){
-        await axios.post("http://10.0.2.15:3000/api/credOffer")
+
+      async function test1(){
+        await axios.post("http://192.168.0.49:3000/api/credOffer")
         .then(response => prover.credOffer = response.data);
 
         // test type!! //
@@ -209,17 +223,17 @@ module.exports = function (app){
       };
 
 
-      test()
-
-
+      
       logOK("Waiting  credential offer...");
       while (prover.credOffer == undefined) {
+        await test1(),
         await sleep(2000);
-      }  
+      } 
+      
 
-      for (var key in prover.credOffer) {
-        console.log("=>:" + key + ", value:" + prover.credOffer[key]);
-      };      
+      // for (var key in prover.credOffer) {
+      //   console.log("=>:" + key + ", value:" + prover.credOffer[key]);
+      // };      
 
 
       logProver("Prover gets credential definition from ledger");
@@ -255,12 +269,28 @@ module.exports = function (app){
       }
 
 
+      res.redirect("/credential3")
+    });
+    app.get("/credential3", function(req,res){
+      res.render("prover_credential_3");
+    })
+
+    app.post("/credential3", async function(req,res){
+
+      async function test2(){
+
+        await axios.post("http://192.168.0.49:3000/api/cred")
+        .then(response => prover.cred = response.data)
+      }
 
       logOK("\n\nWaiting for Credential from Issuer...");
       while (prover.cred == undefined) {
-        await sleep(200000);
+        await sleep(2000),
+        await test2();
       }
+
   
+
       logProver("Prover stores credential which was received from issuer");
       await indy.proverStoreCredential(
         prover.wallet,
@@ -270,21 +300,38 @@ module.exports = function (app){
         prover.credDef,
         undefined
       );
+
+
+      for (var key in prover.cred) {
+        logOK("=>:"+ key  + ", value:" + JSON.stringify(prover.cred[key]));
+      };      
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    app.post("/test", async function(req,res){
   
   
-      for (const [key, value] of Object.entries(prover.cred)) {
-        console.log(`${key} : ${value}`);
-      }
+      // for (const [key, value] of Object.entries(prover.cred)) {
+      //   console.log(`${key} : ${value}`);
+      // }
   
   
   
 
     });
-
-    app.post("/api/credReq",urlencodedParser, async function(req,res){
-      res.send(JSON.stringify(prover.credReq));
-    })
-
 
 
 
@@ -298,6 +345,9 @@ module.exports = function (app){
     
     res.render("/credential2222222222222222222");
   });
+
+
+
 
 
 
@@ -442,8 +492,9 @@ module.exports = function (app){
 
 
   app.post("/prover", (req, res) => {
-    // let type = req.body.type;
-    // let message = req.body.message;
+    // const type = req.body.type;
+    // const message = req.body.message;
+
     // switch (type) {
     //   case "schemaId":
     //     prover.schemaId = message;

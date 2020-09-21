@@ -26,6 +26,8 @@ const { json } = require("body-parser");
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("issuer.db");
 const axios = require("axios");
+const { response } = require("express");
+const colors = require("./colors");
 
 
 
@@ -312,44 +314,12 @@ module.exports = function (app){
   
       log(
         "Transfer credential offer from 'Issuer' to 'Prover' (via HTTP or other) ..."
-      );      
-  
-    
-      res.send(JSON.stringify(issuer.credOffer));
+      );          
+      await res.send(JSON.stringify(issuer.credOffer));
     });
 
 
-    // app.get("/No3", function(req,res){
-    //   res.render("prover_credential_3.ejs")
-
-    // });
-
-  
-
-    app.post("/No3" ,urlencodedParser,async function(req,res){
-  
-      async function test(){
-  
-        await axios.post("http://10.0.2.15:3001/api/credReq")
-        .then(response => issuer.credReq = response.data);
-  
-        logOK(JSON.stringify(issuer.credReq));
-      };
-  
-      test()
-  
-      logOK("\nWaiting for Credential Request from prover!");
-      while (issuer.credReq == undefined) {
-        await sleep(2000);
-      }
-
-
-      for (var key in issuer.credReq) {
-        console.log("=>:" + key + ", value:" + issuer.credReq[key]);
-      };      
-
-
-      logKO("got ittttttttt!!!!!!!")
+    app.post("/api/cred", urlencodedParser, async function(req,res){
 
       const tailsWriterConfig = {
         base_dir: util.getPathToIndyClientHome() + "/tails",
@@ -359,21 +329,19 @@ module.exports = function (app){
         "default",
         tailsWriterConfig
       );
-    
-        //request from prover //
-  
-      // you need a request from prover 
+
+
       logIssuer("Issuer creates credential");
       {
         const credValues = {
-          gender: { raw: "male", encoded: "123456789123456789" },
+          gender: { raw: "secret", encoded: "123456789123456789" },
           age: {
-            raw: "28",
+            raw: "20",
             encoded: "28"
           },
-          food: {raw: "pizzzaaaaa", encoded: "123456789123456789"},
-          name: { raw: "yosuniiiii", encoded: "123456789123456789" },
-          address: { raw: "Seoul", encoded: "123456789123456789" }
+          food: {raw: "Tteockbokkiiiiii", encoded: "123456789123456789"},
+          name: { raw: "eunhyeeeeeeeeeee", encoded: "123456789123456789" },
+          address: { raw: "Deajeon", encoded: "123456789123456789" }
         };
         const [cred, _i, _d] = await indy.issuerCreateCredential(
           issuer.wallet,
@@ -385,14 +353,63 @@ module.exports = function (app){
         );
         issuer.cred = cred;
       }
+
+      await res.send(JSON.stringify(issuer.cred));
+
+      console.log(JSON.stringify(issuer.cred));
+
+
+  });
+
+
+
+ 
+
+    // app.get("/No3", function(req,res){
+    //   res.render("prover_credential_3.ejs")
+
+    // });
+
   
-      for (var key in issuer.cred) {
-        console.log("=>:" + key + ", value:" + issuer.cred[key]);
+
+    app.post("/No3" ,urlencodedParser,async function(req,res){
+
+  
+      async function test(){
+        await axios.post("http://192.168.0.49:3001/api/credReq")
+        .then(response => issuer.credReq = response.data);
+  
+        logOK(JSON.stringify(issuer.credReq));
       };
+  
+  
+      logOK("\nWaiting for Credential Request from prover!");
+      while (issuer.credReq == undefined) {
+        await test();
+      }
+
+      logKO("got ittttttttt!!!!!!!")
+              //request from prover //
+  
+
   
       // await sendToProver("credOffer", JSON.stringify(issuer.credOffer));
     });
-  
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -465,44 +482,6 @@ module.exports = function (app){
   app.post("/No555555555555", async function(req, res){
 
 
-  //Sending SchemaId to Prover
-
-
-  // logKO("\tSchemaId: " + issuer.schemaId);
-  // await sendToProver("schemaId", issuer.schemaId);
-
-  //Sending CredDefId to Prover
-
-
-  // logKO("\tCredential Defination ID: " + issuer.credDefId);
-  // await sendToProver("credDefId", issuer.credDefId);
-
-    logIssuer("Issuer creates credential offer");
-    issuer.credOffer = await indy.issuerCreateCredentialOffer(
-      issuer.wallet,
-      issuer.credDefId
-    );
-
-    logOK(issuer.credOffer);
-
-    log(
-      "Transfer credential offer from 'Issuer' to 'Prover' (via HTTP or other) ..."
-    );
-  // await sendToProver("credOffer", JSON.stringify(issuer.credOffer));
-
-  // logOK("\nWaiting for Credential Request from prover!");
-  // while (issuer.credReq == undefined) {
-  //   await sleep(2000);
-  // }
-
-  // const tailsWriterConfig = {
-  //   base_dir: util.getPathToIndyClientHome() + "/tails",
-  //   uri_pattern: ""
-  // };
-  // const tailsWriter = await indy.openBlobStorageWriter(
-  //   "default",
-  //   tailsWriterConfig
-  // );
 
 
   logIssuer("Issuer creates credential");
@@ -528,11 +507,6 @@ module.exports = function (app){
     issuer.cred = cred;
   }
 
-  //####################################### test #################################3 
-    for (var key in issuer.cred) {
-      console.log("=>:" + key + ", value:" + issuer.cred[key]);
-    };
-    //####################################### test #################################3 
 
 
 

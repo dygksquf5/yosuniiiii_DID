@@ -10,9 +10,9 @@ const ISSUER_COLOR = COLOR.CYAN;
 const PROVER_COLOR = COLOR.MAGENTA;
 const VERIFIER_COLOR = COLOR.YELLOW;
 
-const ISSUER_ADDRESS = "http://10.0.2.15:3000/issuer";
-const PROVER_ADDRESS = "http://10.0.2.15:3001/prover";
-const VERIFIER_ADDRESS = "http://10.0.2.15:2000/verifier";
+const ISSUER_ADDRESS = "http://192.168.0.49:3000/issuer";
+const PROVER_ADDRESS = "http://192.168.0.49:3001/prover";
+const VERIFIER_ADDRESS = "http://192.168.0.49:2000/verifier";
 
 
 
@@ -39,6 +39,11 @@ function logOK(s) {
 function logKO(s) {
   log(COLOR.RED + s + COLOR.NONE);
 }
+
+
+
+
+
 
 // Communication Functions
 async function sendToProver(type, message) {
