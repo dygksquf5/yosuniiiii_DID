@@ -1,4 +1,5 @@
 const prover = {};
+const testtest_1 = {};
 var {
   log,
   logProver,
@@ -27,6 +28,7 @@ const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("prover.db");
 const axios = require("axios");
 const { response } = require("express");
+const cors = require("cors");
 
 
 
@@ -39,32 +41,12 @@ const { response } = require("express");
 
 module.exports = function (app){
   app.use(bodyParser.json());
+  app.use(cors());
 
+    app.post("/api/log", urlencodedParser ,async function(req,res){
 
-  app.get("/", async function(req,res){
-    log("Set protocol version 2");
-    await indy.setProtocolVersion(2);
-
-      res.render("prover_login.ejs")
-  });
-  
-  
-  
-  
-    app.post("/log", urlencodedParser ,async function(req,res){
-      var username = req.body.username;
-      var password = req.body.password;
-  
-      req.session.user_name = username;
-      req.session.password = password;
-
-      console.log(username)
-      console.log(req.session.password)
-
-      res.redirect("/main");
-    });
-    
-    app.get("/main", async function(req,res){
+      log("Set protocol version 2");
+      await indy.setProtocolVersion(2);  
 
       log("Prover Open connections to ledger");
 
@@ -124,29 +106,40 @@ module.exports = function (app){
           const render_data = {
             did : test
           }
-          res.render("prover_main.ejs", render_data)
+
+          res.send("success, your did is "+ test);
+
       });
+    });
+
+
+
+    
+    // app.get("/main", async function(req,res){
+
+    //       res.render("prover_main.ejs", render_data)
+    //   });
 
         
-    });
 
-    app.get("/main2",async function(req,res){
 
-      const sql = ('SELECT * FROM DID');
-      db.get(sql, (err,row) => {
-        if (err){
-          return logKO(err.message);
-        }
-        const test =  `${row.DID}`;
-        console.log(test,"you have got DID successfully ");
-        const render_data = {
-          did : test
-        }
-        res.render("prover_main_2.ejs", render_data)
+    // app.get("/main2",async function(req,res){
+
+    //   const sql = ('SELECT * FROM DID');
+    //   db.get(sql, (err,row) => {
+    //     if (err){
+    //       return logKO(err.message);
+    //     }
+    //     const test =  `${row.DID}`;
+    //     console.log(test,"you have got DID successfully ");
+    //     const render_data = {
+    //       did : test
+    //     }
+    //     res.render("prover_main_2.ejs", render_data)
   
-      });
+    //   });
   
-    });
+    // });
 
     // app.post("/api",urlencodedParser,function(req,res){
     //   prover.schemaId = req.body.schemaId
@@ -160,18 +153,17 @@ module.exports = function (app){
     
 
 
-  app.get("/credential", async function(req, res){
+  // app.get("/credential", async function(req, res){
 
-    res.render("prover_credential.ejs");
-  });
-
-
-  app.post("/credential",urlencodedParser, async function(req,res){
+  //   res.render("prover_credential.ejs");
+  // });
 
 
+  app.post("/api/schema",urlencodedParser, async function(req,res){
 
-    prover.schemaId = req.body.schemaID;
-      console.log(prover.schemaId)
+    prover.schemaId = req.query.state
+    
+    console.log(prover.schemaId)
 
     logOK("Waiting for issuer to send schema ID...");
     while (prover.schemaId == undefined) {
@@ -194,9 +186,11 @@ module.exports = function (app){
 
     logOK("got a schema ledger")
     
-    res.redirect("/credential2")
 
     });
+
+
+    
 
     app.get("/credential2",async function(req,res){
       res.render("prover_credential_2.ejs");
@@ -292,7 +286,7 @@ module.exports = function (app){
   
 
       logProver("Prover stores credential which was received from issuer");
-      await indy.proverStoreCredential(
+       prover.outCredId =  await indy.proverStoreCredential(
         prover.wallet,
         undefined,
         prover.credReqMetadata,
@@ -302,104 +296,64 @@ module.exports = function (app){
       );
 
 
-      for (var key in prover.cred) {
-        logOK("=>:"+ key  + ", value:" + JSON.stringify(prover.cred[key]));
-      };      
-
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    app.post("/test", async function(req,res){
-  
-  
-      // for (const [key, value] of Object.entries(prover.cred)) {
-      //   console.log(`${key} : ${value}`);
-      // }
-  
-  
-  
-
-    });
-
-
-
-
-
-
-
-
-  app.get("/credential2",async function(req,res){
-
-    
-    res.render("/credential2222222222222222222");
-  });
-
-
-
-
-
-
-
-
-
-
-  app.get("/credential3", async function(req,res){
-
-
-    async function test1 (){
-      await axios.get("http://192.168.0.49:3000/api/credOffer")
-      .then(response => prover.credOffer = response.data);
-
-      // test type!! //
-        logKO(JSON.stringify(prover.credOffer));
+    //   db.serialize(function() {
+    //     const stmt = db.prepare('INSERT INTO proverID(pool_name, date) VALUES (?,?)');
+    //     const date = new Date();
+    //     const strDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
       
+        
+    //   stmt.run(poolName,strDate);
+    //   stmt.finalize();
 
-    };
+    //   db.each('SELECT aid, pool_name, date FROM proverID', (err, row) =>{
+    //     logProver(`${row.aid})  pool_name: ${row.pool_name}  Date: ${row.date}` );
+    //  });
+    // });
+
+      // logProver("get specific credential from wallet ")
+
+      // const test_credential = await indy.proverGetCredential(
+      //   prover.wallet,
+      //   outCredId
+      // );
 
 
-    test1()
-    
-    logOK("\n\nWaiting for Credential from Issuer...");
-    while (prover.cred == undefined) {
-      await sleep(200000);
+        // logOK(JSON.stringify(test_credential))
+
+        // logOK(JSON.stringify(prover.cred.values))
+        res.redirect("credential3")
+    });
+
+    app.post("/api/cred", urlencodedParser, async function(req,res){
+
+      logProver("get specific credential from wallet ")
+
+      const test_credential = await indy.proverGetCredential(
+        prover.wallet,
+        prover.outCredId
+      );
+      
+      testtest_1.test = req.query.title;
+
+      res.send(JSON.stringify(test_credential))
+    });
+
+
+
+
+
+
+
+
+  app.get("/credential4", async function(req,res){
+
+    const render_data = {
+      data: testtest_1.test
     }
 
-    logProver("Prover stores credential which was received from issuer");
-    await indy.proverStoreCredential(
-      prover.wallet,
-      undefined,
-      prover.credReqMetadata,
-      prover.cred,
-      prover.credDef,
-      undefined
-    );
 
-
-    for (const [key, value] of Object.entries(prover.cred)) {
-      console.log(`${key} : ${value}`);
-    }
-
-    res.render("prover_credential_3.ejs", render_data);
+    res.render("prover_credential_4.ejs", render_data);
   });
-
-
-  app.post("/credential2", urlencodedParser ,async function(req,res){
-    res.redirect("/credential2")
-  
-  });
-
 
 
 
@@ -475,7 +429,7 @@ module.exports = function (app){
       await sendToVerfier("proof", JSON.stringify(prover.proof));
 
       readline.question(
-        "\n\nProof successfully transfered from prover to verifer, Press enter to terminate this session, delete prover wallet, pool handle and teriminate program:"
+        "\n\nhahahahahahahahahahahahahahahahahh"
       );
 
       // log("Prover close and delete wallets");
