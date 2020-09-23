@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { Text, View, Image, StyleSheet, Button, TouchableOpacity, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BarCodeScanner } from 'expo-barcode-scanner';
@@ -63,7 +63,6 @@ export default function App() {
 
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [data, setdata] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -75,28 +74,6 @@ export default function App() {
 
 
 //##############################################################################################
-function testtest(){
-  
-
-  var params = new URLSearchParams();
-  params.append('state',JSON.stringify(data));
-
-  Axios({
-    method: "POST",
-    url: "http://192.168.0.49:3001/api/schema",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    params
-  }).then(req => {
-    console.log(req.body.data);
-  })
-}
-
-
-
-
-
 
 
 
@@ -118,35 +95,40 @@ function testtest(){
 
 const handleBarCodeScanned = ({ type, data }) => {
 
+  async function testtest(){
   
-    setdata(data);
+
+    var params = new URLSearchParams();
+    await params.append('data',JSON.stringify(data));
+  
+    await Axios({
+      method: "POST",
+      url: "http://192.168.0.49:3001/api/schema",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      params
+    }).then(req => {
+      console.log(req.body.data);
+    })
+  }
+  
+  async function testtest_1(){
+
+        alert('data:    '+JSON.stringify({data})+ 'has been scanned!')
+
+  }
+
+
     setScanned(true);
-
-
-    if (setScanned != true) {
-      <Button title={'????????????????'} onPress={() => setScanned(false)} />
-     } else {
-      this.props.navigation.navigate('Home');
-        var params = new URLSearchParams();
-       params.append('state',JSON.stringify(data));
-      Axios({
-        method: "POST",
-        url: "http://192.168.0.49:3001/api/schema",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        params
-      }).then(req => {
-        console.log(req.body.data);
-      })
-        .then( response => console.log(response.data))
-    }
-
-
-
-
         // alert('Bar code with type'+JSON.stringify({type})+ 'and data'+JSON.stringify({data})+ 'has been scanned!')
-        
+      Alert.alert(
+        type,
+        data,
+        [
+          {Text: 'OK!!!!!!!!!!', onPress: () => testtest_1()},
+        ]
+      )
   };
 
 
@@ -180,7 +162,7 @@ function QrScreen() {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      {/* {scanned && <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />} */}
+      {scanned && <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />}
       {/* {scanned && <Button title={'Tap to Scan'} onPress={() => testtest()} />} */}
 
     </View>

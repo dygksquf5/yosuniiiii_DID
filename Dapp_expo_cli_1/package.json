@@ -21,7 +21,8 @@
     "react-native-gesture-handler": "^1.8.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.4.0",
-    "react-navigation-stack": "^2.8.2"
+    "react-navigation-stack": "^2.8.2",
+    "url-search-params-polyfill": "^8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
