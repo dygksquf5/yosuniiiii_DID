@@ -7,7 +7,6 @@ import MainScreen from './screens/MainScreen';
 import IdScreen from './screens/IdScreen';
 
 
-
 // StackNavigator 객체 생성
 const stackNav = createStackNavigator({
   // Home: {screen:HomeScreen, ncavigationOptions:{header:null}},
@@ -21,9 +20,8 @@ const stackNav = createStackNavigator({
 // 네비게이터 객체를 가지고 있는 AppContainer객체 생성 : 컴포넌트 객체
 const Container = createAppContainer(stackNav);
 
-export default class App extends Component {
+export default class Main extends Component {
   render() {
-
     return <Container theme="light"></Container>;
   }
 }

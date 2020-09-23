@@ -3,6 +3,10 @@ import { Text, View, Image, StyleSheet, Button, TouchableOpacity } from 'react-n
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import {Axios} from 'axios';
+import { render } from 'react-dom';
+import { State } from 'react-native-gesture-handler';
+import 'url-search-params-polyfill';
 
 
 function gotoId () {
@@ -24,12 +28,9 @@ function HomeScreen () {
     <View style={styles.box}>
       <TouchableOpacity onPress={() => setIdView(showIdView = false)}>
       <Text style={{marginTop: 10, marginLeft: 10}}>나의 신분증</Text>  
-      <View>
-      <Text style={styles.date}>2022.04.18</Text>
-      </View>
+      <Text style={{marginTop: 150, marginLeft: 260}}>2022.04.18</Text>
       </TouchableOpacity>
     </View>
-    
     </View>
     </View>
     :
@@ -59,8 +60,10 @@ function HomeScreen () {
 
 export default function App() {
 
+
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [data, setdata] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -69,10 +72,92 @@ export default function App() {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+
+
+//##############################################################################################
+function testtest(){
+  
+
+  var params = new URLSearchParams();
+  params.append('state',JSON.stringify(data));
+
+  Axios({
+    method: "POST",
+    url: "http://192.168.0.49:3001/api/schema",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    params
+  }).then(req => {
+    console.log(req.body.data);
+  })
+}
+
+
+
+
+
+
+
+
+
+
+    // state = {
+    //   type: {type},
+    //   data: {data},
+    // };
+    // updateState = () => {
+    //   this.setState({
+    //     type: this.state,
+    //     data: this.state,
+    //   }); 
+    // }
+        
+
+
+
+const handleBarCodeScanned = ({ type, data }) => {
+
+  
+    setdata(data);
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+
+    if (setScanned != true) {
+      <Button title={'????????????????'} onPress={() => setScanned(false)} />
+     } else {
+      this.props.navigation.navigate('Home');
+        var params = new URLSearchParams();
+       params.append('state',JSON.stringify(data));
+      Axios({
+        method: "POST",
+        url: "http://192.168.0.49:3001/api/schema",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        params
+      }).then(req => {
+        console.log(req.body.data);
+      })
+        .then( response => console.log(response.data))
+    }
+
+
+
+
+        // alert('Bar code with type'+JSON.stringify({type})+ 'and data'+JSON.stringify({data})+ 'has been scanned!')
+        
   };
+
+
+
+
+
+
+
+
+
+
 
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
@@ -95,13 +180,14 @@ function QrScreen() {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
+      {/* {scanned && <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />} */}
+      {/* {scanned && <Button title={'Tap to Scan'} onPress={() => testtest()} />} */}
 
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
     </View>
 
   // </View>
   );
-      }
+}
 const Tab = createBottomTabNavigator();
 
 
@@ -175,11 +261,8 @@ const styles = StyleSheet.create({
     box: {
       marginTop: 30,
       borderWidth:1,
-      width: 320,
-      height: '60%',
-    },
-    date: {
-      marginTop: 170, 
-      marginLeft: 230,
-     }
+      width: 350,
+      height: 200,
+       
+    }
 })

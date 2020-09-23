@@ -1,7 +1,7 @@
+import Axios from 'axios';
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
-
 
 export default class SecondScreen extends Component {
   state = {
@@ -15,7 +15,9 @@ export default class SecondScreen extends Component {
     if (code != '5678') {
       this.pinInput.current.shake().then(() => this.setState({code: ''}));
      } else {
-      this.props.navigation.navigate('Home')
+      this.props.navigation.navigate('Home');
+      Axios.post("http://192.168.0.49:3001/api/log")
+      .then( response => console.log(response.data))
     }
     }
     
