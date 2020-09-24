@@ -9,9 +9,6 @@ import { State } from 'react-native-gesture-handler';
 import 'url-search-params-polyfill';
 
 
-function gotoId () {
-  navigation.navigate('Id');
-}
 
 
 
@@ -103,7 +100,7 @@ const handleBarCodeScanned = ({ type, data }) => {
   
     await Axios({
       method: "POST",
-      url: "http://192.168.0.49:3001/api/schema",
+      url: "http://172.20.10.6:3001/api/schema",
       headers: {
         "Content-Type": "application/json"
       },
@@ -124,9 +121,8 @@ const handleBarCodeScanned = ({ type, data }) => {
         // alert('Bar code with type'+JSON.stringify({type})+ 'and data'+JSON.stringify({data})+ 'has been scanned!')
       Alert.alert(
         type,
-        data,
         [
-          {Text: 'OK!!!!!!!!!!', onPress: () => testtest_1()},
+          {Text: 'OK!!!!!!!!!!', onPress: () => testtest()},
         ]
       )
   };
@@ -203,6 +199,7 @@ const Tab = createBottomTabNavigator();
       }}>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="QRcamera" component={QrScreen}/>
+
         
       </Tab.Navigator>
     </NavigationContainer>

@@ -16,7 +16,7 @@ export default class SecondScreen extends Component {
       this.pinInput.current.shake().then(() => this.setState({code: ''}));
      } else {
       this.props.navigation.navigate('Home');
-      Axios.post("http://192.168.0.49:3001/api/log")
+      Axios.post("http://192.168.0.5:3001/api/log")
       .then( response => console.log(response.data))
     }
     }
