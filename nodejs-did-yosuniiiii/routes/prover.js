@@ -161,7 +161,7 @@ module.exports = function (app){
 
   app.post("/api/schema",urlencodedParser, async function(req,res){
 
-    prover.schemaId = req.query.state
+    prover.schemaId = req.query.data
     
     console.log(prover.schemaId)
 
