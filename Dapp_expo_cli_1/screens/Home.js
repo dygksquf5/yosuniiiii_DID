@@ -1,11 +1,12 @@
 import React, { useState, useEffect , Component} from 'react';
 import PropTypes from 'prop-types'
 import {
-  StyleSheet, Text, View, StatusBar, TouchableOpacity
+  StyleSheet, Text, View, StatusBar, TouchableOpacity, TouchableHighlight
 } from 'react-native'
 import Button from '../src/components/Button'
 import { colors } from '../src/theme'
 import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
+import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { render } from 'react-dom';
@@ -44,6 +45,18 @@ export default class Home extends Component {
 </TouchableOpacity>
 </View>
 
+<View style={styles.addButton}>
+      <TouchableHighlight 
+      underlayColor='#ff7043' onPress={this.gotoQR}>
+      <FontIcon
+                  name="qrcode-scan"
+                  color='white'
+                  size={35}
+                  
+                />
+  </TouchableHighlight>
+
+      </View>
     {/* <StatusBar barStyle="light-content" />
     <Text style={styles.title}>Home</Text> */}
     {/* <Button
@@ -97,8 +110,26 @@ const styles = StyleSheet.create({
     borderColor:'white', 
     borderRadius:10,
     shadowColor: '#000000'
-
   },
-  
+  addButton: {
+    backgroundColor: '#9966CC',
+    borderColor: '#9966CC',
+    borderWidth: 1,
+    height: 75,
+    width: 75,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 50,
+    right:20,
+    shadowColor: "#000000",
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    }
+  }
 })
 
