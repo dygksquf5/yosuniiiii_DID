@@ -27,7 +27,7 @@ export default class HomeScreen extends Component {
     );
   } 
   gotoSecond = () => {
-    this.props.navigation.navigate('Second');
+    this.props.navigation.replace('Second');
   };
 }
 

@@ -55,7 +55,7 @@ function HomeScreen () {
   
 }
 
-export default function App() {
+export default function () {
 
 
   const [hasPermission, setHasPermission] = useState(null);
