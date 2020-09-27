@@ -17,6 +17,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { render } from 'react-dom';
 import { State } from 'react-native-gesture-handler';
 
+
 export default class Home extends Component {
   render() {
     return (
@@ -29,7 +30,7 @@ export default class Home extends Component {
           <Content>
             <Card style={styles.card}>
               <View style={{ margin: 8 }}>
-                <TouchableOpacity onPress={this.gotoDetails}>
+                <TouchableOpacity onPress={this.gotoPassword}>
                   <Text style={styles.cardUpText}>나의 신분증 !</Text>
 
                   {/* 신분증 사진 넣게된다면 자리 ! */}
@@ -56,6 +57,11 @@ export default class Home extends Component {
   gotoDetails = () => {
     this.props.navigation.navigate('testtest');
   };
+  gotoPassword = () => {
+    this.props.navigation.replace('SecondScreen');
+  };
+
+
 }
 
 const styles = StyleSheet.create({

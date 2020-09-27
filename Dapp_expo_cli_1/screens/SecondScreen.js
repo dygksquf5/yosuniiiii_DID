@@ -14,7 +14,7 @@ export default class SecondScreen extends Component {
     if (code != '5678') {
       this.pinInput.current.shake().then(() => this.setState({ code: '' }));
     } else {
-      this.props.navigation.replace('Home');
+      this.props.navigation.replace('Details');
       Axios.post('http://192.168.0.5:3001/api/log').then((response) =>
         console.log(response.data)
       );
