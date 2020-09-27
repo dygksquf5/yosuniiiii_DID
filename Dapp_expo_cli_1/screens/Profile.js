@@ -8,6 +8,23 @@ import { render } from 'react-dom';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { State } from 'react-native-gesture-handler';
+import Axios from 'axios';
+
+
+// const [credential, setcredential] = useState("");
+
+
+async function requestCred(){
+  await Axios.post('http://192.168.0.5:3001/api/requestCred')
+  .then(response => setcredential(response.data))
+
+}
+async function getCred(){
+  await Axios.post('http://192.168.0.5:3001/api/getCred')
+  .then(response => setcredential(response.data))
+
+}
+
 
 export default class Profile extends Component {
   render() {
@@ -16,11 +33,35 @@ export default class Profile extends Component {
         <StatusBar barStyle='light-content' />
         <Text style={styles.title}>여기는 디 테 일2222 !!</Text>
         <Button
+          title=" offer 요청 "
+          color='white'
+          backgroundColor={colors.pink}
+          onPress={() => requestCred()}
+        />
+        <Button
+          title='지갑에서 신분증 요청하기!'
+          color='white'
+          backgroundColor={colors.pink}
+          onPress={() => getCred()}
+        />
+
+
+
+
+        
+        <Button
           title='Go Back'
           color='white'
           backgroundColor={colors.pink}
           onPress={this.gotoBack}
         />
+        <Button
+          title='Go Back'
+          color='white'
+          backgroundColor={colors.pink}
+          onPress={this.gotoBack}
+        />
+        
       </View>
     );
   }

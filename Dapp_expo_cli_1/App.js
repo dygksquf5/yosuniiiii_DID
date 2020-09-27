@@ -36,21 +36,22 @@ import { fontAssets } from './src/theme/fonts'
 // });
 
 
-const StacNav1 = createStackNavigator({
-  certification: {screen: HomeScreen},
-
-
-})
+// const StacNav1 = createStackNavigator({
+//   certification: {screen: HomeScreen}
+// })
 
 
 const StacNav2 = createStackNavigator({
     Home: {screen: Home},
     SecondScreen : {screen: SecondScreen},
     Details: { screen: Details },
+    QRcode: { screen: QRcode, ncavigationOptions: { header: null } },
+
 
 });
 const StacNav3 = createStackNavigator({
     Profile: {screen: Profile},
+
 
 })
 
@@ -75,10 +76,10 @@ const TabNavigator = createBottomTabNavigator({
 
 const SwitchNav = createSwitchNavigator({
     
-    second: { screen: TabNavigator},
+    first: { screen: TabNavigator},
   },
   {
-    initialRouteName: 'second',
+    initialRouteName: 'first',
 })
 
 
