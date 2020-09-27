@@ -107,7 +107,7 @@ module.exports = function (app){
             did : test
           }
 
-          res.send("success, your did is "+ test);
+          res.send(test);
 
       });
     });
@@ -189,19 +189,59 @@ module.exports = function (app){
 
 
     logOK("got a schema ledger")
-    
+
+    async function test1(){
+      await axios.post("http://192.168.0.5:3000/api/credOffer")
+      .then(response => prover.credOffer = response.data);
+
+      // test type!! //
+        logKO(JSON.stringify(prover.credOffer));
+    };
+
+
+    logOK("Waiting  credential offer...");
+    while (prover.credOffer == undefined) {
+      await test1(),
+      await sleep(2000);
+    } 
+
+
+    logOK (" got it OFFER!!! ")
+
+    logProver("Prover gets credential definition from ledger");
+    prover.credDefId = prover.credOffer["cred_def_id"];
+    prover.credDef = await getCredDefFromLedger(
+      prover.poolHandle,
+      prover.did,
+      prover.credDefId
+    );
+
+
+    logProver("Prover creates master secret");
+    prover.masterSecretId = await indy.proverCreateMasterSecret(
+      prover.wallet,
+      undefined
+    );
+  
+
+
+
+
+    logProver("Prover creates credential request");
+    {
+      const [credReq, credReqMetadata] = await indy.proverCreateCredentialReq(
+        prover.wallet,
+        prover.did,
+        prover.credOffer,
+        prover.credDef,
+        prover.masterSecretId
+      );
+      prover.credReq = credReq;
+      prover.credReqMetadata = credReqMetadata;
+    }
+
 
     });
-
-
-    
-
-    app.get("/credential2",async function(req,res){
-      res.render("prover_credential_2.ejs");
-    });
-
-
-
 
     app.post("/api/credReq",urlencodedParser, async function(req,res){
       res.send(JSON.stringify(prover.credReq));
@@ -209,75 +249,86 @@ module.exports = function (app){
 
 
 
+    
+
+    // app.get("/credential2",async function(req,res){
+    //   res.render("prover_credential_2.ejs");
+    // });
+
+
+
+
+
+
   
-    app.post("/credential2", urlencodedParser, async function(req,res){
+    // app.post("/credential2", urlencodedParser, async function(req,res){
 
-      async function test1(){
-        await axios.post("http://192.168.0.49:3000/api/credOffer")
-        .then(response => prover.credOffer = response.data);
+    //   async function test1(){
+    //     await axios.post("http://192.168.0.49:3000/api/credOffer")
+    //     .then(response => prover.credOffer = response.data);
 
-        // test type!! //
-          logKO(JSON.stringify(prover.credOffer));
-      };
+    //     // test type!! //
+    //       logKO(JSON.stringify(prover.credOffer));
+    //   };
 
 
       
-      logOK("Waiting  credential offer...");
-      while (prover.credOffer == undefined) {
-        await test1(),
-        await sleep(2000);
-      } 
+    //   logOK("Waiting  credential offer...");
+    //   while (prover.credOffer == undefined) {
+    //     await test1(),
+    //     await sleep(2000);
+    //   } 
       
 
-      // for (var key in prover.credOffer) {
-      //   console.log("=>:" + key + ", value:" + prover.credOffer[key]);
-      // };      
+    //   // for (var key in prover.credOffer) {
+    //   //   console.log("=>:" + key + ", value:" + prover.credOffer[key]);
+    //   // };      
 
 
-      logProver("Prover gets credential definition from ledger");
-      prover.credDefId = prover.credOffer["cred_def_id"];
-      prover.credDef = await getCredDefFromLedger(
-        prover.poolHandle,
-        prover.did,
-        prover.credDefId
-      );
+    //   logProver("Prover gets credential definition from ledger");
+    //   prover.credDefId = prover.credOffer["cred_def_id"];
+    //   prover.credDef = await getCredDefFromLedger(
+    //     prover.poolHandle,
+    //     prover.did,
+    //     prover.credDefId
+    //   );
   
   
-      logProver("Prover creates master secret");
-      prover.masterSecretId = await indy.proverCreateMasterSecret(
-        prover.wallet,
-        undefined
-      );
+    //   logProver("Prover creates master secret");
+    //   prover.masterSecretId = await indy.proverCreateMasterSecret(
+    //     prover.wallet,
+    //     undefined
+    //   );
     
   
   
   
   
-      logProver("Prover creates credential request");
-      {
-        const [credReq, credReqMetadata] = await indy.proverCreateCredentialReq(
-          prover.wallet,
-          prover.did,
-          prover.credOffer,
-          prover.credDef,
-          prover.masterSecretId
-        );
-        prover.credReq = credReq;
-        prover.credReqMetadata = credReqMetadata;
-      }
+    //   logProver("Prover creates credential request");
+    //   {
+    //     const [credReq, credReqMetadata] = await indy.proverCreateCredentialReq(
+    //       prover.wallet,
+    //       prover.did,
+    //       prover.credOffer,
+    //       prover.credDef,
+    //       prover.masterSecretId
+    //     );
+    //     prover.credReq = credReq;
+    //     prover.credReqMetadata = credReqMetadata;
+    //   }
 
 
-      res.redirect("/credential3")
-    });
-    app.get("/credential3", function(req,res){
-      res.render("prover_credential_3");
-    })
+    //   res.redirect("/credential3")
+    // });
+    // app.get("/credential3", function(req,res){
+    //   res.render("prover_credential_3");
+    // })
 
-    app.post("/credential3", async function(req,res){
+    app.post("/api/requestCred", async function(req,res){
 
       async function test2(){
 
-        await axios.post("http://192.168.0.49:3000/api/cred")
+        await axios.post("http://192.168.0.5:3000/api/cred")
         .then(response => prover.cred = response.data)
       }
 
@@ -299,47 +350,34 @@ module.exports = function (app){
         undefined
       );
 
+      logProver("get specific credential from wallet ")
 
-    //   db.serialize(function() {
-    //     const stmt = db.prepare('INSERT INTO proverID(pool_name, date) VALUES (?,?)');
-    //     const date = new Date();
-    //     const strDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+      const get_credential = await indy.proverGetCredential(
+        prover.wallet,
+        prover.outCredId
+      );
       
-        
-    //   stmt.run(poolName,strDate);
-    //   stmt.finalize();
+      res.send(JSON.stringify(get_credential))
 
-    //   db.each('SELECT aid, pool_name, date FROM proverID', (err, row) =>{
-    //     logProver(`${row.aid})  pool_name: ${row.pool_name}  Date: ${row.date}` );
-    //  });
-    // });
 
-      // logProver("get specific credential from wallet ")
-
-      // const test_credential = await indy.proverGetCredential(
-      //   prover.wallet,
-      //   outCredId
-      // );
 
 
         // logOK(JSON.stringify(test_credential))
 
         // logOK(JSON.stringify(prover.cred.values))
-        res.redirect("credential3")
     });
 
-    app.post("/api/cred", urlencodedParser, async function(req,res){
+    app.post("/api/getCred", urlencodedParser, async function(req,res){
 
       logProver("get specific credential from wallet ")
 
-      const test_credential = await indy.proverGetCredential(
+      const get_credential = await indy.proverGetCredential(
         prover.wallet,
         prover.outCredId
       );
       
-      testtest_1.test = req.query.title;
-
-      res.send(JSON.stringify(test_credential))
+        logOK(JSON.stringify(get_credential))
+      res.send(JSON.stringify(get_credential))
     });
 
 

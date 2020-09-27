@@ -315,6 +315,8 @@ module.exports = function (app){
         "Transfer credential offer from 'Issuer' to 'Prover' (via HTTP or other) ..."
       );          
       await res.send(JSON.stringify(issuer.credOffer));
+
+      
     });
 
 
@@ -360,6 +362,10 @@ module.exports = function (app){
 
   });
 
+  app.get("/api/credential", async function(req,res){
+    
+    res.send(JSON.stringify(issuer.cred));
+  });
 
 
  
@@ -375,7 +381,7 @@ module.exports = function (app){
 
   
       async function test(){
-        await axios.post("http://192.168.0.49:3001/api/credReq")
+        await axios.post("http://192.168.0.5:3001/api/credReq")
         .then(response => issuer.credReq = response.data);
   
         logOK(JSON.stringify(issuer.credReq));
@@ -392,7 +398,6 @@ module.exports = function (app){
   
 
   
-      // await sendToProver("credOffer", JSON.stringify(issuer.credOffer));
     });
     
 
@@ -413,9 +418,6 @@ module.exports = function (app){
 
 
 
-    app.post("/No488888888",function(req,res){
-      res.redirect("/No5")
-    })
   
     app.get("/No5", async function(req,res){
 
@@ -444,10 +446,6 @@ module.exports = function (app){
 
   });
 
-  app.get("/api/credential", async function(req,res){
-    
-    res.send(JSON.stringify(issuer.cred));
-  });
 
 
 
