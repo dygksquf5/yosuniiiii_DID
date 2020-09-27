@@ -6,22 +6,34 @@ import SecondScreen from './screens/SecondScreen';
 import MainScreen from './screens/MainScreen';
 import IdScreen from './screens/IdScreen';
 
+import stackNav from './src/navigator/stack'
+
+
+// assets
+import { imageAssets } from './src/theme/images'
+import { fontAssets } from './src/theme/fonts'
+
+
 
 // StackNavigator 객체 생성
-const stackNav = createStackNavigator({
+// const stackNav = createStackNavigator({
   // Home: {screen:HomeScreen, ncavigationOptions:{header:null}},
-  First: {screen: HomeScreen},
-  Second: {screen: SecondScreen},
-  Home: {screen: MainScreen},
-  Id: {screen:IdScreen},
+  // First: {screen: HomeScreen},
+  // Second: {screen: SecondScreen},
+  // Home: {screen: MainScreen},
+  // Id: {screen:IdScreen},
   // QR: {screens: QRApp, ncavigationOptions:{header:null}},
-});
+// });
 
 // 네비게이터 객체를 가지고 있는 AppContainer객체 생성 : 컴포넌트 객체
 const Container = createAppContainer(stackNav);
 
+
+
+
+
 export default class Main extends Component {
   render() {
-    return <Container theme="light"></Container>;
+    return<Container theme="light"></Container>;
   }
 }
