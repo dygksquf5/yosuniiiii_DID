@@ -161,9 +161,13 @@ module.exports = function (app){
 
   app.post("/api/schema",urlencodedParser, async function(req,res){
 
-    prover.schemaId = req.query.state
+    // prover.schemaId = "Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"
+    res.send("connecting !!!! yeahhhh");
+    // console.log(req.body.data);
+
+    prover.schemaId = req.body.data;
     
-    console.log(prover.schemaId)
+    console.log(prover.schemaId);
 
     logOK("Waiting for issuer to send schema ID...");
     while (prover.schemaId == undefined) {
@@ -177,11 +181,11 @@ module.exports = function (app){
     // }
 
     logProver("Prover gets schema from ledger");
-    prover.schema = await getSchemaFromLedger(
-      prover.poolHandle,
-      prover.did,
-      prover.schemaId
-    );
+      prover.schema = await getSchemaFromLedger(
+        prover.poolHandle,
+        prover.did,
+        prover.schemaId
+      );
 
 
     logOK("got a schema ledger")

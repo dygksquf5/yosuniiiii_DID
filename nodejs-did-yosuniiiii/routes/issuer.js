@@ -127,7 +127,6 @@ module.exports = function (app){
   });
 
   app.get("/main2", async function(req,res){
-
     const sql = ('SELECT * FROM DID');
     db.get(sql, (err,row) => {
       if (err){
@@ -156,42 +155,42 @@ module.exports = function (app){
     
  // ######################################done register schema to the ledger#######################################################################
 
-  // app.post("/No2", async function(req, res){
-// 
-    // try{
-// 
-    // logIssuer("Issuer creates credential schema");
-// 
-// 
-      // const [schemaId, schema] = await indy.issuerCreateSchema(
-// 
-        // issuer.did,
-        // "YOSUNIIIII",
-        // "1.0",
-        // `["name", "age", "gender", "food", "address"]`
-// 
-      // )
-      // issuer.schemaId = schemaId;
-      // issuer.schema = schema;
-      // console.log(schema, schemaId);
-// 
-      // logIssuer("Issuer posts schema to ledger");
-      // await postSchemaToLedger(
-        // issuer.poolHandle,
-        // issuer.wallet,
-        // issuer.did,
-        // issuer.schema
-      // );
-      // 
-      // logOK("\n\n\n" ,"done");
-// 
-    // }
-// 
-    // catch(err){
-// 
-      // logOK("ERROR !!!! ", err)
-    // }
-  // });
+  app.post("/api/testtest", async function(req, res){
+
+    try{
+
+    logIssuer("Issuer creates credential schema");
+
+
+      const [schemaId, schema] = await indy.issuerCreateSchema(
+
+        issuer.did,
+        "YOSUNIIIII",
+        "1.0",
+        `["name", "age", "gender", "food", "address"]`
+
+      )
+      issuer.schemaId = schemaId;
+      issuer.schema = schema;
+      console.log(schema, schemaId);
+
+      logIssuer("Issuer posts schema to ledger");
+      await postSchemaToLedger(
+        issuer.poolHandle,
+        issuer.wallet,
+        issuer.did,
+        issuer.schema
+      );
+      
+      logOK("\n\n\n" ,"done");
+
+    }
+
+    catch(err){
+
+      logOK("ERROR !!!! ", err)
+    }
+  });
 
   // ##############################done register schema to the ledger#######################################################################
 
@@ -201,7 +200,7 @@ module.exports = function (app){
   app.post("/No2", urlencodedParser, async function(req,res){
 
        issuer.schemaId = req.body.list;
-      // logOK(issuer.schemaId);
+      // logOK(typeof(issuer.schemaId));
 
       //#############//
 

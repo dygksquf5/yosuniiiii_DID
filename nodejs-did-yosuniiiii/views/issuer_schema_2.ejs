@@ -77,7 +77,7 @@
   var qrcode = new QRCode(document.getElementById("qrcode"));
 
   function generateQR() {
-    var data = qrdata1.value + "\n" + qrdata2.value;
+    var data = qrdata1.value;
 
     qrcode.makeCode(data);
   }
