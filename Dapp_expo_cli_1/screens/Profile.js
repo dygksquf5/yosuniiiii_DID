@@ -9,12 +9,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { State } from 'react-native-gesture-handler';
 
-export default class Details extends Component {
+export default class Profile extends Component {
   render() {
     return (
       <View style={styles.root}>
         <StatusBar barStyle='light-content' />
-        <Text style={styles.title}>여기는 디 테 일 !!</Text>
+        <Text style={styles.title}>여기는 디 테 일2222 !!</Text>
         <Button
           title='Go Back'
           color='white'
@@ -25,7 +25,7 @@ export default class Details extends Component {
     );
   }
   gotoBack = () => {
-    this.props.navigation.replace('Home');
+    this.props.navigation.navigate('Home');
   };
 }
 

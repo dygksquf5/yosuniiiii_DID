@@ -28,7 +28,7 @@ export default class HomeScreen extends Component {
     );
   }
   gotoSecond = () => {
-    this.props.navigation.replace('Password');
+    this.props.navigation.replace('SecondScreen');
   };
 }
 
