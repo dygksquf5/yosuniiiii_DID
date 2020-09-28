@@ -5,8 +5,6 @@ var {
   logProver,
   logOK,
   logKO,
-  sendToIssuer,
-  sendToVerfier,
   createAndOpenWallet,
   closeAndDeleteWallet,
   createAndOpenPoolHandle,
@@ -159,28 +157,32 @@ module.exports = function (app){
   // });
 
 
-  app.post("/api/schema",urlencodedParser, async function(req,res){
+  app.post("/api/schemaId",urlencodedParser, async function(req,res){
 
-    // prover.schemaId = "Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"
-    res.send("connecting !!!! yeahhhh");
+
+    async function getschemaId(){
+      await axios.post("http://192.168.0.5:3000/api/schemaId")
+      .then(response => prover.schemaId = response.data);
+
+        // prover.schemId = "Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"
+        logKO(prover.schemaId);
+
+    };
+
+
     // console.log(req.body.data);
 
-    prover.schemaId = req.body.data;
+    // prover.schemaId = req.body.data;
     
-    console.log(prover.schemaId);
-
-    logOK("Waiting for issuer to send schema ID...");
-    while (prover.schemaId == undefined) {
-      await sleep(2000);
-    }
 
 
-    // logOK("Waiting for issuer to send credential definition ID...");
-    // while (prover.credDefId == undefined) {
-    //   await sleep(2000);
-    // }
+      logOK("Waiting for issuer to send schemaID...");
+      while (prover.schemaId == undefined) {
+        await getschemaId()
+        await sleep(2000);
+      }
 
-    logProver("Prover gets schema from ledger");
+      logProver("Prover gets schema from ledger");
       prover.schema = await getSchemaFromLedger(
         prover.poolHandle,
         prover.did,
@@ -188,7 +190,8 @@ module.exports = function (app){
       );
 
 
-    logOK("got a schema ledger")
+      logOK("got a schema ledger")
+
 
     async function test1(){
       await axios.post("http://192.168.0.5:3000/api/credOffer")
@@ -247,6 +250,16 @@ module.exports = function (app){
       res.send(JSON.stringify(prover.credReq));
     })
 
+    app.post("/api/sendId",urlencodedParser, function(req,res){
+      const sendToVerifier = {
+        schemId: prover.schemaId,
+        CredDefId: prover.CredDefId
+      }
+      // res.send(JSON.stringify(sendToVerifier))
+      res.send(JSON.stringify(prover.schemaId))
+
+      console.log(sendToVerifier)
+    })
 
 
     
