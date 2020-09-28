@@ -14,20 +14,20 @@ import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Axios from 'axios';
 
-
-
-
-
+async function requestCred() {
+  await Axios.post('http://192.168.0.5:3001/api/requestCred').then((response) =>
+    setcredential(response.data)
+  );
+}
 export default class Home extends Component {
   render() {
-    
     return (
-      
       <View style={styles.root}>
         <View style={{ textAlign: 'left', marginTop: 15 }}>
-          <Text style={styles.name} onPress={this.getToLedger}
-          
-          > 000 님 ! </Text>
+          <Text style={styles.name} onPress={this.getToLedger}>
+            {' '}
+            000 님 !{' '}
+          </Text>
         </View>
 
         <Container>
@@ -47,6 +47,15 @@ export default class Home extends Component {
           </Content>
         </Container>
 
+        <View style={styles.addButton2}>
+          <TouchableHighlight
+            underlayColor='#ff7043'
+            onPress={() => requestCred()}
+          >
+            <FontIcon name='send' color='white' size={35} />
+          </TouchableHighlight>
+        </View>
+
         <View style={styles.addButton}>
           <TouchableHighlight underlayColor='#ff7043' onPress={this.gotoQR}>
             <FontIcon name='qrcode-scan' color='white' size={35} />
@@ -64,13 +73,16 @@ export default class Home extends Component {
   gotoPassword = () => {
     this.props.navigation.navigate('SecondScreen');
   };
+  gotoDetails2 = () => {
+    this.props.navigation.navigate('Details2');
+  };
 
   getToLedger = () => {
     this.props.navigation.navigate('Home');
-    Axios.post('http://192.168.0.5:3001/api/log').then(response => setproverDID(response.data))
-  }
-
-
+    Axios.post('http://192.168.0.5:3001/api/log').then((response) =>
+      setproverDID(response.data)
+    );
+  };
 }
 
 const styles = StyleSheet.create({
@@ -125,6 +137,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     bottom: 50,
+    right: 20,
+    shadowColor: '#000000',
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0,
+    },
+  },
+  addButton2: {
+    backgroundColor: '#9966CC',
+    borderColor: '#9966CC',
+    borderWidth: 1,
+    height: 75,
+    width: 75,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 150,
     right: 20,
     shadowColor: '#000000',
     shadowOpacity: 0.8,
