@@ -36,6 +36,9 @@ function QRcode() {
   //     data: this.state,
   //   });
   // }
+  // gotoDetails = () => {
+  //   this.props.navigation.navigate('Details');
+  // };
 
   const handleBarCodeScanned = ({ type, data }) => {
     async function testtest() {
@@ -85,11 +88,14 @@ function QRcode() {
       />
       {scanned && (
         <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
+        // <Button title={'Tap to Scan'} onPress={this.gotoDetails} />
+
       )}
     </View>
 
     // </View>
   );
+  
 }
 
 export default QRcode;

@@ -12,18 +12,22 @@ import Button from '../src/components/Button';
 import { colors } from '../src/theme';
 import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { render } from 'react-dom';
-import { State } from 'react-native-gesture-handler';
+import Axios from 'axios';
+
+
+
 
 
 export default class Home extends Component {
   render() {
+    
     return (
+      
       <View style={styles.root}>
         <View style={{ textAlign: 'left', marginTop: 15 }}>
-          <Text style={styles.name}> O O O 님 ! </Text>
+          <Text style={styles.name} onPress={this.getToLedger}
+          
+          > 000 님 ! </Text>
         </View>
 
         <Container>
@@ -58,8 +62,13 @@ export default class Home extends Component {
     this.props.navigation.navigate('testtest');
   };
   gotoPassword = () => {
-    this.props.navigation.replace('SecondScreen');
+    this.props.navigation.navigate('SecondScreen');
   };
+
+  getToLedger = () => {
+    this.props.navigation.navigate('Home');
+    Axios.post('http://192.168.0.5:3001/api/log').then(response => setproverDID(response.data))
+  }
 
 
 }
