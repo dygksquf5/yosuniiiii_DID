@@ -390,7 +390,7 @@ module.exports = function (app){
     );
 
     logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
-
+      res.send(prover.proof);
     
   });
 
