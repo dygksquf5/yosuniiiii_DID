@@ -9,10 +9,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { State } from 'react-native-gesture-handler';
 import Axios from 'axios';
+import SvgQRCode from 'react-native-qrcode-svg';
 
 
 // const [credential, setcredential] = useState("");
 
+function Simple() {
+  return <SvgQRCode value="Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0" />;
+}
 
 async function requestCred(){
   await Axios.post('http://192.168.0.5:3001/api/requestCred')
@@ -44,7 +48,15 @@ export default class Profile extends Component {
           backgroundColor={colors.pink}
           onPress={() => getCred()}
         />
-
+      <View
+        style={{
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+        }}>
+        <Simple />
+      </View>
 
 
 
@@ -53,8 +65,11 @@ export default class Profile extends Component {
           title='Go Back'
           color='white'
           backgroundColor={colors.pink}
-          onPress={this.gotoBack}
-        />
+          onPress={() => Simple()}        
+          />
+
+
+
         <Button
           title='Go Back'
           color='white'
