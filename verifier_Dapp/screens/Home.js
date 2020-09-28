@@ -35,7 +35,7 @@ export default class Home extends Component {
             <Card style={styles.card}>
               <View style={{ margin: 8 }}>
                 <TouchableOpacity onPress={this.gotoPassword}>
-                  <Text style={styles.cardUpText}>나의 신분증 !</Text>
+                  <Text style={styles.cardUpText}>나는 점주점주점주!!! </Text>
 
                   {/* 신분증 사진 넣게된다면 자리 ! */}
                   <View style={{ height: 150 }} />
