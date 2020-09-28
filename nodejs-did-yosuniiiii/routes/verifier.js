@@ -18,97 +18,152 @@ var {
 
 const indy = require("indy-sdk");
 const util = require("./util");
-// const express = require("express");
-// const app = express();
 var readline = require("readline-sync");
 const { openWallet } = require("indy-sdk");
-
-
 const bodyParser = require("body-parser");
-var urlencodedParser = bodyParser.urlencoded({extended : false});
+var urlencodedParser = bodyParser.urlencoded({extended : true});
+var readline = require("readline-sync");
+const { render } = require("ejs");
+const { error } = require("jquery");
+const { json } = require("body-parser");
+const sqlite3 = require("sqlite3").verbose();
+const db = new sqlite3.Database("verifier.db");
+const axios = require("axios");
+const { response } = require("express");
+const cors = require("cors");
 
 
-// app.use(bodyParser.urlencoded({ extended: true }));
 
-//Main code starts here
-async function verifierVerifyProof(proofReq, proof, schemas, credDefs) {
-  return indy.verifierVerifyProof(proofReq, proof, schemas, credDefs, {}, {});
-}
+
 module.exports = function (app){
+  app.use(bodyParser.json());
+  app.use(cors());
+
+    //Main code starts here
+    async function verifierVerifyProof(proofReq, proof, schemas, credDefs) {
+      return indy.verifierVerifyProof(proofReq, proof, schemas, credDefs, {}, {});
+    }
 
 
-async function run() {
-  log("Set protocol version 2");
-  await indy.setProtocolVersion(2);
-};
+    app.get("/", async function(req,res){
+        
+        //Main code starts here
+      log("Set protocol version 2");
+      await indy.setProtocolVersion(2);
 
-
-
-    app.get("/", function(req,res){
-      res.render("test.ejs")
+      res.render("verifier_login.ejs");
     });
 
-    app.post("/test3",urlencodedParser,async function(req,res){
-      log("Verifier Open connections to ledger");
-    var name = req.body.name;
+    app.post("/log", urlencodedParser, async function(req,res) {
+    
+      var user_name = req.body.user_name;
+      var password = req.body.password;
+  
+      req.session.user_name = user_name;
+      req.session.password = password;
+  
+    
+      res.redirect("/main");
+  
+    });
+  
 
-      const poolName = name + "-pool-sandbox";
+
+    app.get("/main",async function(req,res){
+
+      log("Verifier Open connections to ledger");
+
+      const poolName = "verifier" + "-pool-sandbox";
       const poolGenesisTxnPath = await util.getPoolGenesisTxnPath(poolName);
       const poolConfig = { genesis_txn: poolGenesisTxnPath };
       verifier.poolHandle=await indy.openPoolLedger(poolName, poolConfig); 
+
+      db.serialize(function() {
+        const stmt = db.prepare('INSERT INTO verifierID(pool_name, date) VALUES (?,?)');
+        const date = new Date();
+        const strDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
       
-    
-      readline.question("press Enter");
+        
+      stmt.run(poolName,strDate);
+      stmt.finalize();
 
-  // log("Verifier Open connections to ledger");
-  // const poolName = 'verifier' + "-pool-sandbox";
-  // const poolGenesisTxnPath = await util.getPoolGenesisTxnPath(poolName);
-  // const poolConfig = { genesis_txn: poolGenesisTxnPath };
-  // verifier.poolHandle=await indy.openPoolLedger(poolName, poolConfig);
+      db.each('SELECT aid, pool_name, date FROM verifierID', (err, row) =>{
+        
+        logVerifier(`${row.aid})  pool_name: ${row.pool_name}  Date: ${row.date}` );
+      });
+    });
 
 
-  // verifier.poolHandle = await createAndOpenPoolHandle("verifier");
-
-  // app.post("/verifier",urlencodedParser,async function(req,res){
-
-    log("Verifier Creates Wallet");
-    var name = req.body.name;
-    const walletConfig = { id: name + ".wallet" };
-    const walletCredentials = { key: name + ".wallet_key" };
+    log("verifier Open Wallet");
+    const walletConfig = { id: "verifier" + ".wallet" };
+    const walletCredentials = { key: 'verifier' + ".wallet_key" };
     verifier.wallet= await indy.openWallet(walletConfig, walletCredentials);
-    log(verifier.wallet,"--", walletConfig,"---",walletCredentials);
-    
-    res.redirect("test4")
+
+    //   // verifier.wallet = await createAndOpenWallet("verifier");
+
+    log("verifier Create DID");
+    verifier.did = await createAndStoreMyDid(
+      verifier.wallet,
+      "000000000000000000000000Steward3"
+    );
+    logKO("\tverifier's DID is: " + verifier.did);
+      
+      db.get('SELECT * FROM DID', function(err, row){
+        if (row.length != 0) {
+          console.log("already exist", `${row.DID}`);
+        }else {
+          db.run('INSERT INTO DID VALUES (?)', [verifier.did]);
+          console.log("saved on Database");
+        };
+      });
+
+      const sql = ('SELECT * FROM DID');
+      db.get(sql, (err,row) => {
+        if (err){
+          return logKO(err.message);
+        }
+        const test =  `${row.DID}`;
+        console.log(test,"you have got DID successfully ");
+        const render_data = {
+          did : test
+        }
+        res.render("verifier_main.ejs", render_data)
+  
+      });
+  
 
   });
   // verifier.wallet= await createAndOpenWallet("verifier");
 
-  app.get("/test4", async function(req,res){
-    
-    log("Verifier Create DID");
-    verifier.did = await createAndStoreMyDid(verifier.wallet,"000000000000000000000000Steward1");
-      
-    const veri_did= {
-      
-      did : verifier.did
 
-    } 
-    // var veri_did = JSON.stringify(veri_did);
-  
+  app.get("/main2", async function(req,res){
+    const sql = ('SELECT * FROM DID');
+    db.get(sql, (err,row) => {
+      if (err){
+        return logKO(err.message);
+      }
+      const test =  `${row.DID}`;
+      console.log(test,"you have got DID successfully ");
+      const render_data = {
+        did : test
+      }
+      res.render("verifier_main_2.ejs", render_data)
 
+    });
 
-    res.render("test4.ejs",veri_did);
   });
 
-  app.get("/test5", async function(req,res){
-    res.render("test2.ejs");
-  // });
 
-  // app.post("/test5",urlencodedParser,async function(req,res){
+  app.get("/No2", urlencodedParser ,async function(req,res){
+    res.render("verifier_schema.ejs");
+  });
+  app.post("/No2", urlencodedParser, function(req,res){
 
 
     // readline.question("press Enter");
-  logKO("\tVerifier's DID is: " + verifier.did);
+  // logKO("\tVerifier's DID is: " + verifier.did);
+
+// qr need!! but this is a project! thus, we are gonna not use QR scanner due to that this is an web! 
 
   verifier.schemaId = readline.question("\nEnter Schema ID: ");
   logVerifier("Verifier gets schema from ledger");
@@ -118,10 +173,10 @@ async function run() {
     verifier.schemaId
   );
 
-  verifier.credDefId = readline.question("\nEnter Credential Defination ID: ");
-  readline.question(
-    "\nPress Enter to Create Proof Request and Send to Prover: "
-  );
+  // verifier.credDefId = readline.question("\nEnter Credential Defination ID: ");
+  // readline.question(
+  //   "\nPress Enter to Create Proof Request and Send to Prover: "
+  // );
 
   logVerifier("Verifier creates proof request");
   const nonce = await indy.generateNonce();

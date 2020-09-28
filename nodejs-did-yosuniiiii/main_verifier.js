@@ -18,8 +18,8 @@ app.use(session({
 
 app.use(express.static("public"));
 
-require("./src/verifier")(app);
+require("./routes/verifier")(app);
 
-app.listen(2000, function(){
-    console.log("포트 2000번으로 서버 실행 ! 완 료 오오! 크크");
+app.listen(3002, function(){
+    console.log("포트 3002번으로 서버 실행 ! 완 료 오오! 크크");
 });

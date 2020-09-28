@@ -195,17 +195,43 @@ module.exports = function (app){
   // ##############################done register schema to the ledger#######################################################################
 
 
+  app.post("/api/schemaId", urlencodedParser, async function(req,res){
 
+    db.get('SELECT schemaId FROM schemaId', function(err, row){
+      if (err){
+        return logKO(err.message);
+      }{
+        issuer.schemaId = `${row.schemaId}`;
+        console.log("get from Database");
+        console.log(typeof(issuer.schemaId))
+      };
+    });
+    res.send(JSON.stringify(issuer.schemaId))
+
+  })
 
   app.post("/No2", urlencodedParser, async function(req,res){
+    
+    try {
+         db.get('SELECT schemaId FROM schemaId', function(err, row){
+          if (err){
+            return logKO(err.message);
+          }{
+            issuer.schemaId = `${row.schemaId}`;
+            console.log("saved on Database");
+          };
+        });
 
-       issuer.schemaId = req.body.list;
       // logOK(typeof(issuer.schemaId));
 
       //#############//
 
 
-      try {
+      logOK("Waiting for issuer to get schema ID...");
+      while (issuer.schemaId == undefined) {
+        await sleep(2000);
+      }
+  
     
         logIssuer("Issuer gets schema from ledger");
         issuer.schema = await getSchemaFromLedger(
@@ -263,9 +289,9 @@ module.exports = function (app){
           issuer.did,
           issuer.credDef
         );
-      } catch(error) {
+  } catch(error) {
         console.log("errerrrrrrrr", error);
-      };
+    };
   
   
       logKO("\tSchemaId: " + issuer.schemaId);
