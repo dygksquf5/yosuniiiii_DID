@@ -45,31 +45,11 @@ module.exports = function (app){
     }
 
 
-    app.get("/", async function(req,res){
+    app.post("/api/log",urlencodedParser, async function(req,res){
         
-        //Main code starts here
       log("Set protocol version 2");
       await indy.setProtocolVersion(2);
 
-      res.render("verifier_login.ejs");
-    });
-
-    app.post("/log", urlencodedParser, async function(req,res) {
-    
-      var user_name = req.body.user_name;
-      var password = req.body.password;
-  
-      req.session.user_name = user_name;
-      req.session.password = password;
-  
-    
-      res.redirect("/main");
-  
-    });
-  
-
-
-    app.get("/main",async function(req,res){
 
       log("Verifier Open connections to ledger");
 
@@ -127,51 +107,48 @@ module.exports = function (app){
         const render_data = {
           did : test
         }
-        res.render("verifier_main.ejs", render_data)
+        res.send(test)
   
       });
+    });
+
+
   
 
-  });
+
   // verifier.wallet= await createAndOpenWallet("verifier");
 
 
-  app.get("/main2", async function(req,res){
-    const sql = ('SELECT * FROM DID');
-    db.get(sql, (err,row) => {
-      if (err){
-        return logKO(err.message);
-      }
-      const test =  `${row.DID}`;
-      console.log(test,"you have got DID successfully ");
-      const render_data = {
-        did : test
-      }
-      res.render("verifier_main_2.ejs", render_data)
+  // app.get("/main2", async function(req,res){
+  //   const sql = ('SELECT * FROM DID');
+  //   db.get(sql, (err,row) => {
+  //     if (err){
+  //       return logKO(err.message);
+  //     }
+  //     const test =  `${row.DID}`;
+  //     console.log(test,"you have got DID successfully ");
+  //     const render_data = {
+  //       did : test
+  //     }
+  //     res.render("verifier_main_2.ejs", render_data)
 
-    });
+  //   });
 
-  });
-
-
-  app.get("/No2", urlencodedParser ,async function(req,res){
-    res.render("verifier_schema.ejs");
-  });
-  app.post("/No2", urlencodedParser, function(req,res){
+  // });
 
 
-    // readline.question("press Enter");
-  // logKO("\tVerifier's DID is: " + verifier.did);
+  app.post("/api/getschemaId", urlencodedParser, function(req,res){
 
-// qr need!! but this is a project! thus, we are gonna not use QR scanner due to that this is an web! 
+    //request issuer!!!! about schemaID !!! 
 
-  verifier.schemaId = readline.question("\nEnter Schema ID: ");
-  logVerifier("Verifier gets schema from ledger");
-  verifier.schema = await getSchemaFromLedger(
-    verifier.poolHandle,
-    verifier.did,
-    verifier.schemaId
-  );
+    verifier.schemaId = req.body.data;
+
+    logVerifier("Verifier gets schema from ledger");
+    verifier.schema = await getSchemaFromLedger(
+      verifier.poolHandle,
+      verifier.did,
+      verifier.schemaId
+    );
 
   // verifier.credDefId = readline.question("\nEnter Credential Defination ID: ");
   // readline.question(
@@ -199,53 +176,107 @@ module.exports = function (app){
       }
     }
   };
-  });
-  // ############
-
-  app.post("/", async function(req,res){
 
   log(
     "Transfer proof request from 'Verifier' to 'Prover' (via HTTP or other) ..."
   );
-  await sendToProver("proofReq", JSON.stringify(verifier.proofReq));
+
+  async function sendProofReq(){
+    await axios({
+      method: 'POST',
+      url: "http://192.168.0.5:3001/api/proofReq",
+      headers: {
+        'content-Type': 'application/json'
+      },
+      data: {
+        data: verifier.proofReq
+      }
+    }).then((response) => {await verifier.proof(response.data)
+    })
+  }
+  sendProofReq()
 
   logKO("Waiting for proof from prover...");
   while (verifier.proof == undefined) {
     await sleep(2000);
   }
 
-  logVerifier("Verifier gets credential definition from ledger");
-  verifier.credDefId = verifier.proof.identifiers[0]["cred_def_id"];
-  verifier.credDef = await getCredDefFromLedger(
-    verifier.poolHandle,
-    verifier.did,
-    verifier.credDefId
-  );
 
-  logVerifier("Verifier verify proof");
-  verifier.schemas = {
-    [verifier.schemaId]: verifier.schema
-  };
-  verifier.credDefs = {
-    [verifier.credDefId]: verifier.credDef
-  };
-  const proofVerificationResult = await verifierVerifyProof(
-    JSON.stringify(verifier.proofReq),
-    JSON.stringify(verifier.proof),
-    JSON.stringify(verifier.schemas),
-    JSON.stringify(verifier.credDefs)
-  );
-  if (proofVerificationResult) {
-    logOK("\nOK : proof is verified as expected :-)");
-  } else {
-    logKO("\nKO : proof is expected to be verified but it is NOT... :-(");
-  }
+    logVerifier("Verifier gets credential definition from ledger");
+    verifier.credDefId = verifier.proof.identifiers[0]["cred_def_id"];
+    verifier.credDef = await getCredDefFromLedger(
+      verifier.poolHandle,
+      verifier.did,
+      verifier.credDefId
+    );
+
+    logVerifier("Verifier verify proof");
+    verifier.schemas = {
+      [verifier.schemaId]: verifier.schema
+    };
+    verifier.credDefs = {
+      [verifier.credDefId]: verifier.credDef
+    };
+    const proofVerificationResult = await verifierVerifyProof(
+      JSON.stringify(verifier.proofReq),
+      JSON.stringify(verifier.proof),
+      JSON.stringify(verifier.schemas),
+      JSON.stringify(verifier.credDefs)
+    );
+    if (proofVerificationResult) {
+      logOK("\nOK : proof is verified as expected :-)");
+    } else {
+      logKO("\nKO : proof is expected to be verified but it is NOT... :-(");
+    }
 
 
-  readline.question(
-    "\n\nVerifier successfully verified proof!, Press enter to terminate this session, delete verifier wallet, pool handle and teriminate program:"
-  );
-});
+  });
+  // ############
+
+//   app.post("/", async function(req,res){
+
+//   log(
+//     "Transfer proof request from 'Verifier' to 'Prover' (via HTTP or other) ..."
+//   );
+//   await sendToProver("proofReq", JSON.stringify(verifier.proofReq));
+
+//   logKO("Waiting for proof from prover...");
+//   while (verifier.proof == undefined) {
+//     await sleep(2000);
+//   }
+
+//   logVerifier("Verifier gets credential definition from ledger");
+//   verifier.credDefId = verifier.proof.identifiers[0]["cred_def_id"];
+//   verifier.credDef = await getCredDefFromLedger(
+//     verifier.poolHandle,
+//     verifier.did,
+//     verifier.credDefId
+//   );
+
+//   logVerifier("Verifier verify proof");
+//   verifier.schemas = {
+//     [verifier.schemaId]: verifier.schema
+//   };
+//   verifier.credDefs = {
+//     [verifier.credDefId]: verifier.credDef
+//   };
+//   const proofVerificationResult = await verifierVerifyProof(
+//     JSON.stringify(verifier.proofReq),
+//     JSON.stringify(verifier.proof),
+//     JSON.stringify(verifier.schemas),
+//     JSON.stringify(verifier.credDefs)
+//   );
+//   if (proofVerificationResult) {
+//     logOK("\nOK : proof is verified as expected :-)");
+//   } else {
+//     logKO("\nKO : proof is expected to be verified but it is NOT... :-(");
+//   }
+
+
+//   readline.question(
+//     "\n\nVerifier successfully verified proof!, Press enter to terminate this session, delete verifier wallet, pool handle and teriminate program:"
+//   );
+// });
 
   // log("Verifier close and delete wallets");
   // await closeAndDeleteWallet(verifier.wallet, "verifier");
