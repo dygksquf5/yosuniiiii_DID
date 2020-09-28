@@ -13,25 +13,25 @@ import { colors } from '../theme';
 // import Details from '../../screens/Details';
 // import QRcode from '../../screens/QRcode';
 
-import { certification, Home_test, QRcode_test } from './stack'
+// import { certification, Home_test, QRcode_test } from './stack'
 // stack navigators
 // import { HomeNavigator, ProfileNavigator, QRcodeNavigator } from '../stacks'
 
-const TabNavigator = createBottomTabNavigator(
-  {
-    HomeTab: {
-      screen: certification,
-      navigationOptions: { title: 'certification' },
-    },
-    ProfileTab: {
-      screen: Home_test,
-      navigationOptions: { title: 'Home' },
-    },
-    QRcodetTab: {
-      screen: QRcode_test,
-      navigationOptions: { title: 'QRQR' },
-    },
-  },
+// const TabNavigator = createBottomTabNavigator(
+//   {
+//     HomeTab: {
+//       screen: certification,
+//       navigationOptions: { title: 'certification' },
+//     },
+//     ProfileTab: {
+//       screen: Home_test,
+//       navigationOptions: { title: 'Home' },
+//     },
+//     QRcodetTab: {
+//       screen: QRcode_test,
+//       navigationOptions: { title: 'QRQR' },
+//     },
+//   },
   // {
   //   defaultNavigationOptions: ({ navigation }) => ({
   //     // eslint-disable-next-line react/prop-types
@@ -84,6 +84,6 @@ const TabNavigator = createBottomTabNavigator(
   //     swipeEnabled: false,
   //   }),
   // },
-)
+// )
 
-export default TabNavigator
+// export default TabNavigator
