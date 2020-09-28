@@ -264,79 +264,6 @@ module.exports = function (app){
 
     
 
-    // app.get("/credential2",async function(req,res){
-    //   res.render("prover_credential_2.ejs");
-    // });
-
-
-
-
-
-
-  
-    // app.post("/credential2", urlencodedParser, async function(req,res){
-
-    //   async function test1(){
-    //     await axios.post("http://192.168.0.49:3000/api/credOffer")
-    //     .then(response => prover.credOffer = response.data);
-
-    //     // test type!! //
-    //       logKO(JSON.stringify(prover.credOffer));
-    //   };
-
-
-      
-    //   logOK("Waiting  credential offer...");
-    //   while (prover.credOffer == undefined) {
-    //     await test1(),
-    //     await sleep(2000);
-    //   } 
-      
-
-    //   // for (var key in prover.credOffer) {
-    //   //   console.log("=>:" + key + ", value:" + prover.credOffer[key]);
-    //   // };      
-
-
-    //   logProver("Prover gets credential definition from ledger");
-    //   prover.credDefId = prover.credOffer["cred_def_id"];
-    //   prover.credDef = await getCredDefFromLedger(
-    //     prover.poolHandle,
-    //     prover.did,
-    //     prover.credDefId
-    //   );
-  
-  
-    //   logProver("Prover creates master secret");
-    //   prover.masterSecretId = await indy.proverCreateMasterSecret(
-    //     prover.wallet,
-    //     undefined
-    //   );
-    
-  
-  
-  
-  
-    //   logProver("Prover creates credential request");
-    //   {
-    //     const [credReq, credReqMetadata] = await indy.proverCreateCredentialReq(
-    //       prover.wallet,
-    //       prover.did,
-    //       prover.credOffer,
-    //       prover.credDef,
-    //       prover.masterSecretId
-    //     );
-    //     prover.credReq = credReq;
-    //     prover.credReqMetadata = credReqMetadata;
-    //   }
-
-
-    //   res.redirect("/credential3")
-    // });
-    // app.get("/credential3", function(req,res){
-    //   res.render("prover_credential_3");
-    // })
-
     app.post("/api/requestCred", async function(req,res){
 
       async function test2(){
@@ -373,10 +300,6 @@ module.exports = function (app){
       res.send(JSON.stringify(get_credential))
 
 
-
-
-        // logOK(JSON.stringify(test_credential))
-
         // logOK(JSON.stringify(prover.cred.values))
     });
 
@@ -396,96 +319,155 @@ module.exports = function (app){
 
 
 
+  app.post("/api/proofReq", urlencodedParser, async function(req,res){
 
+    prover.proofReq = req.body.data;
 
+    console.log(prover.proofReq)
 
-
-  app.get("/credential4", async function(req,res){
-
-    const render_data = {
-      data: testtest_1.test
+    logOK("\n\nWaiting for proof request from verifier!");
+    while (prover.proofReq == undefined) {
+      await sleep(2000);
     }
 
+    logProver("Prover gets credentials for proof request");
+    {
+      const searchHandle = await indy.proverSearchCredentialsForProofReq(
+        prover.wallet,
+        prover.proofReq,
+        undefined
+      );
 
-    res.render("prover_credential_4.ejs", render_data);
+    const credentialsForAttr1 = await indy.proverFetchCredentialsForProofReq(
+      searchHandle,
+      "attr1_referent",
+      10
+    );
+    prover.credInfoForAttribute = credentialsForAttr1[0]["cred_info"];
+
+    const credentialsForPredicate1 = await indy.proverFetchCredentialsForProofReq(
+      searchHandle,
+      "predicate1_referent",
+      10
+    );
+    prover.credInfoForPredicate = credentialsForPredicate1[0]["cred_info"];
+
+    await indy.proverCloseCredentialsSearchForProofReq(searchHandle);
+    }
+
+    logProver("Prover creates proof for proof request");
+    prover.requestedCredentials = {
+      self_attested_attributes: {},
+      requested_attributes: {
+        attr1_referent: {
+          cred_id: prover.credInfoForAttribute["referent"],
+          revealed: true
+        }
+      },
+      requested_predicates: {
+        predicate1_referent: {
+          cred_id: prover.credInfoForPredicate["referent"]
+        }
+      }
+    };
+    prover.schemas = {
+      [prover.schemaId]: prover.schema
+    };
+    prover.credDefs = {
+      [prover.credDefId]: prover.credDef
+    };
+
+    prover.revocStates = {};
+
+    prover.proof = await indy.proverCreateProof(
+      prover.wallet,
+      prover.proofReq,
+      prover.requestedCredentials,
+      prover.masterSecretId,
+      prover.schemas,
+      prover.credDefs,
+      prover.revocStates
+    );
+
+    logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
+
+    
   });
 
 
+  // app.post("//ddddddddd", urlencodedParser,async function(req,res){
 
 
-  app.post("//ddddddddd", urlencodedParser,async function(req,res){
+      // logOK("\n\nWaiting for proof request from verifier!");
+      // while (prover.proofReq == undefined) {
+      //   await sleep(2000);
+      // }
 
+      // logProver("Prover gets credentials for proof request");
+      // {
+      //   const searchHandle = await indy.proverSearchCredentialsForProofReq(
+      //     prover.wallet,
+      //     prover.proofReq,
+      //     undefined
+      //   );
 
-      logOK("\n\nWaiting for proof request from verifier!");
-      while (prover.proofReq == undefined) {
-        await sleep(2000);
-      }
+      // const credentialsForAttr1 = await indy.proverFetchCredentialsForProofReq(
+      //   searchHandle,
+      //   "attr1_referent",
+      //   10
+      // );
+      // prover.credInfoForAttribute = credentialsForAttr1[0]["cred_info"];
 
-      logProver("Prover gets credentials for proof request");
-      {
-        const searchHandle = await indy.proverSearchCredentialsForProofReq(
-          prover.wallet,
-          prover.proofReq,
-          undefined
-        );
+      // const credentialsForPredicate1 = await indy.proverFetchCredentialsForProofReq(
+      //   searchHandle,
+      //   "predicate1_referent",
+      //   10
+      // );
+      // prover.credInfoForPredicate = credentialsForPredicate1[0]["cred_info"];
 
-      const credentialsForAttr1 = await indy.proverFetchCredentialsForProofReq(
-        searchHandle,
-        "attr1_referent",
-        10
-      );
-      prover.credInfoForAttribute = credentialsForAttr1[0]["cred_info"];
+      // await indy.proverCloseCredentialsSearchForProofReq(searchHandle);
+      // }
 
-      const credentialsForPredicate1 = await indy.proverFetchCredentialsForProofReq(
-        searchHandle,
-        "predicate1_referent",
-        10
-      );
-      prover.credInfoForPredicate = credentialsForPredicate1[0]["cred_info"];
+      // logProver("Prover creates proof for proof request");
+      // prover.requestedCredentials = {
+      //   self_attested_attributes: {},
+      //   requested_attributes: {
+      //     attr1_referent: {
+      //       cred_id: prover.credInfoForAttribute["referent"],
+      //       revealed: true
+      //     }
+      //   },
+      //   requested_predicates: {
+      //     predicate1_referent: {
+      //       cred_id: prover.credInfoForPredicate["referent"]
+      //     }
+      //   }
+      // };
+      // prover.schemas = {
+      //   [prover.schemaId]: prover.schema
+      // };
+      // prover.credDefs = {
+      //   [prover.credDefId]: prover.credDef
+      // };
 
-      await indy.proverCloseCredentialsSearchForProofReq(searchHandle);
-      }
+      // prover.revocStates = {};
 
-      logProver("Prover creates proof for proof request");
-      prover.requestedCredentials = {
-        self_attested_attributes: {},
-        requested_attributes: {
-          attr1_referent: {
-            cred_id: prover.credInfoForAttribute["referent"],
-            revealed: true
-          }
-        },
-        requested_predicates: {
-          predicate1_referent: {
-            cred_id: prover.credInfoForPredicate["referent"]
-          }
-        }
-      };
-      prover.schemas = {
-        [prover.schemaId]: prover.schema
-      };
-      prover.credDefs = {
-        [prover.credDefId]: prover.credDef
-      };
+      // prover.proof = await indy.proverCreateProof(
+      //   prover.wallet,
+      //   prover.proofReq,
+      //   prover.requestedCredentials,
+      //   prover.masterSecretId,
+      //   prover.schemas,
+      //   prover.credDefs,
+      //   prover.revocStates
+      // );
 
-      prover.revocStates = {};
+      // logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
+      // await sendToVerfier("proof", JSON.stringify(prover.proof));
 
-      prover.proof = await indy.proverCreateProof(
-        prover.wallet,
-        prover.proofReq,
-        prover.requestedCredentials,
-        prover.masterSecretId,
-        prover.schemas,
-        prover.credDefs,
-        prover.revocStates
-      );
-
-      logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
-      await sendToVerfier("proof", JSON.stringify(prover.proof));
-
-      readline.question(
-        "\n\nhahahahahahahahahahahahahahahahahh"
-      );
+      // readline.question(
+      //   "\n\nhahahahahahahahahahahahahahahahahh"
+      // );
 
       // log("Prover close and delete wallets");
       // await closeAndDeleteWallet(prover.wallet, "prover");
@@ -493,7 +475,7 @@ module.exports = function (app){
       // log("Prover close and delete poolHandles");
       // await closeAndDeletePoolHandle(prover.poolHandle, "prover");
 
-  });
+  // });
 
     // ####################herererere!!!!!!!!!!! post ##########
 
