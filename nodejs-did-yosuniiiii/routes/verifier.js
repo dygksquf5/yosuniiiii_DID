@@ -137,7 +137,7 @@ module.exports = function (app){
   // });
 
 
-  app.post("/api/getschemaId", urlencodedParser, function(req,res){
+  app.post("/api/getschemaId", urlencodedParser,async function(req,res){
 
     //request issuer!!!! about schemaID !!! 
 
@@ -171,7 +171,7 @@ module.exports = function (app){
       predicate1_referent: {
         name: "age",
         p_type: ">=",
-        p_value: 18,
+        p_value: 26,
         restrictions: { cred_def_id: verifier.credDefId }
       }
     }
@@ -191,10 +191,9 @@ module.exports = function (app){
       data: {
         data: verifier.proofReq
       }
-    }).then((response) => {await verifier.proof(response.data)
-    })
+    }).then(response => verifier.proof=response.data);
   }
-  sendProofReq()
+  await sendProofReq()
 
   logKO("Waiting for proof from prover...");
   while (verifier.proof == undefined) {
