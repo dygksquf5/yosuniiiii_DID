@@ -46,53 +46,53 @@ function logKO(s) {
 
 
 // Communication Functions
-async function sendToProver(type, message) {
-  try {
-    const params = new URLSearchParams();
-    params.append("type", type);
-    params.append("message", message);
-    await fetch(PROVER_ADDRESS, {
-      method: "post",
-      body: params
-    })
-      .then(res => res.json())
-      .then(json => json);
-  } catch (error) {
-    console.log(error);
-  }
-}
+// async function sendToProver(type, message) {
+//   try {
+//     const params = new URLSearchParams();
+//     params.append("type", type);
+//     params.append("message", message);
+//     await fetch(PROVER_ADDRESS, {
+//       method: "post",
+//       body: params
+//     })
+//       .then(res => res.json())
+//       .then(json => json);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
-async function sendToVerfier(type, message) {
-  try {
-    const params = new URLSearchParams();
-    params.append("type", type);
-    params.append("message", message);
-    await fetch(VERIFIER_ADDRESS, {
-      method: "post",
-      body: params
-    })
-      .then(res => res.json())
-      .then(json => json);
-  } catch (error) {
-    console.log(error);
-  }
-}
+// async function sendToVerfier(type, message) {
+//   try {
+//     const params = new URLSearchParams();
+//     params.append("type", type);
+//     params.append("message", message);
+//     await fetch(VERIFIER_ADDRESS, {
+//       method: "post",
+//       body: params
+//     })
+//       .then(res => res.json())
+//       .then(json => json);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
-async function sendToIssuer(type, message) {
-  try {
-    const params = new URLSearchParams();
-    params.append("type", type);
-    params.append("message", message);
-    await fetch(ISSUER_ADDRESS, {
-      method: "post",
-      body: params
-    })
-      .then(res => res.json())
-      .then(json => json);
-  } catch (error) {
-    console.log(error);
-  }
-}
+// async function sendToIssuer(type, message) {
+//   try {
+//     const params = new URLSearchParams();
+//     params.append("type", type);
+//     params.append("message", message);
+//     await fetch(ISSUER_ADDRESS, {
+//       method: "post",
+//       body: params
+//     })
+//       .then(res => res.json())
+//       .then(json => json);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 
 
@@ -249,8 +249,5 @@ module.exports = {
   getSchemaFromLedger,
   getCredDefFromLedger,
   postCredDefToLedger,
-  sendToProver,
-  sendToVerfier,
-  sendToIssuer,
   sleep
 };

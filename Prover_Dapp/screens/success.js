@@ -21,14 +21,14 @@ export default class HomeScreen extends Component {
         <View style={{ marginBottom: 200 }}>
           <Text style={styles.baseText}>본인 인증을 완료했어요 !</Text>
 
-          <AppButton onPress={this.gotoSecond} title={'확  인'} />
+          <AppButton onPress={this.gotoHome} title={'확  인'} />
           {/* <Button onPress={this.gotoSecond} title="확인"></Button> */}
         </View>
       </View>
     );
   }
-  gotoSecond = () => {
-    this.props.navigation.replace('second');
+  gotoHome = () => {
+    this.props.navigation.replace('Home');
   };
 }
 

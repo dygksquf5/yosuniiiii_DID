@@ -171,7 +171,7 @@ module.exports = function (app){
       predicate1_referent: {
         name: "age",
         p_type: ">=",
-        p_value: 26,
+        p_value: 18,
         restrictions: { cred_def_id: verifier.credDefId }
       }
     }
@@ -222,6 +222,16 @@ module.exports = function (app){
       JSON.stringify(verifier.schemas),
       JSON.stringify(verifier.credDefs)
     );
+
+    // async function text(){
+    //   await logOK( "1)"+JSON.stringify(verifier.proofReq)+
+    // "2)"+JSON.stringify(verifier.proof)+
+    // "3)"+JSON.stringify(verifier.schemas)+
+    // "4)"+JSON.stringify(verifier.credDefs)
+    //   )
+    // }
+    // text()
+
     if (proofVerificationResult) {
       logOK("\nOK : proof is verified as expected :-)");
     } else {

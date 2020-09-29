@@ -19,9 +19,6 @@ const util = require("./util");
 const bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({extended : true});
 var readline = require("readline-sync");
-const { render } = require("ejs");
-const { error } = require("jquery");
-const { json } = require("body-parser");
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("prover.db");
 const axios = require("axios");
@@ -40,6 +37,7 @@ const cors = require("cors");
 module.exports = function (app){
   app.use(bodyParser.json());
   app.use(cors());
+
 
     app.post("/api/log", urlencodedParser ,async function(req,res){
 
@@ -72,9 +70,17 @@ module.exports = function (app){
 
 
 
-      log("Prover Open Wallet");
+      log("Prover start Wallet");
       const walletConfig = { id: "prover" + ".wallet" };
       const walletCredentials = { key: 'prover' + ".wallet_key" };
+      // log("Prover delete Wallet");
+
+      // await indy.deleteWallet(walletConfig, walletCredentials);
+      // log("Prover create Wallet");
+
+      // await indy.createWallet(walletConfig, walletCredentials);
+      log("Prover Open Wallet");
+
       prover.wallet=await indy.openWallet(walletConfig, walletCredentials);
 
       log("Prover Create DID");
@@ -110,51 +116,23 @@ module.exports = function (app){
       });
     });
 
+    app.post("/api/logout", urlencodedParser, async function(req,res){
+      
+      // const walletConfig = { id: "prover" + ".wallet" };
+      // const walletCredentials = { key: 'prover' + ".wallet_key" };
 
+      // await indy.deleteWallet(walletConfig, walletCredentials);
 
-    
-    // app.get("/main", async function(req,res){
+      
+      log("Prover close connections from ledger");
 
-    //       res.render("prover_main.ejs", render_data)
-    //   });
+      await indy.closePoolLedger(prover.poolHandle);
 
-        
+      log("Prover close wallet");
+      await indy.closeWallet(prover.wallet);
 
-
-    // app.get("/main2",async function(req,res){
-
-    //   const sql = ('SELECT * FROM DID');
-    //   db.get(sql, (err,row) => {
-    //     if (err){
-    //       return logKO(err.message);
-    //     }
-    //     const test =  `${row.DID}`;
-    //     console.log(test,"you have got DID successfully ");
-    //     const render_data = {
-    //       did : test
-    //     }
-    //     res.render("prover_main_2.ejs", render_data)
-  
-    //   });
-  
-    // });
-
-    // app.post("/api",urlencodedParser,function(req,res){
-    //   prover.schemaId = req.body.schemaId
-    //   res.send("success!!!!")
-    // });
-
-    // app.get("/api",function(req,res){
-    //   res.send("success!!!get!")
-    // });
-
-    
-
-
-  // app.get("/credential", async function(req, res){
-
-  //   res.render("prover_credential.ejs");
-  // });
+      res.send("disconnected ledger and closed wallet ")
+    })
 
 
   app.post("/api/schemaId",urlencodedParser, async function(req,res){
@@ -220,11 +198,16 @@ module.exports = function (app){
     );
 
 
+
+
     logProver("Prover creates master secret");
     prover.masterSecretId = await indy.proverCreateMasterSecret(
       prover.wallet,
       undefined
     );
+
+
+
   
 
 
@@ -242,7 +225,7 @@ module.exports = function (app){
       prover.credReq = credReq;
       prover.credReqMetadata = credReqMetadata;
     }
-
+    
 
     });
 
@@ -250,16 +233,6 @@ module.exports = function (app){
       res.send(JSON.stringify(prover.credReq));
     })
 
-    app.post("/api/sendId",urlencodedParser, function(req,res){
-      const sendToVerifier = {
-        schemId: prover.schemaId,
-        CredDefId: prover.CredDefId
-      }
-      // res.send(JSON.stringify(sendToVerifier))
-      res.send(JSON.stringify(prover.schemaId))
-
-      console.log(sendToVerifier)
-    })
 
 
     
@@ -290,6 +263,27 @@ module.exports = function (app){
         undefined
       );
 
+
+
+      db.serialize(function() {
+        const stmt = db.prepare('INSERT INTO outCredId(outCredId,masterSecretId, date) VALUES (?,?,?)');
+        const date = new Date();
+        const strDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+      
+        
+      stmt.run(prover.outCredId,prover.masterSecretId,strDate);
+      stmt.finalize();
+
+      db.each('SELECT aid, outCredId, masterSecretId ,date FROM outCredId', (err, row) =>{
+        logProver(`${row.aid})  outCredId: ${row.outCredId} masterSecretId: ${row.masterSecretId}  Date: ${row.date}` );
+
+     });
+    });
+
+
+
+      logKO(prover.outCredId)
+
       logProver("get specific credential from wallet ")
 
       const get_credential = await indy.proverGetCredential(
@@ -303,9 +297,30 @@ module.exports = function (app){
         // logOK(JSON.stringify(prover.cred.values))
     });
 
+
+
+
     app.post("/api/getCred", urlencodedParser, async function(req,res){
 
-      logProver("get specific credential from wallet ")
+    function database(){
+      db.get('SELECT outCredId FROM outCredId where aid="1"', function(err, row){
+        if (err){
+          return logKO(err.message);
+        }{
+          prover.outCredId = `${row.outCredId}`;
+
+          console.log(prover.outCredId);
+
+        };
+      });
+    }
+
+      logOK("\n\ngetting specific credential from wallet ");
+      while (prover.outCredId == undefined) {
+        database()
+        await sleep(2000);
+      }
+  
 
       const get_credential = await indy.proverGetCredential(
         prover.wallet,
@@ -314,6 +329,7 @@ module.exports = function (app){
       
         logOK(JSON.stringify(get_credential))
       res.send(JSON.stringify(get_credential))
+     
     });
 
 
@@ -342,6 +358,7 @@ module.exports = function (app){
       searchHandle,
       "attr1_referent",
       10
+      
     );
     prover.credInfoForAttribute = credentialsForAttr1[0]["cred_info"];
 
@@ -349,6 +366,7 @@ module.exports = function (app){
       searchHandle,
       "predicate1_referent",
       10
+      
     );
     prover.credInfoForPredicate = credentialsForPredicate1[0]["cred_info"];
 
@@ -373,11 +391,47 @@ module.exports = function (app){
     prover.schemas = {
       [prover.schemaId]: prover.schema
     };
+
+    async function getcredDefId(){
+      await axios.post("http://192.168.0.5:3000/api/credDefId")
+      .then(response => prover.credDefId = response.data);
+
+        // prover.schemId = "Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"
+        logKO(prover.credDefId);
+
+    };
+
+    while (prover.credDefId == undefined) {
+      await getcredDefId()
+      await sleep(2000);
+    }
+    logKO("-----------------------------1")
     prover.credDefs = {
       [prover.credDefId]: prover.credDef
     };
+    logKO("-----------------------------2")
 
     prover.revocStates = {};
+    logKO("-----------------------------3")
+
+    function database(){
+      db.get('SELECT masterSecretId FROM outCredId where aid="1"', function(err, row){
+        if (err){
+          return logKO(err.message);
+        }{
+          prover.masterSecretId = `${row.masterSecretId}`;
+
+          console.log(prover.masterSecretId);
+
+        };
+      });
+    }
+    while (prover.masterSecretId == undefined) {
+      database()
+      await sleep(2000);
+    }
+
+
 
     prover.proof = await indy.proverCreateProof(
       prover.wallet,
@@ -388,6 +442,7 @@ module.exports = function (app){
       prover.credDefs,
       prover.revocStates
     );
+    logKO("-----------------------------4")
 
     logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
       res.send(prover.proof);
@@ -395,87 +450,6 @@ module.exports = function (app){
   });
 
 
-  // app.post("//ddddddddd", urlencodedParser,async function(req,res){
-
-
-      // logOK("\n\nWaiting for proof request from verifier!");
-      // while (prover.proofReq == undefined) {
-      //   await sleep(2000);
-      // }
-
-      // logProver("Prover gets credentials for proof request");
-      // {
-      //   const searchHandle = await indy.proverSearchCredentialsForProofReq(
-      //     prover.wallet,
-      //     prover.proofReq,
-      //     undefined
-      //   );
-
-      // const credentialsForAttr1 = await indy.proverFetchCredentialsForProofReq(
-      //   searchHandle,
-      //   "attr1_referent",
-      //   10
-      // );
-      // prover.credInfoForAttribute = credentialsForAttr1[0]["cred_info"];
-
-      // const credentialsForPredicate1 = await indy.proverFetchCredentialsForProofReq(
-      //   searchHandle,
-      //   "predicate1_referent",
-      //   10
-      // );
-      // prover.credInfoForPredicate = credentialsForPredicate1[0]["cred_info"];
-
-      // await indy.proverCloseCredentialsSearchForProofReq(searchHandle);
-      // }
-
-      // logProver("Prover creates proof for proof request");
-      // prover.requestedCredentials = {
-      //   self_attested_attributes: {},
-      //   requested_attributes: {
-      //     attr1_referent: {
-      //       cred_id: prover.credInfoForAttribute["referent"],
-      //       revealed: true
-      //     }
-      //   },
-      //   requested_predicates: {
-      //     predicate1_referent: {
-      //       cred_id: prover.credInfoForPredicate["referent"]
-      //     }
-      //   }
-      // };
-      // prover.schemas = {
-      //   [prover.schemaId]: prover.schema
-      // };
-      // prover.credDefs = {
-      //   [prover.credDefId]: prover.credDef
-      // };
-
-      // prover.revocStates = {};
-
-      // prover.proof = await indy.proverCreateProof(
-      //   prover.wallet,
-      //   prover.proofReq,
-      //   prover.requestedCredentials,
-      //   prover.masterSecretId,
-      //   prover.schemas,
-      //   prover.credDefs,
-      //   prover.revocStates
-      // );
-
-      // logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
-      // await sendToVerfier("proof", JSON.stringify(prover.proof));
-
-      // readline.question(
-      //   "\n\nhahahahahahahahahahahahahahahahahh"
-      // );
-
-      // log("Prover close and delete wallets");
-      // await closeAndDeleteWallet(prover.wallet, "prover");
-
-      // log("Prover close and delete poolHandles");
-      // await closeAndDeletePoolHandle(prover.poolHandle, "prover");
-
-  // });
 
     // ####################herererere!!!!!!!!!!! post ##########
 
@@ -483,27 +457,6 @@ module.exports = function (app){
 
 
   app.post("/prover", (req, res) => {
-    // const type = req.body.type;
-    // const message = req.body.message;
-
-    // switch (type) {
-    //   case "schemaId":
-    //     prover.schemaId = message;
-    //     break;
-    //   case "credDefId":
-    //     prover.credDefId = message;
-    //     break;
-    //   case "credOffer":
-    //     prover.credOffer = JSON.parse(message);
-    //     break;
-    //   case "cred":
-    //     prover.cred = JSON.parse(message);
-    //     break;
-    //   case "proofReq":
-    //     prover.proofReq = JSON.parse(message);
-    //   default:
-    //     break;
-    // }
 
 
     res.status(200).send({ status: 200 });

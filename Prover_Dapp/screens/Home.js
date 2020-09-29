@@ -14,11 +14,7 @@ import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Axios from 'axios';
 
-async function requestCred() {
-  await Axios.post('http://192.168.0.5:3001/api/requestCred').then((response) =>
-    setcredential(response.data)
-  );
-}
+
 export default class Home extends Component {
   render() {
     return (
@@ -26,9 +22,17 @@ export default class Home extends Component {
         <View style={{ textAlign: 'left', marginTop: 15 }}>
           <Text style={styles.name} onPress={this.getToLedger}>
             {' '}
-            000 님 !{' '}
+            login !! touch me ! {' '}
           </Text>
         </View>
+
+        <View style={{ textAlign: 'right', marginTop: 15 }}>
+          <Text style={styles.name} onPress={this.logout}>
+            {' '}
+            logout!!!! !! touch me ! {' '}
+          </Text>
+        </View>
+
 
         <Container>
           <Content>
@@ -50,7 +54,7 @@ export default class Home extends Component {
         <View style={styles.addButton2}>
           <TouchableHighlight
             underlayColor='#ff7043'
-            onPress={() => requestCred()}
+            onPress={this.gotoPassword_2}
           >
             <FontIcon name='send' color='white' size={35} />
           </TouchableHighlight>
@@ -73,6 +77,10 @@ export default class Home extends Component {
   gotoPassword = () => {
     this.props.navigation.navigate('SecondScreen');
   };
+  gotoPassword_2 = () => {
+    this.props.navigation.navigate('password');
+  };
+
   gotoDetails2 = () => {
     this.props.navigation.navigate('Details2');
   };
@@ -83,6 +91,16 @@ export default class Home extends Component {
       setproverDID(response.data)
     );
   };
+
+  logout = () => {
+    this.props.navigation.navigate('Home');
+    Axios.post('http://192.168.0.5:3001/api/logout').then((response) =>
+      setproverDID(response.data)
+    );
+  };
+
+
+
 }
 
 const styles = StyleSheet.create({

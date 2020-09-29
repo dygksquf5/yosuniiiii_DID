@@ -14,9 +14,16 @@ export default class SecondScreen extends Component {
     if (code != '5678') {
       this.pinInput.current.shake().then(() => this.setState({ code: '' }));
     } else {
-      this.props.navigation.replace('Details');
+      this.props.navigation.replace('success');
+      Axios.post('http://192.168.0.5:3001/api/requestCred').then((response) =>
+      setcredential(response.data)
+      );
     }
   };
+
+  
+  // onPress={() => requestCred()}
+  
 
   render() {
     const { code, password } = this.state;

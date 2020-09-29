@@ -3,7 +3,6 @@ var {
   log,
   logIssuer,
   logOK,
-  sendToProver,
   logKO,
   createAndOpenWallet,
   closeAndDeleteWallet,
@@ -197,7 +196,7 @@ module.exports = function (app){
 
   app.post("/api/schemaId", urlencodedParser, async function(req,res){
 
-    db.get('SELECT schemaId FROM schemaId', function(err, row){
+    db.get(`SELECT schemaId FROM schemaId`, function(err, row){
       if (err){
         return logKO(err.message);
       }{
@@ -208,7 +207,23 @@ module.exports = function (app){
     });
     res.send(JSON.stringify(issuer.schemaId))
 
+  });
+
+  app.post("/api/credDefId", urlencodedParser, async function(req,res){
+
+    db.get(`SELECT credDefId FROM credDefId`, function(err, row){
+      if (err){
+        return logKO(err.message);
+      }{
+        issuer.credDefId = `${row.credDefId}`;
+        console.log("get from Database");
+        res.send(JSON.stringify(issuer.credDefId))
+        console.log(issuer.credDefId)
+      };
+
+    });
   })
+
 
   app.post("/No2", urlencodedParser, async function(req,res){
     
@@ -293,11 +308,22 @@ module.exports = function (app){
         console.log("errerrrrrrrr", error);
     };
   
+    
+    db.get(`SELECT credDefId FROM credDefId `, function(err, row){
+      if (`${row.credDefId}` == issuer.credDefId){
+        console.log("already exist", `${row.credDefId}`);
+      }else{
+        db.run('INSERT INTO credDefId(credDefId) VALUES (?)', [issuer.credDefId]);
+        console.log("saved on Database");
+        console.log(issuer.credDefId)
+      }
+    });
   
       logKO("\tSchemaId: " + issuer.schemaId);
       logKO("\tCredential Defination ID: " + issuer.credDefId);
   
   
+
       log(
         "Issuer shares public data (schema ID, credential definition ID, ...) (via HTTP or other communication protocol) ..."
       );
@@ -342,6 +368,26 @@ module.exports = function (app){
       );          
       await res.send(JSON.stringify(issuer.credOffer));
 
+
+      async function test(){
+        await axios.post("http://192.168.0.5:3001/api/credReq")
+        .then(response => issuer.credReq = response.data);
+  
+        logOK(JSON.stringify(issuer.credReq));
+      };
+  
+  
+      logOK("\nWaiting for Credential Request from prover!");
+      while (issuer.credReq == undefined) {
+        await sleep(10000),
+        await test();
+      }
+
+      logKO("got ittttttttt!!!!!!!")
+              //request from prover //
+  
+      
+
       
     });
 
@@ -364,7 +410,7 @@ module.exports = function (app){
           gender: { raw: "secret", encoded: "123456789123456789" },
           age: {
             raw: "20",
-            encoded: "28"
+            encoded: "20"
           },
           food: {raw: "Tteockbokkiiiiii", encoded: "123456789123456789"},
           name: { raw: "eunhyeeeeeeeeeee", encoded: "123456789123456789" },
@@ -403,28 +449,28 @@ module.exports = function (app){
 
   
 
-    app.post("/No3" ,urlencodedParser,async function(req,res){
+    // app.post("/No3" ,urlencodedParser,async function(req,res){
 
   
-      async function test(){
-        await axios.post("http://192.168.0.5:3001/api/credReq")
-        .then(response => issuer.credReq = response.data);
+    //   async function test(){
+    //     await axios.post("http://192.168.0.5:3001/api/credReq")
+    //     .then(response => issuer.credReq = response.data);
   
-        logOK(JSON.stringify(issuer.credReq));
-      };
+    //     logOK(JSON.stringify(issuer.credReq));
+    //   };
   
   
-      logOK("\nWaiting for Credential Request from prover!");
-      while (issuer.credReq == undefined) {
-        await test();
-      }
+    //   logOK("\nWaiting for Credential Request from prover!");
+    //   while (issuer.credReq == undefined) {
+    //     await test();
+    //   }
 
-      logKO("got ittttttttt!!!!!!!")
-              //request from prover //
+    //   logKO("got ittttttttt!!!!!!!")
+    //           //request from prover //
   
 
   
-    });
+    // });
     
 
 
@@ -476,28 +522,6 @@ module.exports = function (app){
 
 
   
-
-  app.post("/No4", urlencodedParser, async function(req,res){
-    
-    
-      res.redirect("/No5");
-  })
-
-
-    // check the crededtial offer !! ######## 
-
-      // for (var key in issuer.credOffer) {
-      //   console.log("=>:" + key + ", value:" + issuer.credOffer[key]);
-      // };      
-  
-  app.post("/No5", urlencodedParser,async function(req,res){
-
-
-
-    
-  
-  });
-
 
 
 
