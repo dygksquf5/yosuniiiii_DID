@@ -303,7 +303,7 @@ module.exports = function (app){
     app.post("/api/getCred", urlencodedParser, async function(req,res){
 
     function database(){
-      db.get('SELECT outCredId FROM outCredId where aid="1"', function(err, row){
+      db.get('SELECT outCredId FROM outCredId where aid=1', function(err, row){
         if (err){
           return logKO(err.message);
         }{
