@@ -14,6 +14,7 @@ import QRcode from './screens/QRcode';
 import Details from './screens/Details';
 import Profile from './screens/Profile';
 import Details2 from './screens/Details2';
+import Loading from './screens/Loading';
 
 import success from './screens/success';
 
@@ -76,7 +77,26 @@ const SwitchNav = createSwitchNavigator(
   }
 );
 
-export default createAppContainer(SwitchNav);
+const Appcontainer = createAppContainer(SwitchNav)
+
+export default class App extends Component{
+  state={
+    isLoading : true
+  };
+  componentDidMount= async() => {  
+    // 1,000가 1초
+    setTimeout(() => {this.setState({isLoading: false})},3000);
+  }
+
+
+  render(){
+      if(this.state.isLoading){
+        return <Loading/>
+      }else{
+        return <Appcontainer />
+      }
+  }
+}
 
 // const AppContainer = createAppContainer(SwitchNav);
 
