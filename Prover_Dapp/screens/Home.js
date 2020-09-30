@@ -19,12 +19,12 @@ export default class Home extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <View style={{ textAlign: 'left', marginTop: 15 }}>
+        {/* <View style={{ textAlign: 'left', marginTop: 15 }}>
           <Text style={styles.name} onPress={this.getToLedger}>
             {' '}
             login !! touch me ! {' '}
           </Text>
-        </View>
+        </View> */}
 
         <View style={{ textAlign: 'right', marginTop: 15 }}>
           <Text style={styles.name} onPress={this.logout}>

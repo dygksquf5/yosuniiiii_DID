@@ -4,6 +4,8 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { colors } from './src/theme';
 import FontIcon from 'react-native-vector-icons/FontAwesome5';
+import Axios from 'axios';
+
 
 import SecondScreen from './screens/SecondScreen';
 import password from './screens/password';
@@ -17,6 +19,7 @@ import Details2 from './screens/Details2';
 import Loading from './screens/Loading';
 
 import success from './screens/success';
+
 
 
 // assets
@@ -85,12 +88,15 @@ export default class App extends Component{
   };
   componentDidMount= async() => {  
     // 1,000가 1초
-    setTimeout(() => {this.setState({isLoading: false})},3000);
+    setTimeout(() => {this.setState({isLoading: false})},4000);
   }
 
 
   render(){
       if(this.state.isLoading){
+        Axios.post('http://192.168.0.5:3001/api/log').then((response) =>
+        setproverDID(response.data)
+      );  
         return <Loading/>
       }else{
         return <Appcontainer />
