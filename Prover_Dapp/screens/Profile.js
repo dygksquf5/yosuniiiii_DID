@@ -44,12 +44,6 @@ export default class Profile extends Component {
         <StatusBar barStyle='light-content' />
         <Text style={styles.title}>여기는 디 테 일2222 !!</Text>
         <Button
-          title=" offer 요청 "
-          color='white'
-          backgroundColor={colors.pink}
-          onPress={() => requestCred()}
-        />
-        <Button
           title='지갑에서 신분증 요청하기!'
           color='white'
           backgroundColor={colors.pink}
@@ -64,16 +58,6 @@ export default class Profile extends Component {
         }}>
         <Simple />
       </View>
-
-
-
-        
-        <Button
-          title='새로운 스키마 만들기!! (나중에 지울거임)'
-          color='white'
-          backgroundColor={colors.pink}
-          onPress={() => makeSchema()}        
-          />
 
 
 
