@@ -4,7 +4,7 @@ import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import { colors } from './src/theme';
 import FontIcon from 'react-native-vector-icons/FontAwesome5'
-
+import Axios from 'axios'
 
 
 import HomeScreen from './screens/HomeScreen';
@@ -15,6 +15,7 @@ import Home from './screens/Home'
 import QRcode from './screens/QRcode'
 import Details from './screens/Details'
 import Profile from './screens/Profile'
+import Loading from './screens/Loading'
 
 import stackNav from './src/navigator/stack'
 
@@ -84,17 +85,31 @@ const SwitchNav = createSwitchNavigator({
 
 
 
-export default createAppContainer(SwitchNav);
+// export default createAppContainer(SwitchNav);
 
-// const AppContainer = createAppContainer(SwitchNav);
 
-// export default class App extends Component {
-//   render() {
-//     return (
-//         <AppContainer />
-//     );
-//   }
-// }
+
+const AppContainer = createAppContainer(SwitchNav);
+
+export default class App extends Component {
+  state={
+    isLoading : true
+  };
+  componentDidMount= async() => {
+    setTimeout(() => {this.setState({isLoading: false})}, 4000);
+  }
+
+  render() {
+    if(this.state.isLoading){
+      Axios.post('http://192.168.0.5:3002/api/log').then(response => setproverDID(response.data))
+    return <Loading />
+  }else{
+    return (
+        <AppContainer />
+    );
+  }
+}
+}
 
 
 

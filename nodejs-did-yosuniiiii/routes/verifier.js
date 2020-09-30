@@ -155,6 +155,7 @@ module.exports = function (app){
   //   "\nPress Enter to Create Proof Request and Send to Prover: "
   // );
 
+  
   logVerifier("Verifier creates proof request");
   const nonce = await indy.generateNonce();
   verifier.proofReq = {
@@ -171,7 +172,7 @@ module.exports = function (app){
       predicate1_referent: {
         name: "age",
         p_type: ">=",
-        p_value: 18,
+        p_value: 20,
         restrictions: { cred_def_id: verifier.credDefId }
       }
     }
@@ -189,7 +190,8 @@ module.exports = function (app){
         'content-Type': 'application/json'
       },
       data: {
-        data: verifier.proofReq
+        data: verifier.proofReq,
+        schemaId : verifier.schemaId,
       }
     }).then(response => verifier.proof=response.data);
   }
