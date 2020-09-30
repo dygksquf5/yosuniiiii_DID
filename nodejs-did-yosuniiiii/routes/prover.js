@@ -73,8 +73,8 @@ module.exports = function (app){
       log("Prover start Wallet");
       const walletConfig = { id: "prover" + ".wallet" };
       const walletCredentials = { key: 'prover' + ".wallet_key" };
-      // log("Prover delete Wallet");
 
+      // log("Prover delete Wallet");
       // await indy.deleteWallet(walletConfig, walletCredentials);
       // log("Prover create Wallet");
 
@@ -303,7 +303,7 @@ module.exports = function (app){
     app.post("/api/getCred", urlencodedParser, async function(req,res){
 
     function database(){
-      db.get('SELECT outCredId FROM outCredId where aid=1', function(err, row){
+      db.get('SELECT outCredId FROM outCredId WHERE aid=1', function(err, row){
         if (err){
           return logKO(err.message);
         }{
@@ -336,11 +336,12 @@ module.exports = function (app){
 
 
   app.post("/api/proofReq", urlencodedParser, async function(req,res){
+    try{
 
     prover.proofReq = req.body.data;
-
+    prover.schemaId = req.body.schemaId;
     console.log(prover.proofReq)
-
+    console.log(prover.schemaId)
     logOK("\n\nWaiting for proof request from verifier!");
     while (prover.proofReq == undefined) {
       await sleep(2000);
@@ -388,6 +389,14 @@ module.exports = function (app){
         }
       }
     };
+
+    logProver("Prover gets schema from ledger");
+    prover.schema = await getSchemaFromLedger(
+      prover.poolHandle,
+      prover.did,
+      prover.schemaId
+    );
+
     prover.schemas = {
       [prover.schemaId]: prover.schema
     };
@@ -405,17 +414,8 @@ module.exports = function (app){
       await getcredDefId()
       await sleep(2000);
     }
-    logKO("-----------------------------1")
-    prover.credDefs = {
-      [prover.credDefId]: prover.credDef
-    };
-    logKO("-----------------------------2")
-
-    prover.revocStates = {};
-    logKO("-----------------------------3")
-
     function database(){
-      db.get('SELECT masterSecretId FROM outCredId where aid="1"', function(err, row){
+      db.get('SELECT masterSecretId FROM outCredId WHERE aid=1', function(err, row){
         if (err){
           return logKO(err.message);
         }{
@@ -431,6 +431,19 @@ module.exports = function (app){
       await sleep(2000);
     }
 
+    logKO("-----------------------------1")
+    prover.credDef = await getCredDefFromLedger(
+      prover.poolHandle,
+      prover.did,
+      prover.credDefId
+    );
+    prover.credDefs = {
+      [prover.credDefId]: prover.credDef
+    };
+    logKO("-----------------------------2")
+
+    prover.revocStates = {};
+    logKO("-----------------------------3")
 
 
     prover.proof = await indy.proverCreateProof(
@@ -446,7 +459,9 @@ module.exports = function (app){
 
     logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
       res.send(prover.proof);
-    
+    }catch(error){
+      console.log(error)
+    }
   });
 
 

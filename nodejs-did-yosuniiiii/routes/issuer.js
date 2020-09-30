@@ -154,7 +154,7 @@ module.exports = function (app){
     
  // ######################################done register schema to the ledger#######################################################################
 
-  app.post("/api/testtest", async function(req, res){
+  app.post("/api/makeSchema", async function(req, res){
 
     try{
 
@@ -164,9 +164,9 @@ module.exports = function (app){
       const [schemaId, schema] = await indy.issuerCreateSchema(
 
         issuer.did,
-        "YOSUNIIIII",
+        "KIMYOHAN",
         "1.0",
-        `["name", "age", "gender", "food", "address"]`
+        `["name", "age", "gender", "phone_number", "address", "country"]`
 
       )
       issuer.schemaId = schemaId;
@@ -181,7 +181,7 @@ module.exports = function (app){
         issuer.schema
       );
       
-      logOK("\n\n\n" ,"done");
+      logOK("\n\n\n" ,"done", issuer.schema);
 
     }
 
@@ -196,7 +196,7 @@ module.exports = function (app){
 
   app.post("/api/schemaId", urlencodedParser, async function(req,res){
 
-    db.get(`SELECT schemaId FROM schemaId`, function(err, row){
+    db.get(`SELECT schemaId FROM schemaId where aid=2`, function(err, row){
       if (err){
         return logKO(err.message);
       }{
@@ -211,7 +211,7 @@ module.exports = function (app){
 
   app.post("/api/credDefId", urlencodedParser, async function(req,res){
 
-    db.get(`SELECT credDefId FROM credDefId`, function(err, row){
+    db.get(`SELECT credDefId FROM credDefId WHERE aid=2`, function(err, row){
       if (err){
         return logKO(err.message);
       }{
@@ -228,12 +228,12 @@ module.exports = function (app){
   app.post("/No2", urlencodedParser, async function(req,res){
     
     try {
-         db.get('SELECT schemaId FROM schemaId', function(err, row){
+         db.get('SELECT schemaId FROM schemaId WHERE aid=2', function(err, row){
           if (err){
             return logKO(err.message);
           }{
             issuer.schemaId = `${row.schemaId}`;
-            console.log("saved on Database");
+            console.log("got ID from Database");
           };
         });
 
@@ -290,7 +290,7 @@ module.exports = function (app){
             issuer.wallet,
             issuer.did,
             issuer.schema,
-            "Yosuniiiii_test_ID_credential",
+            "KIMYOHAN_CREDENTIAL",
             "CL",
             { support_revocation: false }
           ); 
@@ -379,7 +379,7 @@ module.exports = function (app){
   
       logOK("\nWaiting for Credential Request from prover!");
       while (issuer.credReq == undefined) {
-        await sleep(10000),
+        await sleep(5000),
         await test();
       }
 
@@ -407,15 +407,17 @@ module.exports = function (app){
       logIssuer("Issuer creates credential");
       {
         const credValues = {
-          gender: { raw: "secret", encoded: "123456789123456789" },
+          gender: { raw: "male", encoded: "123456789123456789" },
           age: {
-            raw: "20",
-            encoded: "20"
+            raw: "27",
+            encoded: "27"
           },
-          food: {raw: "Tteockbokkiiiiii", encoded: "123456789123456789"},
-          name: { raw: "eunhyeeeeeeeeeee", encoded: "123456789123456789" },
-          address: { raw: "Deajeon", encoded: "123456789123456789" }
+          phone_number: {raw: "01051373507", encoded: "01051373507"},
+          name: { raw: "KIMYoHan", encoded: "123456789123456789" },
+          address: { raw: "Seoul,Jung-go-ro 119", encoded: "123456789123456789" },
+          country: { raw: "South Korea", encoded: "123456789123456789" },
         };
+
         const [cred, _i, _d] = await indy.issuerCreateCredential(
           issuer.wallet,
           issuer.credOffer,

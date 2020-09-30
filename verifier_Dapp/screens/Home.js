@@ -24,11 +24,11 @@ export default class Home extends Component {
     return (
       
       <View style={styles.root}>
-        <View style={{ textAlign: 'left', marginTop: 15 }}>
+        {/* <View style={{ textAlign: 'left', marginTop: 15 }}>
           <Text style={styles.name} onPress={this.getToLedger}
           
           > 기업 000 점주님! 클릭해서 로그인을 실행해주세요! </Text>
-        </View>
+        </View> */}
 
         <Container>
           <Content>
