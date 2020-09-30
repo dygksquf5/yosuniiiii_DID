@@ -15,7 +15,7 @@ import SvgQRCode from 'react-native-qrcode-svg';
 // const [credential, setcredential] = useState("");
 
 function Simple() {
-  return <SvgQRCode value="Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0" />;
+  return <SvgQRCode value="Th7MpTaRZVRYnPiabds81Y:2:KIMYOHAN:1.0" />;
 }
 
 async function requestCred(){
@@ -28,6 +28,13 @@ async function getCred(){
   .then(response => setcredential(response.data))
 
 }
+
+// async function makeSchema(){
+//   await Axios.post('http://192.168.0.5:3000/api/makeSchema')
+//   .then(response => setcredential(response.data))
+
+// }
+
 
 
 export default class Profile extends Component {
@@ -62,10 +69,10 @@ export default class Profile extends Component {
 
         
         <Button
-          title='Go Back'
+          title='새로운 스키마 만들기!! (나중에 지울거임)'
           color='white'
           backgroundColor={colors.pink}
-          onPress={() => Simple()}        
+          onPress={() => makeSchema()}        
           />
 
 
