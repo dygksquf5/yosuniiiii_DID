@@ -24,12 +24,6 @@ export default class Home extends Component {
     return (
       
       <View style={styles.root}>
-        {/* <View style={{ textAlign: 'left', marginTop: 15 }}>
-          <Text style={styles.name} onPress={this.getToLedger}
-          
-          > 기업 000 점주님! 클릭해서 로그인을 실행해주세요! </Text>
-        </View> */}
-
         <Container>
           <Content>
             <Card style={styles.card}>
@@ -64,11 +58,6 @@ export default class Home extends Component {
   gotoPassword = () => {
     this.props.navigation.navigate('SecondScreen');
   };
-
-  getToLedger = () => {
-    this.props.navigation.navigate('Home');
-    Axios.post('http://192.168.0.5:3002/api/log').then(response => setproverDID(response.data))
-  }
 
 
 }

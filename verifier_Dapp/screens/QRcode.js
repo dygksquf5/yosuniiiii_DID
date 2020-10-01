@@ -15,9 +15,12 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import Axios from 'axios';
 import 'url-search-params-polyfill';
 
+
+
 function QRcode() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [verifying, setverifying] = useState(null)
 
   useEffect(() => {
     (async () => {
@@ -26,24 +29,10 @@ function QRcode() {
     })();
   }, []);
 
-  // state = {
-  //   type: {type},
-  //   data: {data},
-  // };
-  // updateState = () => {
-  //   this.setState({
-  //     type: this.state,
-  //     data: this.state,
-  //   });
-  // }
-  // gotoDetails = () => {
-  //   this.props.navigation.navigate('Details');
-  // };
+
 
   const handleBarCodeScanned = ({ type, data }) => {
     async function testtest() {
-      // var params = new URLSearchParams();
-      // await params.append('data',JSON.stringify(data));
       await Axios({
         method: 'POST',
         url: "http://192.168.0.5:3002/api/getschemaId",
@@ -54,15 +43,12 @@ function QRcode() {
           data: data,
         },
       }).then((res) => {
-        console.log(res.data);
+        setverifying(res.data);
       });
     }
 
     setScanned(true);
-    // alert('Bar code with type'+JSON.stringify({type})+ 'and data'+JSON.stringify({data})+ 'has been scanned!')
-    Alert.alert(type, data, [
-      { Text: 'OK!!!!!!!!!!', onPress: () => testtest() },
-    ]);
+    testtest()
   };
 
   if (hasPermission === null) {
@@ -85,7 +71,8 @@ function QRcode() {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      {scanned && (
+      {scanned && (Alert.alert(JSON.stringify(verifying))
+      )&& (
         <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
         // <Button title={'Tap to Scan'} onPress={this.gotoDetails} />
 

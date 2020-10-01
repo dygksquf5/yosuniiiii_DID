@@ -352,23 +352,27 @@ module.exports = function (app){
       const searchHandle = await indy.proverSearchCredentialsForProofReq(
         prover.wallet,
         prover.proofReq,
-        undefined
+        null
       );
+
 
     const credentialsForAttr1 = await indy.proverFetchCredentialsForProofReq(
       searchHandle,
       "attr1_referent",
-      10
+      100
       
     );
+
     prover.credInfoForAttribute = credentialsForAttr1[0]["cred_info"];
 
     const credentialsForPredicate1 = await indy.proverFetchCredentialsForProofReq(
       searchHandle,
       "predicate1_referent",
-      10
+      100
       
     );
+
+
     prover.credInfoForPredicate = credentialsForPredicate1[0]["cred_info"];
 
     await indy.proverCloseCredentialsSearchForProofReq(searchHandle);
