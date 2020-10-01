@@ -15,6 +15,9 @@ import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Axios from 'axios';
 
 
+
+
+
 export default class Home extends Component {
   render() {
     return (

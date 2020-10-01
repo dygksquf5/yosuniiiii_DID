@@ -17,7 +17,7 @@ import Details from './screens/Details';
 import Profile from './screens/Profile';
 import Details2 from './screens/Details2';
 import Loading from './screens/Loading';
-
+import QRgenerator from './screens/QRgenerator';
 import success from './screens/success';
 
 
@@ -44,6 +44,7 @@ const StacNav2 = createStackNavigator({
   Home: { screen: Home },
   Details: { screen: Details },
   SecondScreen: { screen: SecondScreen },
+  QRgenerator: {screen: QRgenerator},
   
   success: { screen: success },
   password: { screen: password },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Alert } from 'react-native';
 import Button from '../src/components/Button';
 import { colors } from '../src/theme';
 import { render } from 'react-dom';
@@ -8,6 +8,10 @@ import { render } from 'react-dom';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { State } from 'react-native-gesture-handler';
+import SvgQRCode from 'react-native-qrcode-svg';
+
+
+
 
 export default class Details extends Component {
   render() {
@@ -19,13 +23,13 @@ export default class Details extends Component {
           title='Go Back'
           color='white'
           backgroundColor={colors.pink}
-          onPress={this.gotoBack}
+          onPress={this.QRgenerator}
         />
       </View>
     );
   }
-  gotoBack = () => {
-    this.props.navigation.replace('Home');
+  QRgenerator = () => {
+    this.props.navigation.replace('QRgenerator');
   };
 }
 
