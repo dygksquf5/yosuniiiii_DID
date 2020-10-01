@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Alert } from 'react-native';
 import Button from '../src/components/Button';
 import { colors } from '../src/theme';
 import { render } from 'react-dom';
@@ -8,68 +8,25 @@ import { render } from 'react-dom';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { State } from 'react-native-gesture-handler';
-import Axios from 'axios';
 import SvgQRCode from 'react-native-qrcode-svg';
 
-
-// const [credential, setcredential] = useState("");
 
 function Simple() {
   return <SvgQRCode value="Th7MpTaRZVRYnPiabds81Y:2:KIMYOHAN:1.0" />
 }
 
 
-async function getCred(){
-  await Axios.post('http://192.168.0.5:3001/api/getCred')
-  .then(response => setcredential(response.data))
-
-}
-
-// async function makeSchema(){
-//   await Axios.post('http://192.168.0.5:3000/api/makeSchema')
-//   .then(response => setcredential(response.data))
-
-// }
-
-
-
-export default class Profile extends Component {
+export default class Details extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <StatusBar barStyle='light-content' />
-        <Text style={styles.title}>여기는 디 테 일2222 !!</Text>
-        <Button
-          title='지갑에서 신분증 요청하기!'
-          color='white'
-          backgroundColor={colors.pink}
-          onPress={() => getCred()}
-        />
-      <View
-        style={{
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-        }}>
-        <Simple />
-      </View>
-
-
-
-        <Button
-          title='Go Back'
-          color='white'
-          backgroundColor={colors.pink}
-          onPress={() => Simple()}
-        >
-        </Button>
         
+        <Simple />
       </View>
     );
   }
   gotoBack = () => {
-    this.props.navigation.navigate('Home');
+    this.props.navigation.replace('');
   };
 }
 

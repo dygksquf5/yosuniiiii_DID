@@ -15,6 +15,7 @@
     "expo-barcode-scanner": "~8.2.1",
     "expo-font": "~8.2.1",
     "expo-status-bar": "^1.0.2",
+    "expo-linear-gradient": "^6.0.0",
     "express": "^4.17.1",
     "native-base": "^2.13.14",
     "react": "~16.11.0",
