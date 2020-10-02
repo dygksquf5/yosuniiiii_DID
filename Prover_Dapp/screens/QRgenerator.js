@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, StatusBar, Alert } from 'react-native';
 import Button from '../src/components/Button';
 import { colors } from '../src/theme';
 import { render } from 'react-dom';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { State } from 'react-native-gesture-handler';
@@ -12,7 +11,7 @@ import SvgQRCode from 'react-native-qrcode-svg';
 
 
 function Simple() {
-  return <SvgQRCode value="Th7MpTaRZVRYnPiabds81Y:2:KIMYOHAN:1.0" />
+  return <SvgQRCode value="Th7MpTaRZVRYnPiabds81Y:2:KIMYOHAN:1.0" size={300}/>
 }
 
 
@@ -25,34 +24,8 @@ export default class Details extends Component {
       </View>
     );
   }
-  gotoBack = () => {
-    this.props.navigation.replace('');
-  };
+
 }
-
-// const { from } = navigation.state.params
-
-// Details.propTypes = {
-//   navigation: PropTypes.shape({
-//     state: PropTypes.shape({
-//       params: PropTypes.shape({
-//         from: PropTypes.string,
-//       }),
-//     }),
-//     goBack: PropTypes.func,
-//   }),
-// }
-
-// Details.defaultProps = {
-//   navigation: {
-//     state: {
-//       params: {
-//         from: '',
-//       },
-//     },
-//     goBack: () => null,
-//   },
-// }
 
 const styles = StyleSheet.create({
   root: {

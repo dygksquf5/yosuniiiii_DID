@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Text,
   View,
+  Dimensions,
   Image,
   StyleSheet,
   TouchableOpacity,
@@ -26,19 +27,6 @@ function QRcode() {
     })();
   }, []);
 
-  // state = {
-  //   type: {type},
-  //   data: {data},
-  // };
-  // updateState = () => {
-  //   this.setState({
-  //     type: this.state,
-  //     data: this.state,
-  //   });
-  // }
-  // gotoDetails = () => {
-  //   this.props.navigation.navigate('Details');
-  // };
 
   const handleBarCodeScanned = ({ type, data }) => {
     async function testtest() {
@@ -59,7 +47,6 @@ function QRcode() {
     }
 
     setScanned(true);
-    // alert('Bar code with type'+JSON.stringify({type})+ 'and data'+JSON.stringify({data})+ 'has been scanned!')
     Alert.alert(type, data, [
       { Text: 'OK!!!!!!!!!!', onPress: () => testtest() },
     ]);
@@ -72,29 +59,82 @@ function QRcode() {
     return <Text>No access to camera</Text>;
   }
 
-  return (
-    // <View style={{backgroundColor: 'white', flex:1, justifyContent: 'center', alignItems: 'center'}}>
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}
-    >
+  // return (
+  //   // <View style={{backgroundColor: 'white', flex:1, justifyContent: 'center', alignItems: 'center'}}>
+  //   <View
+  //     style={{
+  //       flex: 1,
+  //       flexDirection: 'column',
+  //       justifyContent: 'flex-end',
+
+  //     }}
+  //   >
+  //     <BarCodeScanner
+  //       onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+  //       style={StyleSheet.absoluteFillObject}
+  //     />
+
+
+
+
+
+
+  //     {scanned && (
+  //       <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
+  //       // <Button title={'Tap to Scan'} onPress={this.gotoDetails} />
+
+  //     )}
+  //   </View>
+
+  //   // </View>
+  // );
+  const { width } = Dimensions.get('window');
+
+    return (
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {scanned && (
-        <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
-        // <Button title={'Tap to Scan'} onPress={this.gotoDetails} />
+        style={[StyleSheet.absoluteFill, styles.container]}
+      >
+        <View style={styles.layerTop} />
+        <View style={styles.layerCenter}>
+          <View style={styles.layerLeft} />
+          <View style={styles.focused} />
+          <View style={styles.layerRight} />
+        </View>
+        <View style={styles.layerBottom} />
+      </BarCodeScanner>
+    );
+  }
 
-      )}
-    </View>
+const opacity = 'rgba(0, 0, 0, .4)';
+const styles = StyleSheet.create({
+  container: {
+    flex: 8,
+    flexDirection: 'column'
+  },
+  layerTop: {
+    flex: 3.5,
+    backgroundColor: opacity,
 
-    // </View>
-  );
-  
-}
-
+  },
+  layerCenter: {
+    flex: 8,
+    flexDirection: 'row'
+  },
+  layerLeft: {
+    flex: 0.5,
+    backgroundColor: opacity
+  },
+  focused: {
+    flex: 4
+  },
+  layerRight: {
+    flex: 0.5,
+    backgroundColor: opacity
+  },
+  layerBottom: {
+    flex: 3.5,
+    backgroundColor: opacity
+  },
+});
 export default QRcode;

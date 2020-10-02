@@ -3,7 +3,17 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { colors } from './src/theme';
-import FontIcon from 'react-native-vector-icons/FontAwesome5';
+// import Button from './src/components/Button';
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
+
+import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Axios from 'axios';
 
 
@@ -40,34 +50,101 @@ import { fontAssets } from './src/theme/fonts';
 //   certification: {screen: HomeScreen}
 // })
 
-const StacNav2 = createStackNavigator({
-  Home: { screen: Home },
-  Details: { screen: Details },
-  SecondScreen: { screen: SecondScreen },
-  QRgenerator: {screen: QRgenerator},
-  
-  success: { screen: success },
-  password: { screen: password },
 
-  Details2: { screen: Details2 },
+const navigationProps = {
+  headerTintColor: 'white',
+  headerStyle: { backgroundColor: colors.darkPurple , height: 110 },
+  headerTitleStyle: { fontSize: 27, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
+  justifyContent: 'center',
+},
+}
+
+let test_1 = "요한"
+const StacNav2 = createStackNavigator({
+  Home: { screen: Home ,
+    navigationOptions: ({ navigation }) => ({
+      title: test_1+"님, 반갑습니다",
+      ...navigationProps,
+      headerRight: <TouchableOpacity><FontIcon 
+      name={"android-messages"}
+      size={30}
+      marginRight={30}
+      onPress={() => navigation.navigate("QRcode")}
+      color="white">
+       </FontIcon>
+       </TouchableOpacity>
+  
+    }),
+   },
+  Details: { screen: Details,
+    navigationOptions: ({ navigation }) => ({
+      title: "신분증 상세정보",
+      headerTintColor: 'black',
+      headerStyle: { backgroundColor: 'white' , height: 110 },
+      headerTitleStyle: { fontSize: 20, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
+      justifyContent: 'center',
+    },
+    }),
+ },
+  SecondScreen: { screen: SecondScreen,
+    navigationOptions: ({ navigation }) => ({
+      header: null,
+      ...navigationProps,   
+    }),
+ },
+  QRgenerator: {screen: QRgenerator,
+    navigationOptions: ({ navigation }) => ({
+      title: "신원인증 QRcode",
+      headerTintColor: 'black',
+      headerStyle: { backgroundColor: 'white' , height: 110 },
+      headerTitleStyle: { fontSize: 20, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
+      justifyContent: 'center',
+    },
+    }),
+},
+
+  success: { screen: success,
+    navigationOptions: ({ navigation }) => ({
+      title: test_1+"님, 반갑습니다",
+      ...navigationProps,
+    }),
+ },
+  password: { screen: password,
+    navigationOptions: ({ navigation }) => ({
+      title: test_1+"님, 반갑습니다",
+      ...navigationProps,
+    }),
+ },
+
+  Details2: { screen: Details2,
+    navigationOptions: ({ navigation }) => ({
+      title: test_1+"님, 반갑습니다",
+      ...navigationProps,
+    }),
+ },
 
   QRcode: { screen: QRcode, ncavigationOptions: { header: null } },
 });
 const StacNav3 = createStackNavigator({
-  Profile: { screen: Profile },
+  Profile: { screen: Profile,
+    navigationOptions: ({ navigation }) => ({
+      title: test_1+"님, 반갑습니다",
+      ...navigationProps,
+    }),
+ },
 });
 
 const TabNavigator = createBottomTabNavigator({
   Home: {
     screen: StacNav2,
     navigationOptions: {
-      tabBarIcon: () => <FontIcon name='home' size={23}></FontIcon>,
+      tabBarIcon: () => <FontIcon name='home' color="#231d54" size={23}></FontIcon>,
     },
   },
   Profile: {
     screen: StacNav3,
     navigationOptions: {
-      tabBarIcon: () => <FontIcon name='user' size={23}></FontIcon>,
+      tabBarIcon: () => <FontIcon name='android-messages' color="#231d54" size={23}></FontIcon>,
     },
   },
 });

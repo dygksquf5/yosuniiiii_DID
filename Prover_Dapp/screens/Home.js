@@ -12,6 +12,7 @@ import Button from '../src/components/Button';
 import { colors } from '../src/theme';
 import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import Axios from 'axios';
 
 
@@ -22,50 +23,36 @@ export default class Home extends Component {
   render() {
     return (
       <View style={styles.root}>
-        {/* <View style={{ textAlign: 'left', marginTop: 15 }}>
-          <Text style={styles.name} onPress={this.getToLedger}>
-            {' '}
-            login !! touch me ! {' '}
-          </Text>
-        </View> */}
-
-        <View style={{ textAlign: 'right', marginTop: 15 }}>
-          <Text style={styles.name} onPress={this.logout}>
-            {' '}
-            logout!!!! !! touch me ! {' '}
-          </Text>
-        </View>
-
-
         <Container>
           <Content>
+          <TouchableOpacity onPress={this.gotoPassword}>
             <Card style={styles.card}>
-              <View style={{ margin: 8 }}>
-                <TouchableOpacity onPress={this.gotoPassword}>
-                  <Text style={styles.cardUpText}>나의 신분증 !</Text>
-
-                  {/* 신분증 사진 넣게된다면 자리 ! */}
-                  <View style={{ height: 150 }} />
-
-                  <Text style={styles.cardDownText}>2022.01.10</Text>
-                </TouchableOpacity>
+              <View style={styles.icon1}>
+                  <FontIcon name='id-card' color='black' size={50}> 
+                  <Text style={styles.cardDownText}>   모바일 신분증</Text>
+                  </FontIcon> 
               </View>
+              <View style={styles.cardDate}>
+                <Text ></Text>
+                <Text >2022.01.10</Text>
+              </View>
+
             </Card>
+            </TouchableOpacity>
           </Content>
         </Container>
 
         <View style={styles.addButton2}>
           <TouchableHighlight
             underlayColor='#ff7043'
-            onPress={this.gotoPassword_2}
-          >
-            <FontIcon name='send' color='white' size={35} />
+            onPress={this.gotoPassword_2}>
+            <FontIcon name='send' color='#231d54' size={35} />
           </TouchableHighlight>
         </View>
 
         <View style={styles.addButton}>
           <TouchableHighlight underlayColor='#ff7043' onPress={this.gotoQR}>
-            <FontIcon name='qrcode-scan' color='white' size={35} />
+            <FontIcon name='qrcode-scan' color='#231d54' size={35} />
           </TouchableHighlight>
         </View>
       </View>
@@ -74,18 +61,11 @@ export default class Home extends Component {
   gotoQR = () => {
     this.props.navigation.navigate('QRcode');
   };
-  gotoDetails = () => {
-    this.props.navigation.navigate('testtest');
-  };
   gotoPassword = () => {
     this.props.navigation.navigate('SecondScreen');
   };
   gotoPassword_2 = () => {
     this.props.navigation.navigate('password');
-  };
-
-  gotoDetails2 = () => {
-    this.props.navigation.navigate('Details2');
   };
 
   getToLedger = () => {
@@ -95,12 +75,6 @@ export default class Home extends Component {
     );
   };
 
-  logout = () => {
-    this.props.navigation.navigate('Home');
-    Axios.post('http://192.168.0.5:3001/api/logout').then((response) =>
-      setproverDID(response.data)
-    );
-  };
 
 
 
@@ -111,6 +85,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 30,
     marginLeft: 20,
+
   },
 
   root: {
@@ -120,39 +95,57 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
 
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  // button: {
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+    
+  // },
 
   card: {
-    height: 200,
-    marginLeft: 10,
-    marginRight: 10,
-    shadowColor: '#000000',
-    borderRadius: 20,
-    backgroundColor: '#9966CC',
-    marginTop: 50,
+    height: 140,
+    marginLeft: 25,
+    marginRight: 25,
+    marginTop: 40,
+    shadowColor: '#A4A4A4',
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 4,
+      width: 1,
+    },
+    borderRadius: 14,
+    backgroundColor: '#FAFAFA',
+    borderColor: '#FAFAFA',
   },
+  icon1:{
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    // backgroundColor: 'black',
+    marginLeft: 30,
+    marginTop: 35,
 
-  cardUpText: {
-    color: 'white',
-    textAlign: 'left',
-    marginLeft: 15,
+  },
+  cardDate:{
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    marginRight:30,
+    marginBottom:20,
+
+
   },
 
   cardDownText: {
-    color: 'white',
-    textAlign: 'right',
-    marginRight: 15,
+    fontWeight: 'bold',
+    fontSize: 25
+    
   },
 
   addButton: {
-    backgroundColor: '#9966CC',
-    borderColor: '#9966CC',
+    backgroundColor: '#FAFAFA',
+    borderColor: '#FAFAFA',
     borderWidth: 1,
-    height: 75,
-    width: 75,
+    height: 65,
+    width: 65,
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
@@ -168,16 +161,16 @@ const styles = StyleSheet.create({
     },
   },
   addButton2: {
-    backgroundColor: '#9966CC',
-    borderColor: '#9966CC',
+    backgroundColor: '#FAFAFA',
+    borderColor: '#FAFAFA',
     borderWidth: 1,
-    height: 75,
-    width: 75,
+    height: 65,
+    width: 65,
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 150,
+    bottom: 130,
     right: 20,
     shadowColor: '#000000',
     shadowOpacity: 0.8,

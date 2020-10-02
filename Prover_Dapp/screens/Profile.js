@@ -4,19 +4,11 @@ import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import Button from '../src/components/Button';
 import { colors } from '../src/theme';
 import { render } from 'react-dom';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { State } from 'react-native-gesture-handler';
 import Axios from 'axios';
 import SvgQRCode from 'react-native-qrcode-svg';
 
 
-// const [credential, setcredential] = useState("");
-
-function Simple() {
-  return <SvgQRCode value="Th7MpTaRZVRYnPiabds81Y:2:KIMYOHAN:1.0" />
-}
 
 
 async function getCred(){
@@ -25,11 +17,6 @@ async function getCred(){
 
 }
 
-// async function makeSchema(){
-//   await Axios.post('http://192.168.0.5:3000/api/makeSchema')
-//   .then(response => setcredential(response.data))
-
-// }
 
 
 
@@ -40,7 +27,7 @@ export default class Profile extends Component {
         <StatusBar barStyle='light-content' />
         <Text style={styles.title}>여기는 디 테 일2222 !!</Text>
         <Button
-          title='지갑에서 신분증 요청하기!'
+          title='testtesttest'
           color='white'
           backgroundColor={colors.pink}
           onPress={() => getCred()}
@@ -52,7 +39,6 @@ export default class Profile extends Component {
           justifyContent: 'space-around',
           alignItems: 'center',
         }}>
-        <Simple />
       </View>
 
 
@@ -73,29 +59,6 @@ export default class Profile extends Component {
   };
 }
 
-// const { from } = navigation.state.params
-
-// Details.propTypes = {
-//   navigation: PropTypes.shape({
-//     state: PropTypes.shape({
-//       params: PropTypes.shape({
-//         from: PropTypes.string,
-//       }),
-//     }),
-//     goBack: PropTypes.func,
-//   }),
-// }
-
-// Details.defaultProps = {
-//   navigation: {
-//     state: {
-//       params: {
-//         from: '',
-//       },
-//     },
-//     goBack: () => null,
-//   },
-// }
 
 const styles = StyleSheet.create({
   root: {
