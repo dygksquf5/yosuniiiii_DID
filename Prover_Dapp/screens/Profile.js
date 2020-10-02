@@ -41,16 +41,6 @@ export default class Profile extends Component {
         }}>
       </View>
 
-
-
-        <Button
-          title='Go Back'
-          color='white'
-          backgroundColor={colors.pink}
-          onPress={() => Simple()}
-        >
-        </Button>
-        
       </View>
     );
   }

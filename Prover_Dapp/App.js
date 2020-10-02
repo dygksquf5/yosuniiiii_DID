@@ -69,7 +69,7 @@ const StacNav2 = createStackNavigator({
       name={"android-messages"}
       size={30}
       marginRight={30}
-      onPress={() => navigation.navigate("QRcode")}
+      onPress={() => navigation.navigate("Profile")}
       color="white">
        </FontIcon>
        </TouchableOpacity>
@@ -105,13 +105,13 @@ const StacNav2 = createStackNavigator({
 
   success: { screen: success,
     navigationOptions: ({ navigation }) => ({
-      title: test_1+"님, 반갑습니다",
+      title: " ",
       ...navigationProps,
     }),
  },
   password: { screen: password,
     navigationOptions: ({ navigation }) => ({
-      title: test_1+"님, 반갑습니다",
+      header: null,
       ...navigationProps,
     }),
  },
@@ -138,13 +138,13 @@ const TabNavigator = createBottomTabNavigator({
   Home: {
     screen: StacNav2,
     navigationOptions: {
-      tabBarIcon: () => <FontIcon name='home' color="#231d54" size={23}></FontIcon>,
+      tabBarIcon: () => <FontIcon name='home' fontweight="bold" color="#231d54" size={30}></FontIcon>,
     },
   },
   Profile: {
     screen: StacNav3,
     navigationOptions: {
-      tabBarIcon: () => <FontIcon name='android-messages' color="#231d54" size={23}></FontIcon>,
+      tabBarIcon: () => <FontIcon name='android-messages' fontweight="bold" color="#231d54" size={30}></FontIcon>,
     },
   },
 });
