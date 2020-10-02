@@ -138,7 +138,7 @@ const TabNavigator = createBottomTabNavigator({
   Home: {
     screen: StacNav2,
     navigationOptions: {
-      tabBarIcon: () => <FontIcon name='home' fontweight="bold" color="#231d54" size={30}></FontIcon>,
+      tabBarIcon: () => <FontIcon name='home-city' fontweight="bold" color="#231d54" size={30}></FontIcon>,
     },
   },
   Profile: {
@@ -191,5 +191,3 @@ export default class App extends Component{
 //     );
 //   }
 // }
-
-// 네비게이터 객체를 가지고 있는 AppContainer객체 생성 : 컴포넌트 객체
