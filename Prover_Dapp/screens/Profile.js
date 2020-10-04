@@ -1,12 +1,18 @@
 import React, { useState, useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, 
+  Text, 
+  View, 
+  StatusBar,  
+  TouchableOpacity,
+  TouchableHighlight,
+} from 'react-native';
 import Button from '../src/components/Button';
 import { colors } from '../src/theme';
 import { render } from 'react-dom';
-import { State } from 'react-native-gesture-handler';
 import Axios from 'axios';
-import SvgQRCode from 'react-native-qrcode-svg';
+import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 
 
@@ -41,6 +47,16 @@ export default class Profile extends Component {
         }}>
       </View>
 
+      {/* <View style={styles.addButton2}>
+          <TouchableHighlight
+            underlayColor='#ff7043'
+            onPress={this.gotoPassword_2}>
+            <FontIcon name='send' color='#231d54' size={35} />
+          </TouchableHighlight>
+        </View>
+
+ */}
+
       </View>
     );
   }
@@ -62,4 +78,25 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
   },
+  addButton2: {
+    backgroundColor: '#FAFAFA',
+    borderColor: '#FAFAFA',
+    borderWidth: 1,
+    height: 65,
+    width: 65,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 130,
+    right: 20,
+    shadowColor: '#000000',
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0,
+    },
+  },
+
 });

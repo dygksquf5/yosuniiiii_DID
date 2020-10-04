@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator, HeaderBackButton } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createDrawerNavigator } from 'react-navigation-drawer'
 import { colors } from './src/theme';
 // import Button from './src/components/Button';
 import {
@@ -29,51 +30,72 @@ import Details2 from './screens/Details2';
 import Loading from './screens/Loading';
 import QRgenerator from './screens/QRgenerator';
 import success from './screens/success';
-
+import Loading_2 from './screens/Loading_2'
 
 
 // assets
 import { imageAssets } from './src/theme/images';
 import { fontAssets } from './src/theme/fonts';
 
-// StackNavigator 객체 생성
-// const createNav = createStackNavigator({
-//   certification: { screen: HomeScreen },
-//   Password: { screen: SecondScreen },
-//   Home: { screen: Home },
-//   testtest: { screen: Details },
-//   Id: { screen: IdScreen },
-//   QRcode: { screen: QRcode, ncavigationOptions: { header: null } },
-// });
-
-// const StacNav1 = createStackNavigator({
-//   certification: {screen: HomeScreen}
-// })
-
 
 const navigationProps = {
-  headerTintColor: 'white',
-  headerStyle: { backgroundColor: colors.darkPurple , height: 110 },
-  headerTitleStyle: { fontSize: 27, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
-  justifyContent: 'center',
+  headerTintColor: 'black',
+  // headerStyle: { backgroundColor: "#f4c151" , height: 110 },
+  headerStyle: { backgroundColor: 'white', 
+  height: 90, 
+  shadowColor: '#A4A4A4',
+  shadowOpacity: 0.4,
+  shadowRadius: 3,
+  shadowOffset: {
+    height: 4,
+    width: 1,
+  },
+
 },
+  headerTitleStyle: { fontSize: 27, marginLeft: -130, marginTop:-10 },
 }
 
-let test_1 = "요한"
+let user_name = "김요한"
+
+const message = createStackNavigator({
+
+
+  Profile: { screen: Profile,
+    navigationOptions: ({ navigation }) => ({
+      title: "Recent Message",
+      headerRight:
+      <TouchableOpacity><FontIcon 
+      name={"menu"}
+      size={30}
+      onPress={() => navigation.openDrawer()}
+
+      color="black"
+      paddingLeft= {10}>
+       </FontIcon>
+       </TouchableOpacity>,
+
+      ...navigationProps,
+    }),
+ },
+ 
+})
+
+
 const StacNav2 = createStackNavigator({
   Home: { screen: Home ,
     navigationOptions: ({ navigation }) => ({
-      title: test_1+"님, 반갑습니다",
-      ...navigationProps,
-      headerRight: <TouchableOpacity><FontIcon 
-      name={"android-messages"}
+      title: user_name+"님",
+      headerRight:
+      <TouchableOpacity><FontIcon 
+      name={"menu"}
       size={30}
-      marginRight={30}
-      onPress={() => navigation.navigate("Profile")}
-      color="white">
+      onPress={() => navigation.openDrawer()}
+
+      color="black"
+      paddingLeft= {10}>
        </FontIcon>
-       </TouchableOpacity>
-  
+       </TouchableOpacity>,
+      ...navigationProps,  
     }),
    },
   Details: { screen: Details,
@@ -88,8 +110,7 @@ const StacNav2 = createStackNavigator({
  },
   SecondScreen: { screen: SecondScreen,
     navigationOptions: ({ navigation }) => ({
-      header: null,
-      ...navigationProps,   
+      headerShown: false,
     }),
  },
   QRgenerator: {screen: QRgenerator,
@@ -103,62 +124,118 @@ const StacNav2 = createStackNavigator({
     }),
 },
 
-  success: { screen: success,
-    navigationOptions: ({ navigation }) => ({
-      title: " ",
-      ...navigationProps,
-    }),
- },
-  password: { screen: password,
-    navigationOptions: ({ navigation }) => ({
-      header: null,
-      ...navigationProps,
-    }),
- },
 
   Details2: { screen: Details2,
     navigationOptions: ({ navigation }) => ({
-      title: test_1+"님, 반갑습니다",
+      title: user_name+"님, 반갑습니다",
       ...navigationProps,
     }),
  },
 
-  QRcode: { screen: QRcode, ncavigationOptions: { header: null } },
-});
-const StacNav3 = createStackNavigator({
-  Profile: { screen: Profile,
+  QRcode: { screen: QRcode, ncavigationOptions: { headerShown: false } },
+
+  password: { screen: password,
     navigationOptions: ({ navigation }) => ({
-      title: test_1+"님, 반갑습니다",
+      headerShown: false,
       ...navigationProps,
     }),
  },
+
+
 });
+
+
+const StacNav3 = createStackNavigator({
+
+  Loading_2: { screen: Loading_2,
+    navigationOptions: ({ navigation }) => ({
+      headerShown: false,
+    }),
+ },
+
+  password: { screen: password,
+    navigationOptions: ({ navigation }) => ({
+      headerShown: false,
+      ...navigationProps,
+    }),
+ },
+
+ success: { screen: success,
+  navigationOptions: ({ navigation }) => ({
+    headerShown: false,
+    ...navigationProps,
+  }),
+},
+
+Home: { screen: Home ,
+  navigationOptions: ({ navigation }) => ({
+    title: user_name+"님",
+    headerRight:
+    <TouchableOpacity><FontIcon 
+    name={"menu"}
+    size={30}
+    onPress={() => navigation.openDrawer()}
+
+    color="black"
+    paddingLeft= {10}>
+     </FontIcon>
+     </TouchableOpacity>,
+    ...navigationProps,  
+  }),
+ },
+
+
+});
+
+
 
 const TabNavigator = createBottomTabNavigator({
-  Home: {
+  홈: {
     screen: StacNav2,
     navigationOptions: {
       tabBarIcon: () => <FontIcon name='home-city' fontweight="bold" color="#231d54" size={30}></FontIcon>,
+      tabBarOptions: {
+        activeTintColor: "black",
+        inactiveTintColor: "gray",
+      }
     },
   },
-  Profile: {
+  connection: {
     screen: StacNav3,
     navigationOptions: {
       tabBarIcon: () => <FontIcon name='android-messages' fontweight="bold" color="#231d54" size={30}></FontIcon>,
+      tabBarOptions: {
+        activeTintColor: "black",
+        inactiveTintColor: "gray"
+      }
     },
   },
 });
 
-const SwitchNav = createSwitchNavigator(
-  {
-    first: { screen: TabNavigator },
-  },
-  {
-    initialRouteName: 'first',
-  }
-);
 
-const Appcontainer = createAppContainer(SwitchNav)
+
+const DrawerNavigator = createDrawerNavigator({
+
+  홈: {
+    screen: TabNavigator,
+    navigationOptions: {
+      navOptionIcon: () => <FontIcon name='home-city' size={30}></FontIcon>   },
+  },
+  이용내역: message,
+});
+
+const Appcontainer = createAppContainer(DrawerNavigator);
+
+// const SwitchNav = createSwitchNavigator(
+//   {
+//     first: { screen: TabNavigator },
+//   },
+//   {
+//     initialRouteName: 'first',
+//   }
+// );
+
+// const Appcontainer = createAppContainer(SwitchNav)
 
 export default class App extends Component{
   state={
@@ -172,9 +249,7 @@ export default class App extends Component{
 
   render(){
       if(this.state.isLoading){
-        Axios.post('http://192.168.0.5:3001/api/log').then((response) =>
-        setproverDID(response.data)
-      );  
+        Axios.post('http://192.168.0.5:3001/api/log')
         return <Loading/>
       }else{
         return <Appcontainer />

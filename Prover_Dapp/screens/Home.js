@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
   StatusBar,
   TouchableOpacity,
   TouchableHighlight,
@@ -16,42 +17,61 @@ import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Axios from 'axios';
 
 
+ // database 로 완성시켜야 될 코드!!! // 
+let testtest1 = '신분증이 없습니다'
+let testtest2 = '모바일 신분증 '
+let date_1 = '2022.01.10';
+let a = 1;
+let testtest = null; 
+let test_pic = null;
+
+
+if (a == undefined){
+   testtest = testtest1,
+   test_pic = null,
+   date_1 = "발급받으세요"
+} else {
+   testtest = testtest2
+   test_pic = require("../assets/images/IDcard.png"),
+   date_1
+}
+// ------------------------------// 
 
 
 
 export default class Home extends Component {
   render() {
+
     return (
       <View style={styles.root}>
         <Container>
           <Content>
           <TouchableOpacity onPress={this.gotoPassword}>
             <Card style={styles.card}>
-              <View style={styles.icon1}>
-                  <FontIcon name='id-card' color='black' size={50}> 
-                  <Text style={styles.cardDownText}>   모바일 신분증</Text>
-                  </FontIcon> 
-              </View>
+            {/* <View style={styles.line}>
+                <Text>   </Text>
+              </View> */}
+
               <View style={styles.cardDate}>
-                <Text ></Text>
-                <Text >2022.01.10</Text>
+              <Image style={styles.icon1} 
+               source={test_pic}>
+              {/* <FontIcon name='script-text' color='black' size={44}> 
+                  </FontIcon>  */}
+                  </Image>
+
+              <Text style={styles.cardDownText}>{testtest}</Text>
+                <Text >{date_1}</Text>
               </View>
 
             </Card>
             </TouchableOpacity>
           </Content>
         </Container>
-
-        <View style={styles.addButton2}>
-          <TouchableHighlight
-            underlayColor='#ff7043'
-            onPress={this.gotoPassword_2}>
-            <FontIcon name='send' color='#231d54' size={35} />
-          </TouchableHighlight>
-        </View>
-
         <View style={styles.addButton}>
-          <TouchableHighlight underlayColor='#ff7043' onPress={this.gotoQR}>
+          <TouchableHighlight underlayColor='#ff7043' onPress={this.gotoQR} >
+            {/* <Image
+            source={require("../assets/images/qrcode.png")}>
+            </Image> */}
             <FontIcon name='qrcode-scan' color='#231d54' size={35} />
           </TouchableHighlight>
         </View>
@@ -81,13 +101,6 @@ export default class Home extends Component {
 }
 
 const styles = StyleSheet.create({
-  name: {
-    fontWeight: 'bold',
-    marginTop: 30,
-    marginLeft: 20,
-
-  },
-
   root: {
     flex: 1,
     flexDirection: 'column',
@@ -119,13 +132,23 @@ const styles = StyleSheet.create({
   },
   icon1:{
     alignItems: 'flex-start',
-    justifyContent: 'center',
-    // backgroundColor: 'black',
-    marginLeft: 30,
+    justifyContent: 'flex-start',
     marginTop: 35,
-
+    marginRight: 210,
+    width: 60,
+    height: 60,
+    
+    
   },
+  // line:{
+  //   backgroundColor:'#f4c151',
+  //   fontSize: 5,
+  //   marginTop: 20,
+  //   marginBottom: -10
+  // },
+  
   cardDate:{
+    
     alignItems: 'flex-end',
     justifyContent: 'center',
     marginRight:30,
@@ -135,8 +158,11 @@ const styles = StyleSheet.create({
   },
 
   cardDownText: {
-    fontWeight: 'bold',
-    fontSize: 25
+    // backgroundColor: 'black',
+    marginTop: -41,
+    fontSize: 24,
+    marginRight: 35,
+    marginBottom:13,
     
   },
 
@@ -151,26 +177,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     bottom: 50,
-    right: 20,
-    shadowColor: '#000000',
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 0,
-    },
-  },
-  addButton2: {
-    backgroundColor: '#FAFAFA',
-    borderColor: '#FAFAFA',
-    borderWidth: 1,
-    height: 65,
-    width: 65,
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 130,
     right: 20,
     shadowColor: '#000000',
     shadowOpacity: 0.8,

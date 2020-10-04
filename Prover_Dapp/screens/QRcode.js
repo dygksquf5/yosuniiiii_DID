@@ -32,19 +32,18 @@ function QRcode() {
     async function testtest() {
       // var params = new URLSearchParams();
       // await params.append('data',JSON.stringify(data));
-      await Axios({
-        method: 'POST',
-        url: data,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        data: {
-          data: data,
-        },
-      }).then((res) => {
-        console.log(res.data);
-      });
-    }
+        await Axios({
+          method: 'POST',
+          url: data,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          data: {
+            data: data,
+          },
+        })
+    
+      }
 
     setScanned(true);
     Alert.alert(type, data, [
@@ -95,6 +94,9 @@ function QRcode() {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={[StyleSheet.absoluteFill, styles.container]}
       >
+      {scanned && (
+        <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
+      )}
         <View style={styles.layerTop} />
         <View style={styles.layerCenter}>
           <View style={styles.layerLeft} />
@@ -103,6 +105,7 @@ function QRcode() {
         </View>
         <View style={styles.layerBottom} />
       </BarCodeScanner>
+      
     );
   }
 

@@ -6,8 +6,10 @@ export default class Loading extends React.Component{
     render(){
         return (
             <ImageBackground
-                source={require("../assets/images/cup.jpeg")}    
-                style={{width:"100%",height:"100%"}}>
+                source={require("../assets/images/first_page.png")}    
+                style={{width:"130%",height:"90%", marginTop:"20%",backgroundColor:'white', alignItems: 'center',
+                justifyContent: 'center',
+            }}>
             </ImageBackground>
         );
     }
