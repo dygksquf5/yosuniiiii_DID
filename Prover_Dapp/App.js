@@ -100,7 +100,7 @@ const StacNav2 = createStackNavigator({
    },
   Details: { screen: Details,
     navigationOptions: ({ navigation }) => ({
-      title: "신분증 상세정보",
+      title: "  Details",
       headerTintColor: 'black',
       headerStyle: { backgroundColor: 'white' , height: 110 },
       headerTitleStyle: { fontSize: 20, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
@@ -115,7 +115,7 @@ const StacNav2 = createStackNavigator({
  },
   QRgenerator: {screen: QRgenerator,
     navigationOptions: ({ navigation }) => ({
-      title: "신원인증 QRcode",
+      title: " ",
       headerTintColor: 'black',
       headerStyle: { backgroundColor: 'white' , height: 110 },
       headerTitleStyle: { fontSize: 20, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
@@ -140,7 +140,6 @@ const StacNav2 = createStackNavigator({
       ...navigationProps,
     }),
  },
-
 
 });
 
@@ -195,7 +194,7 @@ const TabNavigator = createBottomTabNavigator({
     navigationOptions: {
       tabBarIcon: () => <FontIcon name='home-city' fontweight="bold" color="#231d54" size={30}></FontIcon>,
       tabBarOptions: {
-        activeTintColor: "black",
+        activeTintColor: "#2c69dd",
         inactiveTintColor: "gray",
       }
     },
@@ -205,7 +204,7 @@ const TabNavigator = createBottomTabNavigator({
     navigationOptions: {
       tabBarIcon: () => <FontIcon name='android-messages' fontweight="bold" color="#231d54" size={30}></FontIcon>,
       tabBarOptions: {
-        activeTintColor: "black",
+        activeTintColor: "#2c69dd",
         inactiveTintColor: "gray"
       }
     },

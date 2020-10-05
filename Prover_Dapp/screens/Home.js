@@ -40,6 +40,7 @@ if (a == undefined){
 
 
 export default class Home extends Component {
+  
   render() {
 
     return (
@@ -48,9 +49,9 @@ export default class Home extends Component {
           <Content>
           <TouchableOpacity onPress={this.gotoPassword}>
             <Card style={styles.card}>
-            {/* <View style={styles.line}>
+            <View style={styles.line}>
                 <Text>   </Text>
-              </View> */}
+              </View>
 
               <View style={styles.cardDate}>
               <Image style={styles.icon1} 
@@ -67,6 +68,8 @@ export default class Home extends Component {
             </TouchableOpacity>
           </Content>
         </Container>
+
+
         <View style={styles.addButton}>
           <TouchableHighlight underlayColor='#ff7043' onPress={this.gotoQR} >
             {/* <Image
@@ -77,6 +80,7 @@ export default class Home extends Component {
         </View>
       </View>
     );
+    
   }
   gotoQR = () => {
     this.props.navigation.navigate('QRcode');
@@ -115,7 +119,7 @@ const styles = StyleSheet.create({
   // },
 
   card: {
-    height: 140,
+    height: 180,
     marginLeft: 25,
     marginRight: 25,
     marginTop: 40,
@@ -140,12 +144,13 @@ const styles = StyleSheet.create({
     
     
   },
-  // line:{
-  //   backgroundColor:'#f4c151',
-  //   fontSize: 5,
-  //   marginTop: 20,
-  //   marginBottom: -10
-  // },
+  line:{
+    backgroundColor:'#2c69dd',
+    // #96b4ee
+    fontSize: 5,
+    marginTop: 28,
+    marginBottom: -10
+  },
   
   cardDate:{
     
@@ -165,6 +170,12 @@ const styles = StyleSheet.create({
     marginBottom:13,
     
   },
+
+  // message:{
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   marginBottom: 140,
+  // },
 
   addButton: {
     backgroundColor: '#FAFAFA',

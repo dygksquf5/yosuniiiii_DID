@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Button , Image} from 'react-native';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 
 export default class SecondScreen extends Component {
@@ -32,6 +32,15 @@ export default class SecondScreen extends Component {
             password={true}
           />
         </View>
+        <View style={{width: 1, height: 1, alignItems: 'center', justifyContent: 'center',
+              }}>
+        <Image
+         source={require("../assets/images/check.gif")}
+         >
+        </Image>
+        </View>
+
+
       </View>
     );
   }

@@ -16,6 +16,10 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import Axios from 'axios';
 import 'url-search-params-polyfill';
 
+gotoPassword = () => {
+  this.props.navigation.navigate('SecondScreen');
+};
+
 function QRcode() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -29,7 +33,7 @@ function QRcode() {
 
 
   const handleBarCodeScanned = ({ type, data }) => {
-    async function testtest() {
+    async function request_Axios() {
       // var params = new URLSearchParams();
       // await params.append('data',JSON.stringify(data));
         await Axios({
@@ -47,7 +51,7 @@ function QRcode() {
 
     setScanned(true);
     Alert.alert(type, data, [
-      { Text: 'OK!!!!!!!!!!', onPress: () => testtest() },
+      { Text: 'OK!!!!!!!!!!', onPress: () => request_Axios() },
     ]);
   };
 
