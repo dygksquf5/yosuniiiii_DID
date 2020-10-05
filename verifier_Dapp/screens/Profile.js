@@ -17,20 +17,16 @@ import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 
 
 
-let a = undefined;
-
-
 
 export default class Profile extends Component {
   render() {
     return (
       <View style={styles.root}>
         <StatusBar barStyle='light-content'/>
-      <Container>
-          <Content >
 
-              
-        <View id="test_yohan" style={styles.view1} >
+      <Container>
+          <Content>
+          <View className="test_yohan" style={styles.view1} >
             <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}}> 
                 <Image style={{width: 80, height: 50,}}
               source={require("../assets/images/check.gif")} style={{width:50, height:50}}>
@@ -44,7 +40,7 @@ export default class Profile extends Component {
                 <View style={styles.view3} >
                 <Text>2020.10.5</Text>
             </View>  
-        </View>
+          </View>
         <View style={styles.view1} >
             <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}}> 
             <Image style={{width: 80, height: 50,}}

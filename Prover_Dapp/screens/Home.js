@@ -90,7 +90,10 @@ export default class Home extends Component {
             {/* <Image
             source={require("../assets/images/qrcode.png")}>
             </Image> */}
-            <FontIcon name='qrcode-scan' color='#231d54' size={35} />
+            <Text style={{ marginLeft:-10, marginTop: 3, fontSize: 16,
+                  color: "white"}}> <FontIcon name='qrcode-scan' color='white' size={27}  style={{marginLeft:-90}} /><Text>   </Text>
+              SCAN CODE
+            </Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -149,6 +152,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAFAFA',
     borderColor: '#FAFAFA',
   },
+
   card2:{
     height: 100,
     marginLeft: 25,
@@ -165,10 +169,30 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     backgroundColor: '#FAFAFA',
     borderColor: '#FAFAFA',
-        
-
-
   },
+
+  addButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 100,
+    borderRadius: 100,
+    backgroundColor: '#2c69dd',
+    borderColor: '#96b4ee',
+    height: 45,
+    width: 180,
+    borderRadius: 100,
+    position: 'absolute',
+    bottom: 30,
+    shadowColor: '#A4A4A4',
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 4,
+      width: 1,
+    },
+  },
+
+
   icon1:{
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
@@ -220,24 +244,4 @@ const styles = StyleSheet.create({
   //   marginBottom: 140,
   // },
 
-  addButton: {
-    backgroundColor: '#FAFAFA',
-    borderColor: '#FAFAFA',
-    borderWidth: 1,
-    height: 65,
-    width: 65,
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 50,
-    right: 20,
-    shadowColor: '#000000',
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 0,
-    },
-  },
 });
