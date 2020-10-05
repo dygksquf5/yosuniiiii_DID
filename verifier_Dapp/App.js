@@ -1,116 +1,152 @@
-import React, {Component} from 'react';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import React, { Component } from 'react';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer, createSwitchNavigator} from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createDrawerNavigator } from 'react-navigation-drawer'
 import { colors } from './src/theme';
-import FontIcon from 'react-native-vector-icons/FontAwesome5'
-import Axios from 'axios'
+// import Button from './src/components/Button';
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
+
+import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Axios from 'axios';
 
 
-import HomeScreen from './screens/HomeScreen';
-import SecondScreen from './screens/SecondScreen';
-import MainScreen from './screens/MainScreen';
-import IdScreen from './screens/IdScreen';
-import Home from './screens/Home'
-import QRcode from './screens/QRcode'
-import Details from './screens/Details'
-import Profile from './screens/Profile'
-import Loading from './screens/Loading'
 
-import stackNav from './src/navigator/stack'
+import Home from './screens/Home';
+import QRcode from './screens/QRcode';
+import Details from './screens/Details';
+import Profile from './screens/Profile';
+import Details2 from './screens/Details2';
+import Loading from './screens/Loading';
 
 
 // assets
-import { imageAssets } from './src/theme/images'
-import { fontAssets } from './src/theme/fonts'
+import { imageAssets } from './src/theme/images';
+import { fontAssets } from './src/theme/fonts';
 
 
+const navigationProps = {
+  headerTintColor: 'black',
+  // headerStyle: { backgroundColor: "#f4c151" , height: 110 },
+  headerStyle: { backgroundColor: 'white', 
+  height: 90, 
+  shadowColor: '#A4A4A4',
+  shadowOpacity: 0.4,
+  shadowRadius: 3,
+  shadowOffset: {
+    height: 4,
+    width: 1,
+  },
 
-// StackNavigator 객체 생성
-// const createNav = createStackNavigator({
-//   certification: { screen: HomeScreen },
-//   Password: { screen: SecondScreen },
-//   Home: { screen: Home },
-//   testtest: { screen: Details },
-//   Id: { screen: IdScreen },
-//   QRcode: { screen: QRcode, ncavigationOptions: { header: null } },
-// });
+},
+  headerTitleStyle: { fontSize: 27, marginLeft: -130, marginTop:-10 },
+}
 
-
-// const StacNav1 = createStackNavigator({
-//   certification: {screen: HomeScreen}
-// })
+let user_name = "점주"
 
 
 const StacNav2 = createStackNavigator({
-    Home: {screen: Home},
-    SecondScreen : {screen: SecondScreen},
-    Details: { screen: Details },
-    QRcode: { screen: QRcode, ncavigationOptions: { header: null } },
+  Home: { screen: Home ,
+    navigationOptions: ({ navigation }) => ({
+      title: user_name+"님",
+      ...navigationProps,  
+    }),
+   },
+  Details: { screen: Details,
+    navigationOptions: ({ navigation }) => ({
+      title: "  Details",
+      headerTintColor: 'black',
+      headerStyle: { backgroundColor: 'white' , height: 110 },
+      headerTitleStyle: { fontSize: 20, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
+      justifyContent: 'center',
+
+    },
+    }),
+ },
+
+
+  Details2: { screen: Details2,
+    navigationOptions: ({ navigation }) => ({
+      title: user_name+"님, 반갑습니다",
+      ...navigationProps,
+    }),
+ },
+
+  QRcode: { screen: QRcode, ncavigationOptions: { headerShown: false } },
 
 
 });
+
+
 const StacNav3 = createStackNavigator({
-    Profile: {screen: Profile},
+  QRcode: { screen: QRcode, ncavigationOptions: { headerShown: false } },
 
-
-})
-
+ 
+});
 
 
 
 const TabNavigator = createBottomTabNavigator({
-  Home: {
+  홈: {
     screen: StacNav2,
     navigationOptions: {
-      tabBarIcon: () => <FontIcon name="home" size={23}></FontIcon>
-    }
+      tabBarIcon: () => <FontIcon name='home-city' fontweight="bold" color="#231d54" size={30}></FontIcon>,
+      tabBarOptions: {
+        activeTintColor: "#2c69dd",
+        inactiveTintColor: "gray",
+      }
+    },
   },
-  Profile : {
+  connection: {
     screen: StacNav3,
     navigationOptions: {
-      tabBarIcon: () => <FontIcon name="user" size={23}></FontIcon>
-    }
-
+      tabBarIcon: () => <FontIcon name='qrcode-scan' fontweight="bold" color="#231d54" size={30}></FontIcon>,
+      tabBarOptions: {
+        activeTintColor: "#2c69dd",
+        inactiveTintColor: "gray"
+      }
+    },
   },
 });
 
-const SwitchNav = createSwitchNavigator({
-    
-    first: { screen: TabNavigator},
+
+
+
+const SwitchNav = createSwitchNavigator(
+  {
+    first: { screen: TabNavigator },
   },
   {
     initialRouteName: 'first',
-})
+  }
+);
 
+const Appcontainer = createAppContainer(SwitchNav)
 
-
-// export default createAppContainer(SwitchNav);
-
-
-
-const AppContainer = createAppContainer(SwitchNav);
-
-export default class App extends Component {
+export default class App extends Component{
   state={
     isLoading : true
   };
-  componentDidMount= async() => {
-    setTimeout(() => {this.setState({isLoading: false})}, 4000);
+  componentDidMount= async() => {  
+    // 1,000가 1초
+    setTimeout(() => {this.setState({isLoading: false})},4000);
   }
 
-  render() {
-    if(this.state.isLoading){
-      Axios.post('http://192.168.0.5:3002/api/log').then(response => setproverDID(response.data))
-    return <Loading />
-  }else{
-    return (
-        <AppContainer />
-    );
+
+  render(){
+      if(this.state.isLoading){
+        Axios.post('http://192.168.0.5:3002/api/log')
+        return <Loading/>
+      }else{
+        return <Appcontainer />
+      }
   }
 }
-}
 
-
-
-// 네비게이터 객체를 가지고 있는 AppContainer객체 생성 : 컴포넌트 객체

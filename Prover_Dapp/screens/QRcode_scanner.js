@@ -75,9 +75,6 @@ function QRcode_scanner() {
       {scanned && (
         <Button title={'Tap to Scan'} onPress = {()=>setScanned(false)} />
       )}
-      <TouchableOpacity >
-        <Text onPress={()=>this.props.navigation.navigate('SecondScreen')}></Text>
-        </TouchableOpacity>
 
         <View style={styles.layerTop} />
         <View style={styles.layerCenter}>
