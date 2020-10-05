@@ -20,7 +20,7 @@ gotoPassword = () => {
   this.props.navigation.navigate('SecondScreen');
 };
 
-function QRcode() {
+function QRcode_scanner() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -46,7 +46,6 @@ function QRcode() {
             data: data,
           },
         })
-    
       }
 
     setScanned(true);
@@ -62,45 +61,24 @@ function QRcode() {
     return <Text>No access to camera</Text>;
   }
 
-  // return (
-  //   // <View style={{backgroundColor: 'white', flex:1, justifyContent: 'center', alignItems: 'center'}}>
-  //   <View
-  //     style={{
-  //       flex: 1,
-  //       flexDirection: 'column',
-  //       justifyContent: 'flex-end',
 
-  //     }}
-  //   >
-  //     <BarCodeScanner
-  //       onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-  //       style={StyleSheet.absoluteFillObject}
-  //     />
-
-
-
-
-
-
-  //     {scanned && (
-  //       <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
-  //       // <Button title={'Tap to Scan'} onPress={this.gotoDetails} />
-
-  //     )}
-  //   </View>
-
-  //   // </View>
-  // );
   const { width } = Dimensions.get('window');
 
+
+  
     return (
+
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={[StyleSheet.absoluteFill, styles.container]}
       >
       {scanned && (
-        <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
+        <Button title={'Tap to Scan'} onPress = {()=>setScanned(false)} />
       )}
+      <TouchableOpacity >
+        <Text onPress={()=>this.props.navigation.navigate('SecondScreen')}></Text>
+        </TouchableOpacity>
+
         <View style={styles.layerTop} />
         <View style={styles.layerCenter}>
           <View style={styles.layerLeft} />
@@ -110,9 +88,11 @@ function QRcode() {
         <View style={styles.layerBottom} />
       </BarCodeScanner>
       
+      
     );
   }
 
+  
 const opacity = 'rgba(0, 0, 0, .4)';
 const styles = StyleSheet.create({
   container: {
@@ -144,4 +124,4 @@ const styles = StyleSheet.create({
     backgroundColor: opacity
   },
 });
-export default QRcode;
+export default QRcode_scanner;

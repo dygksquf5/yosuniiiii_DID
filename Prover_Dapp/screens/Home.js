@@ -83,7 +83,7 @@ export default class Home extends Component {
     
   }
   gotoQR = () => {
-    this.props.navigation.navigate('QRcode');
+    this.props.navigation.navigate('QRcode_scanner');
   };
   gotoPassword = () => {
     this.props.navigation.navigate('SecondScreen');

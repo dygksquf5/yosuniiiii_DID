@@ -9,7 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { State } from 'react-native-gesture-handler';
 
-export default class Details extends Component {
+export default class Details2 extends Component {
   render() {
     return (
       <View style={styles.root}>

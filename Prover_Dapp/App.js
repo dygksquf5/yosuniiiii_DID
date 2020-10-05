@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer, createSwitchNavigator, HeaderBackButton } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator} from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator } from 'react-navigation-drawer'
 import { colors } from './src/theme';
@@ -23,7 +23,7 @@ import password from './screens/password';
 
 import IdScreen from './screens/IdScreen';
 import Home from './screens/Home';
-import QRcode from './screens/QRcode';
+import QRcode_scanner from './screens/QRcode_scanner';
 import Details from './screens/Details';
 import Profile from './screens/Profile';
 import Details2 from './screens/Details2';
@@ -105,6 +105,7 @@ const StacNav2 = createStackNavigator({
       headerStyle: { backgroundColor: 'white' , height: 110 },
       headerTitleStyle: { fontSize: 20, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
       justifyContent: 'center',
+
     },
     }),
  },
@@ -132,7 +133,7 @@ const StacNav2 = createStackNavigator({
     }),
  },
 
-  QRcode: { screen: QRcode, ncavigationOptions: { headerShown: false } },
+  QRcode_scanner: { screen: QRcode_scanner, ncavigationOptions: { headerShown: false } },
 
   password: { screen: password,
     navigationOptions: ({ navigation }) => ({

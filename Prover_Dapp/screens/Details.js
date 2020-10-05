@@ -7,6 +7,7 @@ import { StyleSheet,
   Alert,
   TouchableOpacity,
   TouchableHighlight,
+  Image
  } from 'react-native';
 import Button from '../src/components/Button';
 import { colors } from '../src/theme';
