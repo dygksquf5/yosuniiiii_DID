@@ -21,6 +21,11 @@ export default class SecondScreen extends Component {
     }
   };
 
+  goback = () => {
+    this.props.navigation.replace('Home');
+  };
+  
+
   
   // onPress={() => requestCred()}
   
@@ -30,6 +35,7 @@ export default class SecondScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={{ marginBottom: 200 }}>
+        <Button title={'back'} onPress={this.goback} color="black" />            
           <SmoothPinCodeInput
             ref={this.pinInput}
             value={code}
@@ -51,6 +57,8 @@ export default class SecondScreen extends Component {
     );
   }
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

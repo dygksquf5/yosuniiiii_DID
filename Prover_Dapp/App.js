@@ -36,6 +36,7 @@ import Loading_2 from './screens/Loading_2'
 // assets
 import { imageAssets } from './src/theme/images';
 import { fontAssets } from './src/theme/fonts';
+import { TabBar } from 'react-native-tab-view';
 
 
 const navigationProps = {
@@ -77,6 +78,8 @@ const message = createStackNavigator({
       ...navigationProps,
     }),
  },
+
+
  
 })
 
@@ -142,6 +145,30 @@ const StacNav2 = createStackNavigator({
     }),
  },
 
+
+ Loading_2: { screen: Loading_2,
+  navigationOptions: ({ navigation }) => ({
+    headerShown: false,
+  }),
+},
+
+password: { screen: password,
+  navigationOptions: ({ navigation }) => ({
+    headerShown: false,
+    ...navigationProps,
+  }),
+},
+
+success: { screen: success,
+navigationOptions: ({ navigation }) => ({
+  headerShown: false,
+  ...navigationProps,
+}),
+},
+
+
+
+
 });
 
 
@@ -200,8 +227,8 @@ const TabNavigator = createBottomTabNavigator({
       }
     },
   },
-  connection: {
-    screen: StacNav3,
+  message: {
+    screen: message,
     navigationOptions: {
       tabBarIcon: () => <FontIcon name='android-messages' fontweight="bold" color="#231d54" size={30}></FontIcon>,
       tabBarOptions: {
@@ -221,21 +248,10 @@ const DrawerNavigator = createDrawerNavigator({
     navigationOptions: {
       navOptionIcon: () => <FontIcon name='home-city' size={30}></FontIcon>   },
   },
-  이용내역: message,
+  발급받기 : message,
 });
 
 const Appcontainer = createAppContainer(DrawerNavigator);
-
-// const SwitchNav = createSwitchNavigator(
-//   {
-//     first: { screen: TabNavigator },
-//   },
-//   {
-//     initialRouteName: 'first',
-//   }
-// );
-
-// const Appcontainer = createAppContainer(SwitchNav)
 
 export default class App extends Component{
   state={

@@ -69,8 +69,8 @@ export default class Home extends Component {
             </TouchableOpacity>
           </Content>
           <Content style={{marginVertical:-110}}>
-          <TouchableOpacity >
-            <Card style={styles.card2}>
+          <TouchableOpacity onPress={this.gotoGetCred}>
+            <Card style={styles.card2}> 
               <View style={styles.plusIcon}>
                 <FontIcon name='folder-plus-outline' color='#96b4ee' size={45}> 
                   </FontIcon> 
@@ -90,7 +90,7 @@ export default class Home extends Component {
             {/* <Image
             source={require("../assets/images/qrcode.png")}>
             </Image> */}
-            <Text style={{ marginLeft:-10, marginTop: 3, fontSize: 16,
+            <Text style={{ marginLeft:-10, marginTop: 3, fontSize: 14,
                   color: "white"}}> <FontIcon name='qrcode-scan' color='white' size={27}  style={{marginLeft:-90}} /><Text>   </Text>
               SCAN CODE
             </Text>
@@ -109,6 +109,10 @@ export default class Home extends Component {
   gotoPassword_2 = () => {
     this.props.navigation.navigate('password');
   };
+  gotoGetCred = () => {
+    this.props.navigation.replace('Loading_2');
+  };
+
 
   getToLedger = () => {
     this.props.navigation.navigate('Home');
