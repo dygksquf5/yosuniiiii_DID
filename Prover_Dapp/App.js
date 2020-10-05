@@ -257,12 +257,3 @@ export default class App extends Component{
   }
 }
 
-// const AppContainer = createAppContainer(SwitchNav);
-
-// export default class App extends Component {
-//   render() {
-//     return (
-//         <AppContainer />
-//     );
-//   }
-// }
