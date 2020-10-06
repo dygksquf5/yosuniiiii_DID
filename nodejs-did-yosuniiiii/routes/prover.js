@@ -328,6 +328,7 @@ module.exports = function (app){
       );
       
         logOK(JSON.stringify(get_credential))
+
       res.send(JSON.stringify(get_credential))
      
     });
@@ -485,9 +486,4 @@ module.exports = function (app){
 
 
 };
-// ##########here !! #########
 
-// app.listen(3001, () => {
-//   console.log("Prover started on port 3001!");
-//   run();
-// });
