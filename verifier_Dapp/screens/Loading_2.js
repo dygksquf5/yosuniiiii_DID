@@ -17,7 +17,7 @@ export default class Loading extends React.Component{
             return <View style={{width:"100%",height:"100%",backgroundColor:'white'}}> 
             <ImageBackground
                 source={require("../assets/images/settings.gif")}    
-                style={{width:"70%",height:"50%",marginTop:"60%", marginLeft:"25%", alignItems: 'center',
+                style={{width:"67%",height:"50%",marginTop:"60%", marginLeft:"25%", alignItems: 'center',
                 justifyContent: 'center',
             }}>
             </ImageBackground>

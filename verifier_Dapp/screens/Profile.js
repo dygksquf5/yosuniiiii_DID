@@ -1,54 +1,81 @@
 import React, { useState, useEffect, Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, 
+  Text, 
+  View, 
+  StatusBar,  
+  TouchableOpacity,
+  TouchableHighlight,
+  Image
+} from 'react-native';
 import Button from '../src/components/Button';
 import { colors } from '../src/theme';
 import { render } from 'react-dom';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { State } from 'react-native-gesture-handler';
 import Axios from 'axios';
+import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 
 
-// const [credential, setcredential] = useState("");
-
-
-async function requestCred(){
-  await Axios.post('http://192.168.0.5:3001/api/requestCred')
-  .then(response => setcredential(response.data))
-
-}
-async function getCred(){
-  await Axios.post('http://192.168.0.5:3001/api/getCred')
-  .then(response => setcredential(response.data))
-
-}
 
 
 export default class Profile extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <StatusBar barStyle='light-content' />
-        <Text style={styles.title}>여기는 디 테 일2222 !!</Text>
+        <StatusBar barStyle='light-content'/>
 
+      <Container>
+          <Content>
+          <View className="test_yohan" style={styles.view1} >
+            <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}}> 
+                <Image style={{width: 80, height: 50,}}
+              source={require("../assets/images/check.gif")} style={{width:50, height:50}}>
+                </Image>
+              </View>
 
+                <View style={styles.view2} >
+                  <Text>You've verified very successfully</Text>
+                </View> 
 
-        
-        <Button
-          title='Go Back'
-          color='white'
-          backgroundColor={colors.pink}
-          onPress={this.gotoBack}
-        />
-        <Button
-          title='Go Back'
-          color='white'
-          backgroundColor={colors.pink}
-          onPress={this.gotoBack}
-        />
-        
+                <View style={styles.view3} >
+                <Text>2020.10.5</Text>
+            </View>  
+          </View>
+        <View style={styles.view1} >
+            <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}}> 
+            <Image style={{width: 80, height: 50,}}
+              source={require("../assets/images/check.gif")} style={{width:50, height:50}}>
+                </Image>
+              </View>
+
+                <View style={styles.view2} >
+                  <Text>You've verified very successfully</Text>
+                </View> 
+
+                <View style={styles.view3} >
+                <Text>2020.10.5</Text>
+            </View>  
+        </View>
+        <View style={styles.view1}  >
+            <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}}> 
+            <Image style={{width: 80, height: 50,}}
+              source={require("../assets/images/check.gif")} style={{width:50, height:50}}>
+                </Image>
+              </View>
+
+                <View style={styles.view2} >
+                  <Text>You've verified very successfully</Text>
+                </View> 
+
+                <View style={styles.view3} >
+                <Text>2020.10.5</Text>
+            </View>  
+        </View>
+       
+         
+          </Content>
+        </Container>
+
       </View>
     );
   }
@@ -57,30 +84,7 @@ export default class Profile extends Component {
   };
 }
 
-// const { from } = navigation.state.params
-
-// Details.propTypes = {
-//   navigation: PropTypes.shape({
-//     state: PropTypes.shape({
-//       params: PropTypes.shape({
-//         from: PropTypes.string,
-//       }),
-//     }),
-//     goBack: PropTypes.func,
-//   }),
-// }
-
-// Details.defaultProps = {
-//   navigation: {
-//     state: {
-//       params: {
-//         from: '',
-//       },
-//     },
-//     goBack: () => null,
-//   },
-// }
-
+// style={{width: 137, height: 50,  backgroundColor: 'steelblue'}}
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -89,8 +93,55 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
+  view1:{
+    flex: 1,
+    marginLeft: 5,
+    flexDirection: 'row',
+    shadowColor: '#A4A4A4',
+    marginTop: 20,
+  //   shadowOpacity: 0.8,
+  //   shadowRadius: 2,
+  //   shadowOffset: {
+  //     height: 4,
+  //     width: 1,
+  //   },
+  //   borderRadius: 14,
+  //   backgroundColor: '#FAFAFA',
+  //   borderColor: '#FAFAFA',
   },
-});
+  view2:{
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    width: 200,
+    height: 50,
+    backgroundColor: 'white',
+    // shadowColor: '#A4A4A4',
+    // shadowOpacity: 0.8,
+    // shadowRadius: 3,
+    // shadowOffset: {
+    //   height: 4,
+    //   width: 1,
+    // },
+    // borderColor: '#FAFAFA',
+  },
+  view3:{
+    alignItems: 'flex-start',
+
+    width: 50,
+    height: 50,
+
+    backgroundColor: 'white',
+    shadowColor: '#A4A4A4',
+    // shadowOpacity: 0.8,
+    // shadowRadius: 3,
+    // shadowOffset: {
+    //   height: 4,
+    //   width: 1,
+    // },
+    // borderColor: '#FAFAFA',
+
+  },
+
+  
+  });

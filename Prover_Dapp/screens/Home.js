@@ -46,7 +46,7 @@ export default class Home extends Component {
     return (
       <View style={styles.root}>
         <Container>
-          <Content>
+          <Content style={{marginBottom: -200}}>
           <TouchableOpacity onPress={this.gotoPassword}>
             <Card style={styles.card}>
             <View style={styles.line}>
@@ -62,12 +62,27 @@ export default class Home extends Component {
 
               <Text style={styles.cardDownText}>{testtest}</Text>
                 <Text >{date_1}</Text>
+
               </View>
 
             </Card>
             </TouchableOpacity>
           </Content>
+          <Content style={{marginVertical:-110}}>
+          <TouchableOpacity onPress={this.gotoGetCred}>
+            <Card style={styles.card2}> 
+              <View style={styles.plusIcon}>
+                <FontIcon name='folder-plus-outline' color='#96b4ee' size={45}> 
+                  </FontIcon> 
+
+              </View>
+
+            </Card>
+            </TouchableOpacity>
+          </Content>
+
         </Container>
+
 
 
         <View style={styles.addButton}>
@@ -75,7 +90,10 @@ export default class Home extends Component {
             {/* <Image
             source={require("../assets/images/qrcode.png")}>
             </Image> */}
-            <FontIcon name='qrcode-scan' color='#231d54' size={35} />
+            <Text style={{ marginLeft:-10, marginTop: 3, fontSize: 14,
+                  color: "white"}}> <FontIcon name='qrcode-scan' color='white' size={27}  style={{marginLeft:-90}} /><Text>   </Text>
+              SCAN CODE
+            </Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -91,6 +109,10 @@ export default class Home extends Component {
   gotoPassword_2 = () => {
     this.props.navigation.navigate('password');
   };
+  gotoGetCred = () => {
+    this.props.navigation.replace('Loading_2');
+  };
+
 
   getToLedger = () => {
     this.props.navigation.navigate('Home');
@@ -134,6 +156,47 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAFAFA',
     borderColor: '#FAFAFA',
   },
+
+  card2:{
+    height: 100,
+    marginLeft: 25,
+    marginRight: 25,
+    marginTop: 50,
+    paddingTop: 20,
+    shadowColor: '#A4A4A4',
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 4,
+      width: 1,
+    },
+    borderRadius: 14,
+    backgroundColor: '#FAFAFA',
+    borderColor: '#FAFAFA',
+  },
+
+  addButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 100,
+    borderRadius: 100,
+    backgroundColor: '#2c69dd',
+    borderColor: '#96b4ee',
+    height: 45,
+    width: 180,
+    borderRadius: 100,
+    position: 'absolute',
+    bottom: 30,
+    shadowColor: '#A4A4A4',
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 4,
+      width: 1,
+    },
+  },
+
+
   icon1:{
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
@@ -161,6 +224,14 @@ const styles = StyleSheet.create({
 
 
   },
+  plusIcon:{
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    marginRight:30,
+    marginBottom:30 ,
+    paddingTop:6,
+
+  },
 
   cardDownText: {
     // backgroundColor: 'black',
@@ -177,24 +248,4 @@ const styles = StyleSheet.create({
   //   marginBottom: 140,
   // },
 
-  addButton: {
-    backgroundColor: '#FAFAFA',
-    borderColor: '#FAFAFA',
-    borderWidth: 1,
-    height: 65,
-    width: 65,
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 50,
-    right: 20,
-    shadowColor: '#000000',
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 0,
-    },
-  },
 });
