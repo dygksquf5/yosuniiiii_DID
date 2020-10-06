@@ -97,7 +97,7 @@ module.exports = function (app){
       const render_data = {
         did : test
       }
-      res.render("issuer_main.ejs", render_data)
+      res.render("index.ejs", render_data)
 
     });
 

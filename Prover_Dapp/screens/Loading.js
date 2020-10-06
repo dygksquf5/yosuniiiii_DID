@@ -7,7 +7,7 @@ export default class Loading extends React.Component{
         return (
             <ImageBackground
                 source={require("../assets/images/loading.jpg")}    
-                style={{width:"130%",height:"90%", marginTop:"20%",backgroundColor:'white', alignItems: 'center',
+                style={{width:"100%",height:"100%",backgroundColor:'white', alignItems: 'center',
                 justifyContent: 'center',
             }}>
             </ImageBackground>
