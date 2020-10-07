@@ -12,6 +12,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Button,
+  Image
 } from 'react-native';
 
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -69,12 +70,10 @@ const message = createStackNavigator({
       name={"menu"}
       size={30}
       onPress={() => navigation.openDrawer()}
-
       color="black"
       paddingLeft= {10}>
        </FontIcon>
        </TouchableOpacity>,
-
       ...navigationProps,
     }),
  },
