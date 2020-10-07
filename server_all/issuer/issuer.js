@@ -397,8 +397,8 @@ module.exports = function (app){
             encoded: "27"
           },
           phone_number: {raw: "01051373507", encoded: "01051373507"},
-          name: { raw: "KIMYoHan", encoded: "123456789123456789" },
-          address: { raw: "Seoul,Jung-go-ro 119", encoded: "123456789123456789" },
+          name: { raw: "김요한", encoded: "123456789123456789" },
+          address: { raw: "대전 ,중구 중앙로 119", encoded: "123456789123456789" },
           country: { raw: "South Korea", encoded: "123456789123456789" },
         };
 
