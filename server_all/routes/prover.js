@@ -291,7 +291,7 @@ module.exports = function (app){
         prover.outCredId
       );
       
-      res.send(JSON.stringify(get_credential))
+      res.send(JSON.stringify(get_credential.attrs))
 
 
         // logOK(JSON.stringify(prover.cred.values))
