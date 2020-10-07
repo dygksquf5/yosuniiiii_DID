@@ -49,8 +49,8 @@ function QRcode_scanner() {
       }
 
     setScanned(true);
-    Alert.alert(type, data, [
-      { Text: 'OK!!!!!!!!!!', onPress: () => request_Axios() },
+    Alert.alert([
+      { Text: '연결완료, "홈" 에서 발급받기 버튼을 눌러주세요!', onPress: () => request_Axios() },
     ]);
   };
 

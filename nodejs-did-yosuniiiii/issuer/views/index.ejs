@@ -149,7 +149,7 @@
             function getSchema(){
               axios({
                 method: "get",
-                url: "http://192.168.0.5:3000/No2"
+                url: "http://192.168.0.5:3000/api/No2"
               })
               .then(response => {
                 console.log(response.data)
@@ -220,7 +220,7 @@
 
     
     
-    <div class="site-section" id="QR_section" align="center"  data-aos="fade-down">
+    <div class="row align-items-center" id="QR_section"  data-aos="fade-down">
       <div class="container">
         <div class="row mb-5" >
           <div class="col-12 text-center">
@@ -231,7 +231,7 @@
       
 
 
-        <textarea id="qr-data" class="form-control" placeholder="DID 입력!" ></textarea> <br>
+        <textarea id="qr-data" class="form-control" placeholder="'생성' 버튼을 눌러 QR생성을 완료 해 보세요!" ></textarea> <br>
         <button class="btn btn-primary" onclick="generateQR()">생성!</button> <br> <br>
         <div class="center-block" id="qrcode"></div>
 
@@ -244,8 +244,8 @@
             var qrcode = new QRCode(document.getElementById("qrcode"));
 
             function generateQR() {
-                var data = qrdata.value;
-
+                // var data = qrdata.value;
+                var data = "http://192.168.0.5:3001/api/schemaId";
                 qrcode.makeCode(data);
             }
         </script>

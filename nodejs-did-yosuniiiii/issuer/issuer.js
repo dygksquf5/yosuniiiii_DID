@@ -209,7 +209,7 @@ module.exports = function (app){
   })
 
 
-  app.get("/No2", urlencodedParser, async function(req,res){
+  app.get("/api/No2", urlencodedParser, async function(req,res){
     
     try {
          db.get('SELECT schemaId FROM schemaId WHERE aid=2', function(err, row){
