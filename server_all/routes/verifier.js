@@ -204,13 +204,13 @@ module.exports = function (app){
 
 
     if (proofVerificationResult) {
-      logOK("\nOK : proof is verified as expected :-)");
-      const good = "OK : proof is verified as expected :-)";
+      logOK("\nOK : proof is verified 성인입니다 :)");
+      const good = "OK : proof is verified 성인입니다 :)";
       res.send(JSON.stringify(good))
 
     } else {
-      logKO("\nKO : proof is expected to be verified but it is NOT... :-(");
-      const bad = "KO : proof is expected to be verified but it is NOT... :-("
+      logKO("\nKO : proof is expected but, 미성년자입니다 :(");
+      const bad = "KO : proof is expected but, 미성년자입니다 :("
       res.send(JSON.stringify(bad))
     }
 
