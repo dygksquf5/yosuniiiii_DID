@@ -66,8 +66,21 @@ function QRcode() {
       onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
       style={[StyleSheet.absoluteFill, styles.container]}
     >
-      {scanned && (Alert.alert(JSON.stringify(verifying))
-        )&& (
+      {scanned && (Alert.alert(
+      "스캔 완료",
+      (JSON.stringify(verifying),
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    ))
+      )
+        && (
           <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
           // <Button title={'Tap to Scan'} onPress={this.gotoDetails} />
         )}
