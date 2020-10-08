@@ -76,7 +76,9 @@ state = {
                 <Text > 이름 : {this.state.name}</Text>
                 <Text > 나이 : {this.state.age}</Text>
                 <Text > 주소 : {this.state.address}</Text>
-                <Text > 성별 : {this.state.gender}</Text>            
+                <Text > 성별 : {this.state.gender}</Text>
+                <Text > 국가 : {this.state.country}</Text>            
+            
 
               </View>
             </Card>
