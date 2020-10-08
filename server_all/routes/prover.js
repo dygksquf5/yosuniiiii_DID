@@ -79,6 +79,7 @@ module.exports = function (app){
       // log("Prover create Wallet");
 
       // await indy.createWallet(walletConfig, walletCredentials);
+
       log("Prover Open Wallet");
 
       prover.wallet=await indy.openWallet(walletConfig, walletCredentials);
@@ -329,7 +330,7 @@ module.exports = function (app){
       
         logOK(JSON.stringify(get_credential))
 
-      res.send(JSON.stringify(get_credential))
+      res.send(JSON.stringify(get_credential.attrs))
      
     });
 
