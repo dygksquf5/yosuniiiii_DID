@@ -16,6 +16,7 @@ import { State } from 'react-native-gesture-handler';
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 
+import Axios from 'axios';
 
 
 
@@ -27,13 +28,43 @@ import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 //   "좋아하는 음식" : "이거 신분증이잖아 ...."
 // }; 
 
-let name = "김요한"
-let age = "21"
-let address = "머나먼 세종시"
-let gender = " 남자 "
+// let name = "김요한"
+// let age = "21"
+// let address = "머나먼 세종시"
+// let gender = " 남자 "
+
+
 
 
 export default class Details extends Component {
+
+state = {
+  name: '',
+  age:'',
+  address:'',
+  phone_number:'',
+  gender:'',
+  country:'',
+}
+
+    componentDidMount() {
+    Axios.post('http://192.168.0.5:3001/api/getCred')
+    .then(response => {this.setState({
+      name: response.data.name,
+      age:response.data.age,
+      address:response.data.address,
+      phone_number:response.data.phone_number,
+      gender:response.data.gender,
+      country:response.data.country,
+    })})
+
+  }
+
+
+
+
+
+
   render() {
     return (
       <View style={styles.root}>
@@ -42,10 +73,10 @@ export default class Details extends Component {
           <TouchableOpacity >
             <Card style={styles.card}>
               <View style={styles.information}>
-                <Text > 이름 : {name}</Text>
-                <Text > 나이 : {age}</Text>
-                <Text > 주소 : {address}</Text>
-                <Text > 성별 : {gender}</Text>
+                <Text > 이름 : {this.state.name}</Text>
+                <Text > 나이 : {this.state.age}</Text>
+                <Text > 주소 : {this.state.address}</Text>
+                <Text > 성별 : {this.state.gender}</Text>            
 
               </View>
             </Card>

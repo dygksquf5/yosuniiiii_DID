@@ -4,64 +4,64 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import * as SQLite from 'expo-sqlite'
 import Axios from 'axios';
 
-const DB = SQLite.openDatabase('prover_cred.db');
+const db = SQLite.openDatabase('prover_cred.db');
 
-function insert_cred(data){
-  DB.transaction(tx => {
+const insert_cred = (data) => {
+  db.transaction(
+    (tx) => {
     tx.executeSql(
       `insert into prover_cred (credential) values (?);`,
       [data]
-    );
-  })
+    )
+  }
+  )
 }
 
 
 
-const delete_cred = (data) => {
-  DB.transaction(
+
+
+// delete = (id) => {
+//   db.transaction(tx => {
+//     tx.executeSql('DELETE FROM items WHERE id = ? ', [id],
+//       (txObj, resultSet) => {
+//         if (resultSet.rowsAffected > 0) {
+//           let newList = this.state.data.filter(data => {
+//             if (data.id === id)
+//               return false
+//             else
+//               return true
+//           })
+//           this.setState({ data: newList })
+//         }
+//       })
+//   })
+// }
+
+const deleteItem = (data) => {
+  db.transaction(
     tx => {
-      tx.executeSql(`delete from prover_cred where aid = ?;`, [data]);
+      tx.executeSql(`delete from prover_cred where credential = ?;`, [data]);
     }, null,
   )    
 }
 
 
 
-// const select_cred = (setUserFunc) => {
-//   DB.transaction(
-//     tx => {
-//       tx.executeSql(
-//         'select * from prover_cred',
-//         [],
-//         (_, { rows: { _array } }) => {
-//           setUserFunc(_array)
-//         }
-//       );
-//     },
-//     (t, error) => { console.log("db error load users"); console.log(error) },
-//     (_t, _success) => { console.log("loaded users")}
-//   );
-// }
 
-// const select_cred = () => {
-//   DB.transaction(tx => {
-//     tx.executeSql(
-//       `SELECT * FROM prover_cred`,
-//       null,
-//       (_, { rows: { _array } }) => this.setState({testtest: _array})
-//     );
-//   })
-// }
+
 
 
 export default class SecondScreen extends Component {
 
+
+  
   
   state = {
     code: '',
     password: '',
     credential: '',
-    testtest: '',
+    database_information: '',
   };
 
   // constructor(props){
@@ -72,29 +72,31 @@ export default class SecondScreen extends Component {
 
 
 
-  componentWillMount(){
-    DB.transaction(tx =>{
-      tx.executeSql(
-        'create table if not exists prover_cred (aid integer primary key not null, credential varchar (8000));'
-      ),
-      null
+  // componentWillMount(){
+  //   db.transaction(
+  //     (tx) =>{
+  //     tx.executeSql(
+  //       'create table if not exists prover_cred (aid integer primary key not null, credential varchar (8000));'
+  //     ),
+  //     null
 
-      DB.transaction(tx => {
-        tx.executeSql(
-          'select * from prover_cred',
-          null,
-          (_, { rows: { _array } }) => this.setState({credential: _array})
-        )
-      }
-      ) 
-    })
-  }
+  //     db.transaction(
+  //       (tx) => {
+  //       tx.executeSql(
+  //         'select * from prover_cred',
+  //         null,
+  //         (_, { rows: { _array } }) => this.setState({database_information: _array})
+  //       )
+  //     }
+  //     ) 
+  //   })
+  // }
 
-  componentDidMount() {
-    Axios.post('http://192.168.0.5:3001/api/getCred')
-    .then(response => {this.setState({credential: response.data.attrs})})
+  // componentDidMount() {
+  //   Axios.post('http://192.168.0.5:3001/api/getCred')
+  //   .then(response => {this.setState({credential: response.data})})
 
-  }
+  // }
 
 
 
@@ -106,8 +108,9 @@ export default class SecondScreen extends Component {
       this.pinInput.current.shake().then(() => this.setState({ code: '' }));
     } else {
       this.props.navigation.replace('success');
-      Axios.post('http://192.168.0.5:3001/api/getCred')
-      .then(response => {this.setState({credential: response.data})})
+      Axios.post('http://192.168.0.5:3001/api/requestCred')
+      // .then(response => {insert_cred(JSON.stringify(response.data.name))})
+
     }
   };
 
@@ -117,6 +120,8 @@ export default class SecondScreen extends Component {
   
 
 
+
+
   render() {
     const { code, password } = this.state;
 
@@ -124,20 +129,9 @@ export default class SecondScreen extends Component {
 
     // const prover_credential = JSON.stringify(this.state.credential)
 
-    // insert_cred(prover_credential);
+    // insert_cred("안녕")
+    // deleteItem("안녕")
 
-    const listSeparator = () => {
-      return (
-        <View
-          style={{
-            height: 5,
-            width: "50%",
-            backgroundColor: "#fff",
-            marginLeft: "10%"
-          }}
-        />
-      );
-    };
 
 
 
@@ -160,7 +154,7 @@ export default class SecondScreen extends Component {
                 
                 <View>
                 <Text>
-                  {JSON.stringify(this.state.credential)}
+                  {/* {JSON.stringify(this.state.database_information)} */}
 
                 </Text>
                 </View>
@@ -176,15 +170,15 @@ export default class SecondScreen extends Component {
                 {JSON.stringify(this.state.credential.phone_number)}
                 {JSON.stringify(this.state.credential.gender)}
 
-         </Text>
- */}
-        {/* <View style={{width: 1, height: 1, alignItems: 'center', justifyContent: 'center',
+         </Text> */}
+
+        <View style={{width: 1, height: 1, alignItems: 'center', justifyContent: 'center',
               }}>
         <Image
          source={require("../assets/images/password.png")}
          >
         </Image>
-        </View> */}
+        </View> 
 
       </View>
     );

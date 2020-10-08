@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import * as SQLite from 'expo-sqlite'
+
+const db = SQLite.openDatabase('prover_cred.db');
+
 
 const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
@@ -8,6 +12,12 @@ const AppButton = ({ onPress, title }) => (
 );
 
 export default class HomeScreen extends Component {
+
+
+
+
+
+
   render() {
     return (
       <View

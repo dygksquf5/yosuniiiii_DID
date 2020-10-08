@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   Text,
   View,
-  Dimensions,
   Image,
   StyleSheet,
   TouchableOpacity,
@@ -16,9 +15,9 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import Axios from 'axios';
 import 'url-search-params-polyfill';
 
-gotoPassword = () => {
-  this.props.navigation.navigate('SecondScreen');
-};
+
+
+
 
 function QRcode_scanner() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -32,27 +31,20 @@ function QRcode_scanner() {
   }, []);
 
 
+
   const handleBarCodeScanned = ({ type, data }) => {
     async function request_Axios() {
-      // var params = new URLSearchParams();
-      // await params.append('data',JSON.stringify(data));
-        await Axios({
-          method: 'POST',
-          url: data,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          data: {
-            data: data,
-          },
-        })
-      }
+      await Axios({
+        method: 'POST',
+        url: data
+      });
+    }
 
     setScanned(true);
-    Alert.alert([
-      { Text: '연결완료, "홈" 에서 발급받기 버튼을 눌러주세요!', onPress: () => request_Axios() },
-    ]);
+    request_Axios()
   };
+
+
 
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
@@ -61,64 +53,72 @@ function QRcode_scanner() {
     return <Text>No access to camera</Text>;
   }
 
+  return (
 
-  const { width } = Dimensions.get('window');
+    <BarCodeScanner
+      onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+      style={[StyleSheet.absoluteFill, styles.container]}
+    >
+      {scanned && (Alert.alert(
+      "발급 완료",
+      "홈에서 발급절차를 완료 해 주세요 :)",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    )
+      ) && (
+          <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
+        )}
+
+      <View style={styles.layerTop} />
+      <View style={styles.layerCenter}>
+        <View style={styles.layerLeft} />
+        <View style={styles.focused} />
+        <View style={styles.layerRight} />
+      </View>
+      <View style={styles.layerBottom} />
+    </BarCodeScanner>
+    
+    
+  );
+}
 
 
-  
-    return (
-
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={[StyleSheet.absoluteFill, styles.container]}
-      >
-      {scanned && (
-        <Button title={'Tap to Scan'} onPress = {()=>setScanned(false)} />
-      )}
-
-        <View style={styles.layerTop} />
-        <View style={styles.layerCenter}>
-          <View style={styles.layerLeft} />
-          <View style={styles.focused} />
-          <View style={styles.layerRight} />
-        </View>
-        <View style={styles.layerBottom} />
-      </BarCodeScanner>
-      
-      
-    );
-  }
-
-  
 const opacity = 'rgba(0, 0, 0, .4)';
 const styles = StyleSheet.create({
-  container: {
-    flex: 8,
-    flexDirection: 'column'
-  },
-  layerTop: {
-    flex: 3.5,
-    backgroundColor: opacity,
+container: {
+  flex: 8,
+  flexDirection: 'column'
+},
+layerTop: {
+  flex: 3.5,
+  backgroundColor: opacity,
 
-  },
-  layerCenter: {
-    flex: 8,
-    flexDirection: 'row'
-  },
-  layerLeft: {
-    flex: 0.5,
-    backgroundColor: opacity
-  },
-  focused: {
-    flex: 4
-  },
-  layerRight: {
-    flex: 0.5,
-    backgroundColor: opacity
-  },
-  layerBottom: {
-    flex: 3.5,
-    backgroundColor: opacity
-  },
+},
+layerCenter: {
+  flex: 8,
+  flexDirection: 'row'
+},
+layerLeft: {
+  flex: 0.5,
+  backgroundColor: opacity
+},
+focused: {
+  flex: 4
+},
+layerRight: {
+  flex: 0.5,
+  backgroundColor: opacity
+},
+layerBottom: {
+  flex: 3.5,
+  backgroundColor: opacity
+},
 });
 export default QRcode_scanner;
