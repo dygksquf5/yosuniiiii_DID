@@ -68,7 +68,7 @@ function QRcode() {
     >
       {scanned && (Alert.alert(
       "스캔 완료",
-      (JSON.stringify(verifying),
+      (JSON.stringify(verifying)),
       [
         {
           text: "Cancel",
@@ -79,7 +79,6 @@ function QRcode() {
       ],
       { cancelable: false }
     ))
-      )
         && (
           <Button title={'Tap to Scan'} onPress={() => setScanned(false)} />
           // <Button title={'Tap to Scan'} onPress={this.gotoDetails} />
