@@ -33,15 +33,17 @@ function QRcode_scanner() {
 
 
   const handleBarCodeScanned = ({ type, data }) => {
-    async function request_Axios() {
+     async function request_Axios() {
       await Axios({
         method: 'POST',
         url: data
-      })
-    }
+        })
+      }
+
 
     setScanned(true);
-    request_Axios()
+    request_Axios()  
+
   };
 
 
