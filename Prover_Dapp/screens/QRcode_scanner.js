@@ -37,7 +37,7 @@ function QRcode_scanner() {
       await Axios({
         method: 'POST',
         url: data
-      });
+      })
     }
 
     setScanned(true);
