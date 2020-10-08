@@ -8,11 +8,16 @@ import {
   StatusBar,
   TouchableOpacity,
   TouchableHighlight,
+  FlatList,
+  List
 } from 'react-native';
 import Button from '../src/components/Button';
 import { colors } from '../src/theme';
 import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+
+
 
 import Axios from 'axios';
 
@@ -40,7 +45,8 @@ if (a == undefined){
 
 
 export default class Home extends Component {
-  
+
+
   render() {
 
     return (
@@ -63,7 +69,7 @@ export default class Home extends Component {
               <Text style={styles.cardDownText}>{testtest}</Text>
                 <Text >{date_1}</Text>
 
-              </View>
+              </View>              
 
             </Card>
             </TouchableOpacity>
@@ -74,9 +80,7 @@ export default class Home extends Component {
               <View style={styles.plusIcon}>
                 <FontIcon name='folder-plus-outline' color='#96b4ee' size={45}> 
                   </FontIcon> 
-
               </View>
-
             </Card>
             </TouchableOpacity>
           </Content>
