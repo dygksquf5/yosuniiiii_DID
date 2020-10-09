@@ -1,5 +1,4 @@
 const prover = {};
-const testtest_1 = {};
 var {
   log,
   logProver,
@@ -18,7 +17,6 @@ const indy = require("indy-sdk");
 const util = require("./util");
 const bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({extended : true});
-var readline = require("readline-sync");
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("prover.db");
 const axios = require("axios");
@@ -27,17 +25,18 @@ const cors = require("cors");
 
 
 
-// const { json } = require("body-parser");
-
-// app.use(express.urlencoded({ extended: false }));
-
-//Main code starts here
-
 
 module.exports = function (app){
   app.use(bodyParser.json());
   app.use(cors());
 
+
+    app.post("/api/deleteWallet_and_create", urlencodedParser, async function(req,res){
+      log("Prover delete Wallet");
+      await indy.deleteWallet(walletConfig, walletCredentials);
+      log("Prover create Wallet");
+      await indy.createWallet(walletConfig, walletCredentials);
+    });
 
     app.post("/api/log", urlencodedParser ,async function(req,res){
 
@@ -74,11 +73,6 @@ module.exports = function (app){
       const walletConfig = { id: "prover" + ".wallet" };
       const walletCredentials = { key: 'prover' + ".wallet_key" };
 
-      // log("Prover delete Wallet");
-      // await indy.deleteWallet(walletConfig, walletCredentials);
-      // log("Prover create Wallet");
-
-      // await indy.createWallet(walletConfig, walletCredentials);
 
       log("Prover Open Wallet");
 
@@ -119,11 +113,6 @@ module.exports = function (app){
 
     app.post("/api/logout", urlencodedParser, async function(req,res){
       
-      // const walletConfig = { id: "prover" + ".wallet" };
-      // const walletCredentials = { key: 'prover' + ".wallet_key" };
-
-      // await indy.deleteWallet(walletConfig, walletCredentials);
-
       
       log("Prover close connections from ledger");
 
@@ -146,13 +135,7 @@ module.exports = function (app){
         // prover.schemId = "Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"
         logKO(prover.schemaId);
 
-    };
-
-
-    // console.log(req.body.data);
-
-    // prover.schemaId = req.body.data;
-    
+    };    
 
 
       logOK("Waiting for issuer to send schemaID...");
@@ -172,23 +155,22 @@ module.exports = function (app){
       logOK("got a schema ledger")
 
 
-    async function test1(){
+    async function getCredOffer(){
       await axios.post("http://192.168.0.5:3000/api/credOffer")
       .then(response => prover.credOffer = response.data);
 
-      // test type!! //
         logKO(JSON.stringify(prover.credOffer));
     };
 
 
     logOK("Waiting  credential offer...");
     while (prover.credOffer == undefined) {
-      await test1(),
+      await getCredOffer(),
       await sleep(2000);
     } 
 
 
-    logOK (" got it OFFER!!! ")
+    logOK (" got it OFFER !!  ")
 
     logProver("Prover gets credential definition from ledger");
     prover.credDefId = prover.credOffer["cred_def_id"];
@@ -240,7 +222,7 @@ module.exports = function (app){
 
     app.post("/api/requestCred", async function(req,res){
 
-      async function test2(){
+      async function requestCred(){
 
         await axios.post("http://192.168.0.5:3000/api/cred")
         .then(response => prover.cred = response.data)
@@ -249,7 +231,7 @@ module.exports = function (app){
       logOK("\n\nWaiting for Credential from Issuer...");
       while (prover.cred == undefined) {
         await sleep(2000),
-        await test2();
+        await requestCred();
       }
 
   
@@ -411,7 +393,6 @@ module.exports = function (app){
       await axios.post("http://192.168.0.5:3000/api/credDefId")
       .then(response => prover.credDefId = response.data);
 
-        // prover.schemId = "Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"
         logKO(prover.credDefId);
 
     };
@@ -437,7 +418,7 @@ module.exports = function (app){
       await sleep(2000);
     }
 
-    logKO("-----------------------------1")
+    logKO("-----------------------------1 done ")
     prover.credDef = await getCredDefFromLedger(
       prover.poolHandle,
       prover.did,
@@ -446,10 +427,10 @@ module.exports = function (app){
     prover.credDefs = {
       [prover.credDefId]: prover.credDef
     };
-    logKO("-----------------------------2")
+    logKO("-----------------------------2 done ")
 
     prover.revocStates = {};
-    logKO("-----------------------------3")
+    logKO("-----------------------------3 done ")
 
 
     prover.proof = await indy.proverCreateProof(
@@ -461,7 +442,7 @@ module.exports = function (app){
       prover.credDefs,
       prover.revocStates
     );
-    logKO("-----------------------------4")
+    logKO("-----------------------------4 done ")
 
     logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
       res.send(prover.proof);
@@ -469,20 +450,6 @@ module.exports = function (app){
       console.log(error)
     }
   });
-
-
-
-    // ####################herererere!!!!!!!!!!! post ##########
-
-
-
-
-  app.post("/prover", (req, res) => {
-
-
-    res.status(200).send({ status: 200 });
-  });
-
 
 
 

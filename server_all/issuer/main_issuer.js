@@ -9,14 +9,11 @@ var methodOverride = require('method-override');
 
 var app = express();
 
-// Other settings
-// app.set("views",__dirname + "/views");
 app.set("view engine", "ejs");
 app.set("ejs", ejs.renderFile);
 app.use(methodOverride('_method'));
 
 
-//미들웨어
 app.use(cookieParser());
 app.use(session({
     secret : "dmspdmsp",
@@ -27,7 +24,6 @@ app.use(session({
 
 app.use(express.static("public"));
 
-// Routes
 require("./issuer")(app);
 
 app.listen(3000, function(){

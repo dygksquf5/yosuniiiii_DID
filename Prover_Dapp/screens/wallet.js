@@ -2,27 +2,30 @@ import React, { useState, useEffect, Component } from 'react';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import Button from '../src/components/Button';
 import { colors } from '../src/theme';
+import Axios from 'axios';
 
 
-export default class Details2 extends Component {
+export default class wallet extends Component {
   render() {
     return (
       <View style={styles.root}>
         <StatusBar barStyle='light-content' />
-        <Text style={styles.title}>여기는 디 테 일 22!!</Text>
+        <Text style={styles.title}>wallet reset하기</Text>
         <Button
           title='Go Back'
           color='white'
           backgroundColor={colors.pink}
-          onPress={this.gotoBack}
+          onPress={this.resetWallet}
         />
       </View>
     );
   }
-  gotoBack = () => {
-    this.props.navigation.replace('Home');
+  resetWallet = () => {
+    this.props.navigation.navigate('Home');
+    Axios.post('http://192.168.0.5:3001/api/deleteWallet_and_create')
   };
-}
+};
+
 
 
 const styles = StyleSheet.create({

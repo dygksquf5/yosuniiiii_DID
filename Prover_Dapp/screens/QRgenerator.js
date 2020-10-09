@@ -1,12 +1,5 @@
-import React, { useState, useEffect, Component } from 'react';
-import PropTypes from 'prop-types';
+import React, {  Component } from 'react';
 import { StyleSheet, Text, View, StatusBar, Alert } from 'react-native';
-import Button from '../src/components/Button';
-import { colors } from '../src/theme';
-import { render } from 'react-dom';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { State } from 'react-native-gesture-handler';
 import SvgQRCode from 'react-native-qrcode-svg';
 
 

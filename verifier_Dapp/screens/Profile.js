@@ -1,19 +1,11 @@
 import React, { useState, useEffect, Component } from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, 
   Text, 
   View, 
   StatusBar,  
-  TouchableOpacity,
-  TouchableHighlight,
   Image
 } from 'react-native';
-import Button from '../src/components/Button';
-import { colors } from '../src/theme';
-import { render } from 'react-dom';
-import Axios from 'axios';
-import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
+import { Container, Content } from 'native-base';
 
 
 
@@ -26,7 +18,7 @@ export default class Profile extends Component {
 
       <Container>
           <Content>
-          <View className="test_yohan" style={styles.view1} >
+          <View style={styles.view1} >
             <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}}> 
                 <Image style={{width: 80, height: 50,}}
               source={require("../assets/images/check.gif")} style={{width:50, height:50}}>
@@ -93,21 +85,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
+
   view1:{
     flex: 1,
     marginLeft: 5,
     flexDirection: 'row',
     shadowColor: '#A4A4A4',
     marginTop: 20,
-  //   shadowOpacity: 0.8,
-  //   shadowRadius: 2,
-  //   shadowOffset: {
-  //     height: 4,
-  //     width: 1,
-  //   },
-  //   borderRadius: 14,
-  //   backgroundColor: '#FAFAFA',
-  //   borderColor: '#FAFAFA',
   },
   view2:{
     alignItems: 'center',
@@ -116,14 +100,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 50,
     backgroundColor: 'white',
-    // shadowColor: '#A4A4A4',
-    // shadowOpacity: 0.8,
-    // shadowRadius: 3,
-    // shadowOffset: {
-    //   height: 4,
-    //   width: 1,
-    // },
-    // borderColor: '#FAFAFA',
   },
   view3:{
     alignItems: 'flex-start',
@@ -133,14 +109,6 @@ const styles = StyleSheet.create({
 
     backgroundColor: 'white',
     shadowColor: '#A4A4A4',
-    // shadowOpacity: 0.8,
-    // shadowRadius: 3,
-    // shadowOffset: {
-    //   height: 4,
-    //   width: 1,
-    // },
-    // borderColor: '#FAFAFA',
-
   },
 
   

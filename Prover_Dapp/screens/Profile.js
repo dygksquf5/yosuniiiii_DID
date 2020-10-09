@@ -1,18 +1,10 @@
 import React, { useState, useEffect, Component } from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, 
   Text, 
   View, 
   StatusBar,  
-  TouchableOpacity,
-  TouchableHighlight,
   Image
 } from 'react-native';
-import Button from '../src/components/Button';
-import { colors } from '../src/theme';
-import { render } from 'react-dom';
-import Axios from 'axios';
-import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 
 

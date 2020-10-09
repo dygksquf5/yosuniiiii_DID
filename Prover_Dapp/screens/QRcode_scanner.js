@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
   Text,
   View,
   Image,
   StyleSheet,
-  TouchableOpacity,
   Alert,
   StatusBar,
 } from 'react-native';
 import Button from '../src/components/Button';
-import { colors } from '../src/theme';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Axios from 'axios';
 import 'url-search-params-polyfill';

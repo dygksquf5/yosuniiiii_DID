@@ -1,17 +1,11 @@
-import React, { useState, useEffect, Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  Image,
-  StatusBar,
   TouchableOpacity,
-  TouchableHighlight,
 } from 'react-native';
-import Button from '../src/components/Button';
-import { colors } from '../src/theme';
-import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
+import { Container,  Content, Card } from 'native-base';
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Profile from './Profile'
@@ -50,29 +44,14 @@ export default class Home extends Component {
         <Profile />
         <Container>
           <Content style={{marginTop:-30}}>
-          <TouchableOpacity onPress={this.gotoQR}>
             <Card style={styles.card}>
-            {/* <View style={styles.line}>
-                <Text>   </Text>
-              </View> */}
+            <TouchableOpacity onPress={this.gotoQR}>
                 <Text style={{marginLeft:18, marginTop: 9, fontSize: 16, flexDirection: 'row',
                   color: "white"}}> <FontIcon name="qrcode-scan" size="30"></FontIcon> <Text>  </Text>
                   SCAN CODE
                 </Text>
-              {/* <Image source={require("../assets/images/search.gif")} style={{width:30, height:30,
-              marginLeft: 70, 
-              marginTop:25,
-              backgroundColor: '#FAFAFA',
-              }}>
-              </Image> */}
-
-
-
-
-          
-
+                </TouchableOpacity>
             </Card>
-            </TouchableOpacity>
           </Content>
         </Container>
       </View>

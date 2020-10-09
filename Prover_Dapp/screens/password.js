@@ -21,22 +21,6 @@ const insert_cred = (data) => {
 
 
 
-// delete = (id) => {
-//   db.transaction(tx => {
-//     tx.executeSql('DELETE FROM items WHERE id = ? ', [id],
-//       (txObj, resultSet) => {
-//         if (resultSet.rowsAffected > 0) {
-//           let newList = this.state.data.filter(data => {
-//             if (data.id === id)
-//               return false
-//             else
-//               return true
-//           })
-//           this.setState({ data: newList })
-//         }
-//       })
-//   })
-// }
 
 const deleteItem = (data) => {
   db.transaction(
@@ -151,26 +135,7 @@ export default class SecondScreen extends Component {
         </View>
 
 
-                
-                <View>
-                <Text>
-                  {/* {JSON.stringify(this.state.database_information)} */}
 
-                </Text>
-                </View>
-
-
-        {/* <Text>
-
-                {JSON.stringify(this.state.credential.country)}
-
-                {JSON.stringify(this.state.credential.age)}
-                {JSON.stringify(this.state.credential.name)}
-                {JSON.stringify(this.state.credential.address)}
-                {JSON.stringify(this.state.credential.phone_number)}
-                {JSON.stringify(this.state.credential.gender)}
-
-         </Text> */}
 
         <View style={{width: 1, height: 1, alignItems: 'center', justifyContent: 'center',
               }}>

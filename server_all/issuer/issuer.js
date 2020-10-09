@@ -69,7 +69,6 @@ module.exports = function (app){
   const walletCredentials = { key: 'issuer' + ".wallet_key" };
   issuer.wallet= await indy.openWallet(walletConfig, walletCredentials);
 
-  //   // issuer.wallet = await createAndOpenWallet("issuer");
 
   log("Issuer Create DID");
   issuer.did = await createAndStoreMyDid(
@@ -104,39 +103,6 @@ module.exports = function (app){
   });
 
 
-
-
-
-
-
-  // app.get("/main2", async function(req,res){
-  //   const sql = ('SELECT * FROM DID');
-  //   db.get(sql, (err,row) => {
-  //     if (err){
-  //       return logKO(err.message);
-  //     }
-  //     const test =  `${row.DID}`;
-  //     console.log(test,"you have got DID successfully ");
-  //     const render_data = {
-  //       did : test
-  //     }
-  //     res.render("issuer_main_2.ejs", render_data)
-
-  //   });
-
-  // });
-
-  // app.post("/main",urlencodedParser, async function(req,res){
-      
-  // });
-
-  // app.get("/No2", async function(req, res){
-    
-  //   res.render("issuer_schema.ejs");
-
-  // });
-    
- // ######################################done register schema to the ledger#######################################################################
 
   app.post("/api/makeSchema", async function(req, res){
 
@@ -175,7 +141,6 @@ module.exports = function (app){
     }
   });
 
-  // ##############################done register schema to the ledger#######################################################################
 
 
   app.post("/api/schemaId", urlencodedParser, async function(req,res){
@@ -221,9 +186,6 @@ module.exports = function (app){
           };
         });
 
-      // logOK(typeof(issuer.schemaId));
-
-      //#############//
 
 
       logOK("Waiting for issuer to get schema ID...");
@@ -247,14 +209,11 @@ module.exports = function (app){
           i = i+1  
         };
   
-  
-  
         // ########### differnt way 2)###########
         for (var key in issuer.schema) {
           console.log("=>:" + key + ", value:" + issuer.schema[key]);
         };
   
-        
          // ########### differnt way 3)###########
   
         var test = JSON.stringify(issuer.schema);
@@ -330,16 +289,9 @@ module.exports = function (app){
   });
 
 
-      // #########################################################
-      // there is a big question about .. do we need a QRcode for Scema and Credential definition? in here? 
-      //
 
 
-
-
-
-      //api for offer!!! //
-    app.post("/api/credOffer", async function(req,res){
+  app.post("/api/credOffer", async function(req,res){
 
       logIssuer("Issuer creates credential offer");
       issuer.credOffer = await indy.issuerCreateCredentialOffer(
@@ -368,10 +320,6 @@ module.exports = function (app){
       }
 
       logKO("got ittttttttt!!!!!!!")
-              //request from prover //
-  
-      
-
       
     });
 
@@ -420,6 +368,7 @@ module.exports = function (app){
 
   });
 
+
   app.get("/api/credential", async function(req,res){
     
     res.send(JSON.stringify(issuer.cred));
@@ -428,94 +377,13 @@ module.exports = function (app){
 
  
 
-    // app.get("/No3", function(req,res){
-    //   res.render("prover_credential_3.ejs")
-
-    // });
-
-  
-
-    // app.post("/No3" ,urlencodedParser,async function(req,res){
-
-  
-    //   async function test(){
-    //     await axios.post("http://192.168.0.5:3001/api/credReq")
-    //     .then(response => issuer.credReq = response.data);
-  
-    //     logOK(JSON.stringify(issuer.credReq));
-    //   };
-  
-  
-    //   logOK("\nWaiting for Credential Request from prover!");
-    //   while (issuer.credReq == undefined) {
-    //     await test();
-    //   }
-
-    //   logKO("got ittttttttt!!!!!!!")
-    //           //request from prover //
-  
-
-  
-    // });
-    
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    app.get("/No5", async function(req,res){
-
-
-    // async function test(){
-
-    //   await axios.get("http://192.168.0.49:3001/api/credReq")
-    //   .then(response => issuer.credReq = response.data);
-
-    //   logOK(JSON.stringify(issuer.credReq));
-    // };
-
-    // test()
-
-    // logOK("\nWaiting for Credential Request from prover!");
-    // while (issuer.credReq == undefined) {
-    //   await sleep(2000);
-    // }
-
-
-
-    readline.question("seding!!!!! ")
-
-    res.render("issuer_schema_4.ejs")
-
-
-  });
-
-
-
-
-  
-
-
-
-
-  app.post("/No555555555555", async function(req, res){
-
-
-
+  app.post("/api/another_credential", async function(req, res){
 
   logIssuer("Issuer creates credential");
   {
@@ -538,61 +406,14 @@ module.exports = function (app){
       tailsWriter
     );
     issuer.cred = cred;
-  }
+  }      
+  
+  await res.send(JSON.stringify(issuer.cred));
+  console.log(JSON.stringify(issuer.cred));
 
 
-
-
-    logOK(issuer.cred);
-
-
-
-    logIssuer(
-      "Transfer credential from 'Issuer' to 'Prover' (via HTTP or other) ..."
-    );
-    // await sendToProver("cred", JSON.stringify(issuer.cred));
-
-    // issuer.cred = undefined;
-
-      res.redirect("/No4")
-
-
-  // readline.question(
-  //   "\n\nCredential successfully issued from issuer to prover, Press enter to terminate this session, delete issuer wallet, pool handle and teriminate program:"
-  // );
-
-  // log("Issuer close and delete wallets");
-  // await closeAndDeleteWallet(issuer.wallet, "issuer");
-
-  // log("Issuer close and delete poolHandles");
-  // await closeAndDeletePoolHandle(issuer.poolHandle, "issuer");
-
-});
-// ##############
-
-
-app.post("/issuer", (req, res) => {
-  let type = req.body.type;
-  let message = req.body.message;
-  switch (type) {
-    case "credReq":
-      issuer.credReq = JSON.parse(message);
-      break;
-    default:
-      break;
-  }
-  res.status(200).send({ status: 200 });
-});
-
+  });
 
 
 
 };
-// #########here
-
-// app.listen(3000, () => {
-//   console.log("Issuer started on port 3000!");
-//   run();
-// });
-
-

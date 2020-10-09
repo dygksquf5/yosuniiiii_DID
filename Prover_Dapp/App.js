@@ -6,13 +6,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer'
 import { colors } from './src/theme';
 // import Button from './src/components/Button';
 import {
-  StyleSheet,
-  Text,
-  View,
-  StatusBar,
-  TouchableOpacity,
-  Button,
-  Image
+  TouchableOpacity
 } from 'react-native';
 
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,7 +16,6 @@ import Axios from 'axios';
 import SecondScreen from './screens/SecondScreen';
 import password from './screens/password';
 
-import IdScreen from './screens/IdScreen';
 import Home from './screens/Home';
 import QRcode_scanner from './screens/QRcode_scanner';
 import Details from './screens/Details';
@@ -32,17 +25,12 @@ import Loading from './screens/Loading';
 import QRgenerator from './screens/QRgenerator';
 import success from './screens/success';
 import Loading_2 from './screens/Loading_2'
+import wallet from './screens/wallet'
 
-
-// assets
-import { imageAssets } from './src/theme/images';
-import { fontAssets } from './src/theme/fonts';
-import { TabBar } from 'react-native-tab-view';
 
 
 const navigationProps = {
   headerTintColor: 'black',
-  // headerStyle: { backgroundColor: "#f4c151" , height: 110 },
   headerStyle: { backgroundColor: 'white', 
   height: 90, 
   shadowColor: '#A4A4A4',
@@ -165,51 +153,12 @@ navigationOptions: ({ navigation }) => ({
 }),
 },
 
-
-
-
-});
-
-
-const StacNav3 = createStackNavigator({
-
-  Loading_2: { screen: Loading_2,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-    }),
- },
-
-  password: { screen: password,
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false,
-      ...navigationProps,
-    }),
- },
-
- success: { screen: success,
+wallet : { screen: wallet,
   navigationOptions: ({ navigation }) => ({
     headerShown: false,
     ...navigationProps,
   }),
-},
-
-Home: { screen: Home ,
-  navigationOptions: ({ navigation }) => ({
-    title: user_name+"님",
-    headerRight:
-    <TouchableOpacity><FontIcon 
-    name={"menu"}
-    size={30}
-    onPress={() => navigation.openDrawer()}
-
-    color="black"
-    paddingLeft= {10}>
-     </FontIcon>
-     </TouchableOpacity>,
-    ...navigationProps,  
-  }),
- },
-
+  },
 
 });
 
@@ -247,7 +196,7 @@ const DrawerNavigator = createDrawerNavigator({
     navigationOptions: {
       navOptionIcon: () => <FontIcon name='home-city' size={30}></FontIcon>   },
   },
-  발급받기 : message,
+  지갑리셋 : wallet,
 });
 
 const Appcontainer = createAppContainer(DrawerNavigator);

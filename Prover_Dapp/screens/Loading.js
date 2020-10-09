@@ -1,6 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View,ImageBackground} from "react-native";
-import { render } from 'react-dom';
+import {ImageBackground} from "react-native";
 
 export default class Loading extends React.Component{
     render(){

@@ -5,7 +5,6 @@ var {
   logVerifier,
   logOK,
   logKO,
-  sendToProver,
   createAndOpenWallet,
   closeAndDeleteWallet,
   createAndOpenPoolHandle,
@@ -79,7 +78,6 @@ module.exports = function (app){
     const walletCredentials = { key: 'verifier' + ".wallet_key" };
     verifier.wallet= await indy.openWallet(walletConfig, walletCredentials);
 
-    //   // verifier.wallet = await createAndOpenWallet("verifier");
 
     log("verifier Create DID");
     verifier.did = await createAndStoreMyDid(
@@ -215,20 +213,6 @@ module.exports = function (app){
     }
 
   });
-  // ############
 
-
-app.post("/verifier", (req, res) => {
-  let type = req.body.type;
-  let message = req.body.message;
-  switch (type) {
-    case "proof":
-      verifier.proof = JSON.parse(message);
-      break;
-    default:
-      break;
-  }
-  res.status(200).send({ status: 200 });
-});
 
 };

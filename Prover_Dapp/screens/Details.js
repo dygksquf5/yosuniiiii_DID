@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Component } from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, 
   Text,
   View,
@@ -9,30 +8,10 @@ import { StyleSheet,
   TouchableHighlight,
   Image
  } from 'react-native';
-import Button from '../src/components/Button';
-import { colors } from '../src/theme';
-import { render } from 'react-dom';
-import { State } from 'react-native-gesture-handler';
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 
 import Axios from 'axios';
-
-
-
-// let testtest = {
-//   "11dakdj;l : " : "이나어리나ㅓ아이",
-//   "이름" : "김요한",
-//   "나이" : "20",
-//   "주소" : "머나먼 세종시",
-//   "좋아하는 음식" : "이거 신분증이잖아 ...."
-// }; 
-
-// let name = "김요한"
-// let age = "21"
-// let address = "머나먼 세종시"
-// let gender = " 남자 "
-
 
 
 
@@ -90,12 +69,6 @@ state = {
 
         <StatusBar barStyle='light-content' />
         <Text style={styles.title}>인증 QR코드 생성하기</Text>
-        {/* <Button
-          title='Go Back'
-          color='white'
-          backgroundColor={colors.pink}
-          onPress={this.QRgenerator}
-        /> */}
         <View style={styles.addButton}>
         <TouchableHighlight underlayColor='#ff7043' onPress={this.QRgenerator}>
           <FontIcon name='qrcode-scan' color='#231d54' size={35} />
@@ -110,29 +83,6 @@ state = {
   };
 }
 
-// const { from } = navigation.state.params
-
-// Details.propTypes = {
-//   navigation: PropTypes.shape({
-//     state: PropTypes.shape({
-//       params: PropTypes.shape({
-//         from: PropTypes.string,
-//       }),
-//     }),
-//     goBack: PropTypes.func,
-//   }),
-// }
-
-// Details.defaultProps = {
-//   navigation: {
-//     state: {
-//       params: {
-//         from: '',
-//       },
-//     },
-//     goBack: () => null,
-//   },
-// }
 
 const styles = StyleSheet.create({
   root: {

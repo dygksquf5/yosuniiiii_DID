@@ -11,8 +11,6 @@ import {
   FlatList,
   List
 } from 'react-native';
-import Button from '../src/components/Button';
-import { colors } from '../src/theme';
 import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
 import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -40,7 +38,6 @@ if (a == undefined){
    test_pic = require("../assets/images/IDcard.png"),
    date_1
 }
-// ------------------------------// 
 
 
 
@@ -62,8 +59,6 @@ export default class Home extends Component {
               <View style={styles.cardDate}>
               <Image style={styles.icon1} 
                source={test_pic}>
-              {/* <FontIcon name='script-text' color='black' size={44}> 
-                  </FontIcon>  */}
                   </Image>
 
               <Text style={styles.cardDownText}>{testtest}</Text>
@@ -91,9 +86,6 @@ export default class Home extends Component {
 
         <View style={styles.addButton}>
           <TouchableHighlight underlayColor='#ff7043' onPress={this.gotoQR} >
-            {/* <Image
-            source={require("../assets/images/qrcode.png")}>
-            </Image> */}
             <Text style={{ marginLeft:-10, marginTop: 3, fontSize: 14,
                   color: "white"}}> <FontIcon name='qrcode-scan' color='white' size={27}  style={{marginLeft:-90}} /><Text>   </Text>
               SCAN CODE
@@ -110,25 +102,13 @@ export default class Home extends Component {
   gotoPassword = () => {
     this.props.navigation.navigate('SecondScreen');
   };
-  gotoPassword_2 = () => {
-    this.props.navigation.navigate('password');
-  };
   gotoGetCred = () => {
     this.props.navigation.replace('Loading_2');
   };
 
-
-  getToLedger = () => {
-    this.props.navigation.navigate('Home');
-    Axios.post('http://192.168.0.5:3001/api/log').then((response) =>
-      setproverDID(response.data)
-    );
-  };
-
-
-
-
 }
+
+
 
 const styles = StyleSheet.create({
   root: {
@@ -137,12 +117,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
-
-  // button: {
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-    
-  // },
 
   card: {
     height: 180,
@@ -213,7 +187,6 @@ const styles = StyleSheet.create({
   },
   line:{
     backgroundColor:'#2c69dd',
-    // #96b4ee
     fontSize: 5,
     marginTop: 28,
     marginBottom: -10
@@ -238,18 +211,11 @@ const styles = StyleSheet.create({
   },
 
   cardDownText: {
-    // backgroundColor: 'black',
     marginTop: -41,
     fontSize: 24,
     marginRight: 35,
     marginBottom:13,
     
   },
-
-  // message:{
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   marginBottom: 140,
-  // },
 
 });
