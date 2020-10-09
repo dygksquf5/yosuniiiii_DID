@@ -1,23 +1,12 @@
 const indy = require("indy-sdk");
 const util = require("./util");
 const COLOR = require("./colors");
-const fetch = require("node-fetch");
-const { URLSearchParams } = require("url");
 
 const log = console.log;
 
 const ISSUER_COLOR = COLOR.CYAN;
 const PROVER_COLOR = COLOR.MAGENTA;
 const VERIFIER_COLOR = COLOR.YELLOW;
-
-const ISSUER_ADDRESS = "http://192.168.0.49:3000/issuer";
-const PROVER_ADDRESS = "http://192.168.0.49:3001/prover";
-const VERIFIER_ADDRESS = "http://192.168.0.49:2000/verifier";
-
-
-
-
-
 
 
 
@@ -45,58 +34,6 @@ function logKO(s) {
 
 
 
-// Communication Functions
-// async function sendToProver(type, message) {
-//   try {
-//     const params = new URLSearchParams();
-//     params.append("type", type);
-//     params.append("message", message);
-//     await fetch(PROVER_ADDRESS, {
-//       method: "post",
-//       body: params
-//     })
-//       .then(res => res.json())
-//       .then(json => json);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-// async function sendToVerfier(type, message) {
-//   try {
-//     const params = new URLSearchParams();
-//     params.append("type", type);
-//     params.append("message", message);
-//     await fetch(VERIFIER_ADDRESS, {
-//       method: "post",
-//       body: params
-//     })
-//       .then(res => res.json())
-//       .then(json => json);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-// async function sendToIssuer(type, message) {
-//   try {
-//     const params = new URLSearchParams();
-//     params.append("type", type);
-//     params.append("message", message);
-//     await fetch(ISSUER_ADDRESS, {
-//       method: "post",
-//       body: params
-//     })
-//       .then(res => res.json())
-//       .then(json => json);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
-
-
-// Wallet Functions
 
 async function createAndOpenWallet(actor) {
   const walletConfig = { id: actor + ".wallet" };
