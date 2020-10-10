@@ -26,8 +26,8 @@ state = {
   country:'',
 }
 
-    componentDidMount() {
-    Axios.post('http://192.168.0.5:3001/api/getCred')
+  componentWillMount() {
+    Axios.post('http://192.168.0.5:3001/api/getCred/adult')
     .then(response => {this.setState({
       name: response.data.name,
       age:response.data.age,
@@ -63,6 +63,20 @@ state = {
             </Card>
             </TouchableOpacity>
           </Content>
+
+          <Content style={{marginVertical:-100}}>
+          <TouchableOpacity onPress={this.Minor_Credential}>
+            <Card style={styles.card2}>
+              <View style={styles.information2}>
+                <Text > Minor Credential -> {this.state.name2}</Text>
+            
+
+              </View>
+            </Card>
+            </TouchableOpacity>
+          </Content>
+
+
         </Container>
 
 
@@ -70,7 +84,7 @@ state = {
         <StatusBar barStyle='light-content' />
         <Text style={styles.title}>인증 QR코드 생성하기</Text>
         <View style={styles.addButton}>
-        <TouchableHighlight underlayColor='#ff7043' onPress={this.QRgenerator}>
+        <TouchableHighlight underlayColor='#ff7043' onPress={this.QRgenerator_adult}>
           <FontIcon name='qrcode-scan' color='#231d54' size={35} />
         </TouchableHighlight>
         </View>
@@ -78,9 +92,13 @@ state = {
       </View>
     );
   }
-  QRgenerator = () => {
-    this.props.navigation.replace('QRgenerator');
+  QRgenerator_adult = () => {
+    this.props.navigation.replace('QRgenerator_adult');
   };
+  Minor_Credential = () => {
+    this.props.navigation.replace('Details2');
+  };
+
 }
 
 
@@ -117,7 +135,7 @@ const styles = StyleSheet.create({
     },
   },
   card: {
-    height: 300,
+    height: 150,
     width: 300,
     marginLeft: 25,
     marginRight: 25,
@@ -133,11 +151,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#FAFAFA',
     borderColor: '#FAFAFA',
   },
+  card2: {
+    height: 50,
+    width: 300,
+    marginLeft: 25,
+    marginRight: 25,
+    marginTop: 20,
+    shadowColor: '#A4A4A4',
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 4,
+      width: 1,
+    },
+    borderRadius: 14,
+    backgroundColor: '#FAFAFA',
+    borderColor: '#FAFAFA',
+  },
+
   information: {
     marginTop: 30,
     marginLeft: 30,
     fontSize: 10,
-
-
-  }
+  },
+  information2:{
+    marginTop: 15,
+    marginLeft: 80,
+    fontSize: 10,
+  },
 });

@@ -1,26 +1,87 @@
 import React, { useState, useEffect, Component } from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import Button from '../src/components/Button';
-import { colors } from '../src/theme';
+import { StyleSheet, 
+  Text,
+  View,
+  StatusBar,
+  Alert,
+  TouchableOpacity,
+  TouchableHighlight,
+  Image
+ } from 'react-native';
+import FontIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Container, Header, Content, Card, CardItem, Body } from 'native-base';
+
+import Axios from 'axios';
 
 
-export default class Details2 extends Component {
+
+export default class Details extends Component {
+
+state = {
+  name: '',
+  age:'',
+  address:'',
+  phone_number:'',
+  gender:'',
+  country:'',
+}
+
+  componentWillMount() {
+    Axios.post('http://192.168.0.5:3001/api/getCred/minor')
+    .then(response => {this.setState({
+      name: response.data.name,
+      age:response.data.age,
+      address:response.data.address,
+      phone_number:response.data.phone_number,
+      gender:response.data.gender,
+      country:response.data.country,
+    })})
+
+  }
+
+
+
+
+
+
   render() {
     return (
       <View style={styles.root}>
+        <Container>
+          <Content>
+          <TouchableOpacity >
+            <Card style={styles.card}>
+              <View style={styles.information}>
+                <Text > 이름 : {this.state.name}</Text>
+                <Text > 나이 : {this.state.age}</Text>
+                <Text > 주소 : {this.state.address}</Text>
+                <Text > 성별 : {this.state.gender}</Text>
+                <Text > 국가 : {this.state.country}</Text>            
+            
+
+              </View>
+            </Card>
+            </TouchableOpacity>
+          </Content>
+
+
+        </Container>
+
+
+
         <StatusBar barStyle='light-content' />
-        <Text style={styles.title}>여기는 디 테 일 22!!</Text>
-        <Button
-          title='Go Back'
-          color='white'
-          backgroundColor={colors.pink}
-          onPress={this.gotoBack}
-        />
+        <Text style={styles.title}>인증 QR코드 생성하기</Text>
+        <View style={styles.addButton}>
+        <TouchableHighlight underlayColor='#ff7043' onPress={this.QRgenerator_minor}>
+          <FontIcon name='qrcode-scan' color='#231d54' size={35} />
+        </TouchableHighlight>
+        </View>
+
       </View>
     );
   }
-  gotoBack = () => {
-    this.props.navigation.replace('Home');
+  QRgenerator_minor = () => {
+    this.props.navigation.replace('QRgenerator_minor');
   };
 }
 
@@ -37,4 +98,66 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
   },
+  addButton: {
+    backgroundColor: '#FAFAFA',
+    borderColor: '#FAFAFA',
+    borderWidth: 1,
+    height: 75,
+    width: 75,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 50,
+    right: 20,
+    shadowColor: '#000000',
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0,
+    },
+  },
+  card: {
+    height: 150,
+    width: 300,
+    marginLeft: 25,
+    marginRight: 25,
+    marginTop: 40,
+    shadowColor: '#A4A4A4',
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 4,
+      width: 1,
+    },
+    borderRadius: 14,
+    backgroundColor: '#FAFAFA',
+    borderColor: '#FAFAFA',
+  },
+  card2: {
+    height: 150,
+    width: 300,
+    marginLeft: 25,
+    marginRight: 25,
+    marginTop: 20,
+    shadowColor: '#A4A4A4',
+    shadowOpacity: 0.8,
+    shadowRadius: 3,
+    shadowOffset: {
+      height: 4,
+      width: 1,
+    },
+    borderRadius: 14,
+    backgroundColor: '#FAFAFA',
+    borderColor: '#FAFAFA',
+  },
+
+  information: {
+    marginTop: 30,
+    marginLeft: 30,
+    fontSize: 10,
+
+
+  }
 });

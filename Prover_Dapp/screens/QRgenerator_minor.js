@@ -4,11 +4,11 @@ import SvgQRCode from 'react-native-qrcode-svg';
 
 
 function Simple() {
-  return <SvgQRCode value="Th7MpTaRZVRYnPiabds81Y:2:KIMYOHAN:1.0" size={300}/>
+  return <SvgQRCode value="http://192.168.0.5:3001/api/proofReq/minor" size={300}/>
 }
 
 
-export default class Details extends Component {
+export default class mQRgenerator_minor extends Component {
   render() {
     return (
       <View style={styles.root}>
