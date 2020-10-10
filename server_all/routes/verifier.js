@@ -116,11 +116,25 @@ module.exports = function (app){
 
 
 
-  app.post("/api/getschemaId", urlencodedParser,async function(req,res){
+  app.post("/api/proof", urlencodedParser,async function(req,res){
+
+
+    verifier.proofAPI = req.body.data
 
     //request issuer!!!! about schemaID !!! 
+    async function getschemaId(req,res){
+      await axios.post("http://192.168.0.5:3000/api/schemaId")
+      .then(response => verifier.schemaId = response.data);
+        logKO(verifier.schemaId);
+    }
+    async function getcredDefId(req,res){
+      await axios.post("http://192.168.0.5:3000/api/credDefId")
+      .then(response => verifier.credDefId = response.data);
+        logKO(verifier.credDefId);
+    }
 
-    verifier.schemaId = req.body.data;
+    await getschemaId()
+    await getcredDefId()
 
     logVerifier("Verifier gets schema from ledger");
     verifier.schema = await getSchemaFromLedger(
@@ -156,11 +170,12 @@ module.exports = function (app){
   log(
     "Transfer proof request from 'Verifier' to 'Prover' (via HTTP or other) ..."
   );
-
-  async function sendProofReq(){
+ 
+  async function sendProofReq(data){
     await axios({
       method: 'POST',
-      url: "http://192.168.0.5:3001/api/proofReq",
+      // url: "http://192.168.0.5:3001/api/proofReq",
+      url: data,
       headers: {
         'content-Type': 'application/json'
       },
@@ -170,7 +185,7 @@ module.exports = function (app){
       }
     }).then(response => verifier.proof=response.data);
   }
-  await sendProofReq()
+  await sendProofReq(verifier.proofAPI)
 
   logKO("Waiting for proof from prover...");
   while (verifier.proof == undefined) {
@@ -208,7 +223,7 @@ module.exports = function (app){
 
     } else {
       logKO("\nKO : proof is expected but, 미성년자입니다 :(");
-      const bad = "KO : proof is expected but, 미성년자입니다 :("
+      const bad = "KO : proof is verified but, 미성년자입니다 :("
       res.send(JSON.stringify(bad))
     }
 

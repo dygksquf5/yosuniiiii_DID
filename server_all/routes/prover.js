@@ -126,7 +126,7 @@ module.exports = function (app){
 
 
   app.post("/api/schemaId",urlencodedParser, async function(req,res){
-
+  try{
 
     async function getschemaId(){
       await axios.post("http://192.168.0.5:3000/api/schemaId")
@@ -150,9 +150,19 @@ module.exports = function (app){
         prover.did,
         prover.schemaId
       );
-
-
       logOK("got a schema ledger")
+
+
+      db.get(`SELECT schemaId FROM schemaId WHERE aid=2`, function(err, row){
+        if (`${row.schemaId}` === prover.schemaId){
+          console.log("already exist", `${row.schemaId}`);
+        }else{
+          db.run('INSERT INTO schemaId(schemaId) VALUES (?)', [prover.schemaId]);
+          logOK("saved on Database");
+          console.log(prover.schemaId)
+        }
+      });
+  
 
 
     async function getCredOffer(){
@@ -179,6 +189,17 @@ module.exports = function (app){
       prover.did,
       prover.credDefId
     );
+
+    db.get(`SELECT credDefId FROM credDefId WHERE aid=2`, function(err, row){
+      if (`${row.credDefId}` === prover.credDefId){
+        console.log("already exist", `${row.credDefId}`);
+      }else{
+        db.run('INSERT INTO credDefId(credDefId) VALUES (?)', [prover.credDefId]);
+        logOK("saved on Database");
+        console.log(prover.credDefId)
+      }
+    });
+
 
 
 
@@ -208,9 +229,11 @@ module.exports = function (app){
       prover.credReq = credReq;
       prover.credReqMetadata = credReqMetadata;
     }
-    
+    }catch(error){
+      console.log(error)
+    }
 
-    });
+  });
 
     app.post("/api/credReq",urlencodedParser, async function(req,res){
       res.send(JSON.stringify(prover.credReq));
@@ -283,53 +306,119 @@ module.exports = function (app){
 
 
 
-    app.post("/api/getCred", urlencodedParser, async function(req,res){
+    app.post("/api/getCred/adult", urlencodedParser, async function(req,res){
+      try{
+        function database(){
+          db.get('SELECT outCredId FROM outCredId WHERE aid=1', function(err, row){
+            if (err){
+              return logKO(err.message);
+            }{
+              prover.outCredId = `${row.outCredId}`;
 
-    function database(){
-      db.get('SELECT outCredId FROM outCredId WHERE aid=1', function(err, row){
-        if (err){
-          return logKO(err.message);
-        }{
-          prover.outCredId = `${row.outCredId}`;
+              console.log(prover.outCredId);
 
-          console.log(prover.outCredId);
-
-        };
-      });
-    }
-
-      logOK("\n\ngetting specific credential from wallet ");
-      while (prover.outCredId == undefined) {
-        database()
-        await sleep(2000);
-      }
-  
-
-      const get_credential = await indy.proverGetCredential(
-        prover.wallet,
-        prover.outCredId
-      );
+            };
+          });
+        }
+          prover.outCredId = null
+          logOK("\n\ngetting specific credential from wallet ");
+          while (prover.outCredId == undefined) {
+            database()
+            await sleep(2000);
+          }
       
-        logOK(JSON.stringify(get_credential))
 
-      res.send(JSON.stringify(get_credential.attrs))
+          const get_credential = await indy.proverGetCredential(
+            prover.wallet,
+            prover.outCredId
+          );
+          
+            logOK(JSON.stringify(get_credential))
+
+          res.send(JSON.stringify(get_credential.attrs))
+      }catch(error){
+        console.log(error);
+      }
+     
+    });
+
+    app.post("/api/getCred/minor", urlencodedParser, async function(req,res){
+      try{
+        function database(){
+          db.get('SELECT outCredId FROM outCredId WHERE aid=2', function(err, row){
+            if (err){
+              return logKO(err.message);
+            }{
+              prover.outCredId = `${row.outCredId}`;
+
+              console.log(prover.outCredId);
+
+            };
+          });
+        }
+          prover.outCredId = null
+          logOK("\n\ngetting specific credential from wallet ");
+          while (prover.outCredId == undefined) {
+            database()
+            await sleep(2000);
+          }
+      
+
+          const get_credential = await indy.proverGetCredential(
+            prover.wallet,
+            prover.outCredId
+          );
+          
+            logOK(JSON.stringify(get_credential))
+
+          res.send(JSON.stringify(get_credential.attrs))
+      }catch(error){
+        console.log(error);
+      }
      
     });
 
 
 
 
-  app.post("/api/proofReq", urlencodedParser, async function(req,res){
+
+  app.post("/api/proofReq/adult", urlencodedParser, async function(req,res){
     try{
 
+      db.get(`SELECT schemaId FROM schemaId where aid=2`, function(err, row){
+        if (err){
+          return logKO(err.message);
+        }{
+          prover.schemaId = `${row.schemaId}`;
+          console.log("get SchemaId from Database");
+        };
+      });
+      db.get(`SELECT credDefId FROM credDefId WHERE aid=2`, function(err, row){
+        if (err){
+          return logKO(err.message);
+        }{
+          prover.credDefId = `${row.credDefId}`;
+          console.log("get CredDefId from Database");
+          console.log(prover.credDefId)
+        };
+  
+      });
+  
     prover.proofReq = req.body.data;
-    prover.schemaId = req.body.schemaId;
+    // prover.schemaId = req.body.schemaId;
     console.log(prover.proofReq)
     console.log(prover.schemaId)
     logOK("\n\nWaiting for proof request from verifier!");
+    while (prover.schemaId == undefined) {
+      await sleep(2000);
+    }
     while (prover.proofReq == undefined) {
       await sleep(2000);
     }
+    while (prover.credDefId == undefined) {
+      await sleep(2000);
+    }
+
 
     logProver("Prover gets credentials for proof request");
     {
@@ -389,18 +478,18 @@ module.exports = function (app){
       [prover.schemaId]: prover.schema
     };
 
-    async function getcredDefId(){
-      await axios.post("http://192.168.0.5:3000/api/credDefId")
-      .then(response => prover.credDefId = response.data);
+    // async function getcredDefId(){
+    //   await axios.post("http://192.168.0.5:3000/api/credDefId")
+    //   .then(response => prover.credDefId = response.data);
 
-        logKO(prover.credDefId);
+    //     logKO(prover.credDefId);
 
-    };
+    // };
 
-    while (prover.credDefId == undefined) {
-      await getcredDefId()
-      await sleep(2000);
-    }
+    // while (prover.credDefId == undefined) {
+    //   await getcredDefId()
+    //   await sleep(2000);
+    // }
     function database(){
       db.get('SELECT masterSecretId FROM outCredId WHERE aid=1', function(err, row){
         if (err){
@@ -413,6 +502,7 @@ module.exports = function (app){
         };
       });
     }
+    prover.masterSecretId = null
     while (prover.masterSecretId == undefined) {
       database()
       await sleep(2000);
@@ -450,6 +540,160 @@ module.exports = function (app){
       console.log(error)
     }
   });
+
+
+
+
+
+
+
+  app.post("/api/proofReq/minor", urlencodedParser, async function(req,res){
+    try{
+
+      db.get(`SELECT schemaId FROM schemaId where aid=2`, function(err, row){
+        if (err){
+          return logKO(err.message);
+        }{
+          prover.schemaId = `${row.schemaId}`;
+          console.log("get SchemaId from Database");
+        };
+      });
+      db.get(`SELECT credDefId FROM credDefId WHERE aid=2`, function(err, row){
+        if (err){
+          return logKO(err.message);
+        }{
+          prover.credDefId = `${row.credDefId}`;
+          console.log("get CredDefId from Database");
+          console.log(prover.credDefId)
+        };
+  
+      });
+  
+    prover.proofReq = req.body.data;
+    // prover.schemaId = req.body.schemaId;
+    console.log(prover.proofReq)
+    console.log(prover.schemaId)
+    logOK("\n\nWaiting for proof request from verifier!");
+    while (prover.schemaId == undefined) {
+      await sleep(2000);
+    }
+    while (prover.proofReq == undefined) {
+      await sleep(2000);
+    }
+    while (prover.credDefId == undefined) {
+      await sleep(2000);
+    }
+
+
+    logProver("Prover gets credentials for proof request");
+    {
+      const searchHandle = await indy.proverSearchCredentialsForProofReq(
+        prover.wallet,
+        prover.proofReq,
+        null
+      );
+
+
+    const credentialsForAttr1 = await indy.proverFetchCredentialsForProofReq(
+      searchHandle,
+      "attr1_referent",
+      100
+      
+    );
+
+    prover.credInfoForAttribute = credentialsForAttr1[0]["cred_info"];
+
+    const credentialsForPredicate1 = await indy.proverFetchCredentialsForProofReq(
+      searchHandle,
+      "predicate1_referent",
+      100
+      
+    );
+
+
+    prover.credInfoForPredicate = credentialsForPredicate1[0]["cred_info"];
+
+    await indy.proverCloseCredentialsSearchForProofReq(searchHandle);
+    }
+
+    logProver("Prover creates proof for proof request");
+    prover.requestedCredentials = {
+      self_attested_attributes: {},
+      requested_attributes: {
+        attr1_referent: {
+          cred_id: prover.credInfoForAttribute["referent"],
+          revealed: true
+        }
+      },
+      requested_predicates: {
+        predicate1_referent: {
+          cred_id: prover.credInfoForPredicate["referent"]
+        }
+      }
+    };
+
+    logProver("Prover gets schema from ledger");
+    prover.schema = await getSchemaFromLedger(
+      prover.poolHandle,
+      prover.did,
+      prover.schemaId
+    );
+
+    prover.schemas = {
+      [prover.schemaId]: prover.schema
+    };
+
+    function database(){
+      db.get('SELECT masterSecretId FROM outCredId WHERE aid=2', function(err, row){
+        if (err){
+          return logKO(err.message);
+        }{
+          prover.masterSecretId = `${row.masterSecretId}`;
+
+          console.log(prover.masterSecretId);
+
+        };
+      });
+    }
+    prover.masterSecretId = null
+    while (prover.masterSecretId == undefined) {
+      database()
+      await sleep(2000);
+    }
+
+    logKO("-----------------------------1 done ")
+    prover.credDef = await getCredDefFromLedger(
+      prover.poolHandle,
+      prover.did,
+      prover.credDefId
+    );
+    prover.credDefs = {
+      [prover.credDefId]: prover.credDef
+    };
+    logKO("-----------------------------2 done ")
+
+    prover.revocStates = {};
+    logKO("-----------------------------3 done ")
+
+
+    prover.proof = await indy.proverCreateProof(
+      prover.wallet,
+      prover.proofReq,
+      prover.requestedCredentials,
+      prover.masterSecretId,
+      prover.schemas,
+      prover.credDefs,
+      prover.revocStates
+    );
+    logKO("-----------------------------4 done ")
+
+    logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
+      res.send(prover.proof);
+    }catch(error){
+      console.log(error)
+    }
+  });
+
 
 
 

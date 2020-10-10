@@ -252,8 +252,8 @@ module.exports = function (app){
     };
   
     
-    db.get(`SELECT credDefId FROM credDefId `, function(err, row){
-      if (`${row.credDefId}` == issuer.credDefId){
+    db.get(`SELECT credDefId FROM credDefId WHERE aid=2`, function(err, row){
+      if (`${row.credDefId}` === issuer.credDefId){
         console.log("already exist", `${row.credDefId}`);
       }else{
         db.run('INSERT INTO credDefId(credDefId) VALUES (?)', [issuer.credDefId]);
@@ -341,8 +341,8 @@ module.exports = function (app){
         const credValues = {
           gender: { raw: "male", encoded: "123456789123456789" },
           age: {
-            raw: "27",
-            encoded: "27"
+            raw: "18",
+            encoded: "18"
           },
           phone_number: {raw: "01051373507", encoded: "01051373507"},
           name: { raw: "김요한", encoded: "123456789123456789" },

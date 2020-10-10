@@ -69,6 +69,8 @@ export default class Home extends Component {
             </Card>
             </TouchableOpacity>
           </Content>
+
+          
           <Content style={{marginVertical:-110}}>
           <TouchableOpacity onPress={this.gotoGetCred}>
             <Card style={styles.card2}> 
@@ -81,6 +83,8 @@ export default class Home extends Component {
           </Content>
 
         </Container>
+
+        
 
 
 

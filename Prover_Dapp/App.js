@@ -22,7 +22,8 @@ import Details from './screens/Details';
 import Profile from './screens/Profile';
 import Details2 from './screens/Details2';
 import Loading from './screens/Loading';
-import QRgenerator from './screens/QRgenerator';
+import QRgenerator_adult from './screens/QRgenerator_adult';
+import QRgenerator_minor from './screens/QRgenerator_minor';
 import success from './screens/success';
 import Loading_2 from './screens/Loading_2'
 import wallet from './screens/wallet'
@@ -99,12 +100,24 @@ const StacNav2 = createStackNavigator({
     },
     }),
  },
+ Details2: { screen: Details2,
+  navigationOptions: ({ navigation }) => ({
+    title: "  Details2",
+    headerTintColor: 'black',
+    headerStyle: { backgroundColor: 'white' , height: 110 },
+    headerTitleStyle: { fontSize: 20, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
+    justifyContent: 'center',
+
+  },
+  }),
+},
+
   SecondScreen: { screen: SecondScreen,
     navigationOptions: ({ navigation }) => ({
       headerShown: false,
     }),
  },
-  QRgenerator: {screen: QRgenerator,
+ QRgenerator_adult: {screen: QRgenerator_adult,
     navigationOptions: ({ navigation }) => ({
       title: " ",
       headerTintColor: 'black',
@@ -114,14 +127,16 @@ const StacNav2 = createStackNavigator({
     },
     }),
 },
-
-
-  Details2: { screen: Details2,
-    navigationOptions: ({ navigation }) => ({
-      title: user_name+"님, 반갑습니다",
-      ...navigationProps,
-    }),
- },
+QRgenerator_minor: {screen: QRgenerator_minor,
+  navigationOptions: ({ navigation }) => ({
+    title: " ",
+    headerTintColor: 'black',
+    headerStyle: { backgroundColor: 'white' , height: 110 },
+    headerTitleStyle: { fontSize: 20, fontweight: 'bold', marginRight:80 , alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  }),
+},
 
   QRcode_scanner: { screen: QRcode_scanner, ncavigationOptions: { headerShown: false } },
 
