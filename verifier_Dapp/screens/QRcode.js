@@ -37,7 +37,7 @@ function QRcode() {
     async function testtest() {
       await Axios({
         method: 'POST',
-        url: "http://192.168.0.5:3002/api/getschemaId",
+        url: "http://192.168.0.5:3002/api/proof",
         headers: {
           'Content-Type': 'application/json',
         },
