@@ -32,10 +32,33 @@ module.exports = function (app){
 
 
     app.post("/api/deleteWallet_and_create", urlencodedParser, async function(req,res){
+      const walletConfig = { id: "prover" + ".wallet" };
+      const walletCredentials = { key: 'prover' + ".wallet_key" };
+      
+      await indy.closeWallet(prover.wallet);
+
+
       log("Prover delete Wallet");
       await indy.deleteWallet(walletConfig, walletCredentials);
+
       log("Prover create Wallet");
       await indy.createWallet(walletConfig, walletCredentials);
+
+      // db.run('DELETE * FROM outCredId');
+      // logOK("delete all from outCredId in Database");
+
+      log("Prover Open Wallet");
+
+      prover.wallet=await indy.openWallet(walletConfig, walletCredentials);
+
+      log("Prover Create DID");
+
+      prover.did = await createAndStoreMyDid(
+        prover.wallet, 
+        "000000000000000000000000Steward2"
+       );
+      logKO("\tProver's DID is: " + prover.did);
+
     });
 
     app.post("/api/log", urlencodedParser ,async function(req,res){
@@ -129,7 +152,7 @@ module.exports = function (app){
   try{
 
     async function getschemaId(){
-      await axios.post("http://192.168.0.5:3000/api/schemaId")
+      await axios.post("http://192.168.0.14:3000/api/schemaId")
       .then(response => prover.schemaId = response.data);
 
         // prover.schemId = "Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"
@@ -166,7 +189,7 @@ module.exports = function (app){
 
 
     async function getCredOffer(){
-      await axios.post("http://192.168.0.5:3000/api/credOffer")
+      await axios.post("http://192.168.0.14:3000/api/credOffer")
       .then(response => prover.credOffer = response.data);
 
         logKO(JSON.stringify(prover.credOffer));
@@ -174,6 +197,7 @@ module.exports = function (app){
 
 
     logOK("Waiting  credential offer...");
+    prover.credOffer = null;
     while (prover.credOffer == undefined) {
       await getCredOffer(),
       await sleep(2000);
@@ -181,7 +205,7 @@ module.exports = function (app){
 
 
     logOK (" got it OFFER !!  ")
-
+    
     logProver("Prover gets credential definition from ledger");
     prover.credDefId = prover.credOffer["cred_def_id"];
     prover.credDef = await getCredDefFromLedger(
@@ -205,6 +229,7 @@ module.exports = function (app){
 
 
     logProver("Prover creates master secret");
+    prover.masterSecretId = null;
     prover.masterSecretId = await indy.proverCreateMasterSecret(
       prover.wallet,
       undefined
@@ -219,6 +244,7 @@ module.exports = function (app){
 
     logProver("Prover creates credential request");
     {
+
       const [credReq, credReqMetadata] = await indy.proverCreateCredentialReq(
         prover.wallet,
         prover.did,
@@ -247,10 +273,11 @@ module.exports = function (app){
 
       async function requestCred(){
 
-        await axios.post("http://192.168.0.5:3000/api/cred")
+        await axios.post("http://192.168.0.14:3000/api/cred")
         .then(response => prover.cred = response.data)
       }
 
+      prover.cred = null;
       logOK("\n\nWaiting for Credential from Issuer...");
       while (prover.cred == undefined) {
         await sleep(2000),
@@ -260,6 +287,7 @@ module.exports = function (app){
   
 
       logProver("Prover stores credential which was received from issuer");
+      prover.outCredId = null;
        prover.outCredId =  await indy.proverStoreCredential(
         prover.wallet,
         undefined,
@@ -479,7 +507,7 @@ module.exports = function (app){
     };
 
     // async function getcredDefId(){
-    //   await axios.post("http://192.168.0.5:3000/api/credDefId")
+    //   await axios.post("http://192.168.0.14:3000/api/credDefId")
     //   .then(response => prover.credDefId = response.data);
 
     //     logKO(prover.credDefId);

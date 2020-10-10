@@ -306,7 +306,7 @@ module.exports = function (app){
 
 
       async function test(){
-        await axios.post("http://192.168.0.5:3001/api/credReq")
+        await axios.post("http://192.168.0.14:3001/api/credReq")
         .then(response => issuer.credReq = response.data);
   
         logOK(JSON.stringify(issuer.credReq));
@@ -339,13 +339,15 @@ module.exports = function (app){
       logIssuer("Issuer creates credential");
       {
         const credValues = {
-          gender: { raw: "male", encoded: "123456789123456789" },
+          gender: { raw: "woman", encoded: "123456789123456789" },
           age: {
             raw: "18",
             encoded: "18"
           },
           phone_number: {raw: "01051373507", encoded: "01051373507"},
-          name: { raw: "김요한", encoded: "123456789123456789" },
+          // name: { raw: "김요한 ", encoded: "123456789123456789" },
+          name: { raw: "김요순", encoded: "123456789123456789" },
+
           address: { raw: "대전 ,중구 중앙로 119", encoded: "123456789123456789" },
           country: { raw: "South Korea", encoded: "123456789123456789" },
         };

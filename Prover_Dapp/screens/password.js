@@ -92,7 +92,7 @@ export default class SecondScreen extends Component {
       this.pinInput.current.shake().then(() => this.setState({ code: '' }));
     } else {
       this.props.navigation.replace('success');
-      Axios.post('http://192.168.0.5:3001/api/requestCred')
+      Axios.post('http://192.168.0.14:3001/api/requestCred')
       // .then(response => {insert_cred(JSON.stringify(response.data.name))})
 
     }

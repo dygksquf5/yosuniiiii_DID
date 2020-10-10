@@ -102,7 +102,7 @@ export default class App extends Component{
 
   render(){
       if(this.state.isLoading){
-        Axios.post('http://192.168.0.5:3002/api/log')
+        Axios.post('http://192.168.0.14:3002/api/log')
         return <Loading/>
       }else{
         return <Appcontainer />

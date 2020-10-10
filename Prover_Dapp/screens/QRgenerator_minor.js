@@ -4,7 +4,7 @@ import SvgQRCode from 'react-native-qrcode-svg';
 
 
 function Simple() {
-  return <SvgQRCode value="http://192.168.0.5:3001/api/proofReq/minor" size={300}/>
+  return <SvgQRCode value="http://192.168.0.14:3001/api/proofReq/minor" size={300}/>
 }
 
 
