@@ -29,7 +29,7 @@ crews / Front-end
    - block-chain 네트워크는 docker를 이용하여 총 4개의 노드를 구성하여 네트워크를 구성하게 됨. open-source를 이용한 webserver가 트랜젝션 실시간 상황을 catch 할 수 있게 해줌.
    - Hyperledger-Indy open-source API (이번 프로젝트에서는 Node.js를 사용) 로 신원인증 전 과정 코드 작성 진행.
    - 신분증을 발급하고, 발급받고, 발급받은 신분증을 사용(=인증) 하는 과정을 모두 구현하기 위해 최소 총 3명의 가상 Clients 가 필요했기 때문에,
-     Node.js로 issuer(발급자), prover(사용자), verifier(증명자) 이렇게 총 3개의 서버를 구성하게 됨.
+     Node.js(10.22.0)로 issuer(발급자), prover(사용자), verifier(증명자) 이렇게 총 3개의 서버를 구성하게 됨.
    - issuer(발급자) 는 모바일 신분증을 사용자에게 발급 해 줄 수 있는 가상의 '정부' 로 구성. node.js 서버와 정부 web 페이지를 구성하여 신분증을 발급하는 과정을 구현.
    - prover(사용자) 는 모바일 신분증을 정부로부터 핸드폰 DApp 에 발급받는 과정 및 사용하는 과정을 구현하기 위해 React-native(expo) 로 어플을 구현, Node.js 서버와 데이터를 주고받기 위해 REST API 
      를 적극활용.
