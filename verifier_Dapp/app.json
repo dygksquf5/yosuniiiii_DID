@@ -1,23 +1,13 @@
 {
   "expo": {
     
-    "name": "stack",
-    "slug": "stack",
+    "name": "TAP",
+    "slug": "TAP",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "icon": "./assets/loading.png",
     "ios": {
+      "bundleIdentifier":"com.TAP.yosuniiiii" ,
       "supportsTablet": true
     },
     "web": {
