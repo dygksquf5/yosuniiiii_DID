@@ -32,6 +32,7 @@ module.exports = function (app){
 
 
     app.post("/api/deleteWallet_and_create", urlencodedParser, async function(req,res){
+
       const walletConfig = { id: "prover" + ".wallet" };
       const walletCredentials = { key: 'prover' + ".wallet_key" };
       
@@ -152,10 +153,9 @@ module.exports = function (app){
   try{
 
     async function getschemaId(){
-      await axios.post("http://192.168.0.14:3000/api/schemaId")
+      await axios.post("http://192.168.0.13:3000/api/schemaId")
       .then(response => prover.schemaId = response.data);
 
-        // prover.schemId = "Th7MpTaRZVRYnPiabds81Y:2:YOSUNIIIII:1.0"
         logKO(prover.schemaId);
 
     };    
@@ -189,7 +189,7 @@ module.exports = function (app){
 
 
     async function getCredOffer(){
-      await axios.post("http://192.168.0.14:3000/api/credOffer")
+      await axios.post("http://192.168.0.13:3000/api/credOffer")
       .then(response => prover.credOffer = response.data);
 
         logKO(JSON.stringify(prover.credOffer));
@@ -235,13 +235,6 @@ module.exports = function (app){
       undefined
     );
 
-
-
-  
-
-
-
-
     logProver("Prover creates credential request");
     {
 
@@ -273,7 +266,7 @@ module.exports = function (app){
 
       async function requestCred(){
 
-        await axios.post("http://192.168.0.14:3000/api/cred")
+        await axios.post("http://192.168.0.13:3000/api/cred")
         .then(response => prover.cred = response.data)
       }
 
@@ -507,7 +500,7 @@ module.exports = function (app){
     };
 
     // async function getcredDefId(){
-    //   await axios.post("http://192.168.0.14:3000/api/credDefId")
+    //   await axios.post("http://192.168.0.13:3000/api/credDefId")
     //   .then(response => prover.credDefId = response.data);
 
     //     logKO(prover.credDefId);
@@ -562,7 +555,7 @@ module.exports = function (app){
     );
     logKO("-----------------------------4 done ")
 
-    logOK("Transfer proof from 'Prover' to 'Verifier' (via HTTP or other) ...");
+    logOK("Transfer proof from 'Prover' to 'Verifier' ");
       res.send(prover.proof);
     }catch(error){
       console.log(error)

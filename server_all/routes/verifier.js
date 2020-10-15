@@ -123,12 +123,12 @@ module.exports = function (app){
 
     //request issuer!!!! about schemaID !!! 
     async function getschemaId(req,res){
-      await axios.post("http://192.168.0.14:3000/api/schemaId")
+      await axios.post("http://192.168.0.13:3000/api/schemaId")
       .then(response => verifier.schemaId = response.data);
         logKO(verifier.schemaId);
     }
     async function getcredDefId(req,res){
-      await axios.post("http://192.168.0.14:3000/api/credDefId")
+      await axios.post("http://192.168.0.13:3000/api/credDefId")
       .then(response => verifier.credDefId = response.data);
         logKO(verifier.credDefId);
     }
@@ -168,7 +168,7 @@ module.exports = function (app){
   };
 
   log(
-    "Transfer proof request from 'Verifier' to 'Prover' (via HTTP or other) ..."
+    "Transfer proof request from 'Verifier' to 'Prover' "
   );
  
   async function sendProofReq(data){

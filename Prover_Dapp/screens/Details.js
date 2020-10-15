@@ -27,7 +27,7 @@ state = {
 }
 
   componentWillMount() {
-    Axios.post('http://192.168.0.14:3001/api/getCred/adult')
+    Axios.post('http://192.168.0.13:3001/api/getCred/adult')
     .then(response => {this.setState({
       name: response.data.name,
       age:response.data.age,

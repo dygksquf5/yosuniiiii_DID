@@ -149,7 +149,7 @@
             function getSchema(){
               axios({
                 method: "get",
-                url: "http://192.168.0.14:3000/api/No2"
+                url: "http://192.168.0.13:3000/api/No2"
               })
               .then(response => {
                 console.log(response.data)
@@ -224,7 +224,7 @@
             function makeSchema(){
               axios({
                 method: "get",
-                url: "http://192.168.0.14:3000/api/makeSchema"
+                url: "http://192.168.0.13:3000/api/makeSchema"
               })
               .then(response => {
                 console.log(response.data)
@@ -259,7 +259,7 @@
 
             function generateQR() {
                 // var data = qrdata.value;
-                var data = "http://192.168.0.14:3001/api/schemaId";
+                var data = "http://192.168.0.13:3001/api/schemaId";
                 qrcode.makeCode(data);
             }
         </script>
@@ -325,8 +325,8 @@
           <div class="col-md-6 col-lg-4 mb-4 mb-lg-4" data-aos="fade-up" data-aos-delay="300">
             <div class="h-entry">
               <img src="images/003_news.png" alt="Image" class="img-fluid">
-              <h2><a href="http://blog.naver.com/korea_gov/221936134143">[정부24] 코로나19 정부지원 서비스 안내 </a></h2>
-              <div class="meta mb-4">James Phelps <span class="mx-2">&bullet;</span> Apr 29, 2020<span class="mx-2">&bullet;</span> <a href="http://blog.naver.com/korea_gov/221936134143">News</a></div>
+              <h2><a href="http://blog.naver.com/korea_gov/221936134133">[정부24] 코로나19 정부지원 서비스 안내 </a></h2>
+              <div class="meta mb-4">James Phelps <span class="mx-2">&bullet;</span> Apr 29, 2020<span class="mx-2">&bullet;</span> <a href="http://blog.naver.com/korea_gov/221936134133">News</a></div>
               <p>코로나19관련 중앙, 지자체에서 지원하는 혜택을 정부24에서 한눈에 확인할 수 있습니다.</p>
               <p><a href="#">Continue Reading...</a></p>
             </div> 

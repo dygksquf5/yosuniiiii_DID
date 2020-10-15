@@ -22,7 +22,7 @@ export default class wallet extends Component {
   }
   resetWallet = () => {
     this.props.navigation.navigate('Home');
-    Axios.post('http://192.168.0.14:3001/api/deleteWallet_and_create')
+    Axios.post('http://192.168.0.13:3001/api/deleteWallet_and_create')
   };
 };
 

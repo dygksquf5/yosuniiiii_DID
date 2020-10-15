@@ -34,10 +34,10 @@ function QRcode() {
 
 
   const handleBarCodeScanned = ({ type, data }) => {
-    async function testtest() {
+    async function proof() {
       await Axios({
         method: 'POST',
-        url: "http://192.168.0.14:3002/api/proof",
+        url: "http://192.168.0.13:3002/api/proof",
         headers: {
           'Content-Type': 'application/json',
         },
@@ -50,7 +50,7 @@ function QRcode() {
     }
 
     setScanned(true);
-    testtest()
+    proof()
   };
 
   if (hasPermission === null) {

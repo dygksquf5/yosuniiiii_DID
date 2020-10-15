@@ -52,7 +52,7 @@ module.exports = function (app){
     db.serialize(function() {
       const stmt = db.prepare('INSERT INTO issuerID(pool_name, date) VALUES (?,?)');
       const date = new Date();
-      const strDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+      const strDate = `${date.toLocaleDacredReqring()} ${date.toLocaleTimeString()}`;
     
       
     stmt.run(poolName,strDate);
@@ -91,10 +91,10 @@ module.exports = function (app){
       if (err){
         return logKO(err.message);
       }
-      const test =  `${row.DID}`;
-      console.log(test,"you have got DID successfully ");
+      const credReq =  `${row.DID}`;
+      console.log(credReq,"you have got DID successfully ");
       const render_data = {
-        did : test
+        did : credReq
       }
       res.render("index.ejs", render_data)
 
@@ -216,8 +216,8 @@ module.exports = function (app){
   
          // ########### differnt way 3)###########
   
-        var test = JSON.stringify(issuer.schema);
-        logOK(test);
+        var credReq = JSON.stringify(issuer.schema);
+        logOK(credReq);
   
   
   
@@ -300,13 +300,13 @@ module.exports = function (app){
       );
   
       log(
-        "Transfer credential offer from 'Issuer' to 'Prover' (via HTTP or other) ..."
+        "Transfer credential offer from 'Issuer' to 'Prover' "
       );          
       await res.send(JSON.stringify(issuer.credOffer));
 
 
-      async function test(){
-        await axios.post("http://192.168.0.14:3001/api/credReq")
+      async function credReq(){
+        await axios.post("http://192.168.0.13:3001/api/credReq")
         .then(response => issuer.credReq = response.data);
   
         logOK(JSON.stringify(issuer.credReq));
@@ -316,7 +316,7 @@ module.exports = function (app){
       logOK("\nWaiting for Credential Request from prover!");
       while (issuer.credReq == undefined) {
         await sleep(5000),
-        await test();
+        await credReq();
       }
 
       logKO("got ittttttttt!!!!!!!")

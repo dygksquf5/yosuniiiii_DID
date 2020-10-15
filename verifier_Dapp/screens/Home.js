@@ -64,7 +64,7 @@ export default class Home extends Component {
 
   getToLedger = () => {
     this.props.navigation.navigate('Home');
-    Axios.post('http://192.168.0.14:3001/api/log').then((response) =>
+    Axios.post('http://192.168.0.13:3001/api/log').then((response) =>
       setproverDID(response.data)
     );
   };
