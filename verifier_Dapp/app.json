@@ -5,13 +5,9 @@
     "slug": "TAP",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/loading.png",
     "ios": {
       "bundleIdentifier":"com.TAP.yosuniiiii" ,
       "supportsTablet": true
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     }
   }
 }

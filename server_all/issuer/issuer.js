@@ -52,7 +52,7 @@ module.exports = function (app){
     db.serialize(function() {
       const stmt = db.prepare('INSERT INTO issuerID(pool_name, date) VALUES (?,?)');
       const date = new Date();
-      const strDate = `${date.toLocaleDacredReqring()} ${date.toLocaleTimeString()}`;
+      const strDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
     
       
     stmt.run(poolName,strDate);
@@ -60,7 +60,7 @@ module.exports = function (app){
 
     db.each('SELECT aid, pool_name, date FROM issuerID', (err, row) =>{
       logIssuer(`${row.aid})  pool_name: ${row.pool_name}  Date: ${row.date}` );
-    });
+   });
   });
 
 
@@ -252,7 +252,7 @@ module.exports = function (app){
     };
   
     
-    db.get(`SELECT credDefId FROM credDefId WHERE aid=2`, function(err, row){
+    db.get(`SELECT credDefId FROM credDefId WHERE aid=1`, function(err, row){
       if (`${row.credDefId}` === issuer.credDefId){
         console.log("already exist", `${row.credDefId}`);
       }else{
@@ -339,14 +339,14 @@ module.exports = function (app){
       logIssuer("Issuer creates credential");
       {
         const credValues = {
-          gender: { raw: "woman", encoded: "123456789123456789" },
+          gender: { raw: "man", encoded: "123456789123456789" },
           age: {
             raw: "18",
             encoded: "18"
           },
           phone_number: {raw: "01051373507", encoded: "01051373507"},
-          // name: { raw: "김요한 ", encoded: "123456789123456789" },
-          name: { raw: "김요순", encoded: "123456789123456789" },
+          name: { raw: "김요한 ", encoded: "123456789123456789" },
+          // name: { raw: "김요순", encoded: "123456789123456789" },
 
           address: { raw: "대전 ,중구 중앙로 119", encoded: "123456789123456789" },
           country: { raw: "South Korea", encoded: "123456789123456789" },

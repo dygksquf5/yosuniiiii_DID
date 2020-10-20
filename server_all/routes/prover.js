@@ -74,7 +74,7 @@ module.exports = function (app){
         const poolName = "prover" + "-pool-sandbox";
         const poolGenesisTxnPath = await util.getPoolGenesisTxnPath(poolName);
         const poolConfig = { genesis_txn: poolGenesisTxnPath };
-        prover.poolHandle=await indy.openPoolLedger(poolName, poolConfig); 
+        prover.poolHandle= await indy.openPoolLedger(poolName, poolConfig); 
       
 
         db.serialize(function() {
@@ -214,7 +214,7 @@ module.exports = function (app){
       prover.credDefId
     );
 
-    db.get(`SELECT credDefId FROM credDefId WHERE aid=2`, function(err, row){
+    db.get(`SELECT credDefId FROM credDefId WHERE aid=1`, function(err, row){
       if (`${row.credDefId}` === prover.credDefId){
         console.log("already exist", `${row.credDefId}`);
       }else{
@@ -412,9 +412,11 @@ module.exports = function (app){
         }{
           prover.schemaId = `${row.schemaId}`;
           console.log("get SchemaId from Database");
+          console.log(prover.schemaId)
+
         };
       });
-      db.get(`SELECT credDefId FROM credDefId WHERE aid=2`, function(err, row){
+      db.get(`SELECT credDefId FROM credDefId WHERE aid=1`, function(err, row){
         if (err){
           return logKO(err.message);
         }{
@@ -428,7 +430,6 @@ module.exports = function (app){
     prover.proofReq = req.body.data;
     // prover.schemaId = req.body.schemaId;
     console.log(prover.proofReq)
-    console.log(prover.schemaId)
     logOK("\n\nWaiting for proof request from verifier!");
     while (prover.schemaId == undefined) {
       await sleep(2000);
@@ -579,7 +580,7 @@ module.exports = function (app){
           console.log("get SchemaId from Database");
         };
       });
-      db.get(`SELECT credDefId FROM credDefId WHERE aid=2`, function(err, row){
+      db.get(`SELECT credDefId FROM credDefId WHERE aid=1`, function(err, row){
         if (err){
           return logKO(err.message);
         }{

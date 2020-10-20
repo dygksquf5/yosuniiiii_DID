@@ -214,7 +214,7 @@
                 <h3>출입국 사실증명</h3>
                 <p>간편한 QR 증명서!</p>
                 <button onclick="makeSchema()"> 
-                  <p><a href="#QR_section">schema 만들기!! (test)</a></p>
+                  <p><a href="#QR_section">schema 만들기!!</a></p>
                 </button>
                 </div>
             </div>
@@ -223,7 +223,7 @@
           <script>
             function makeSchema(){
               axios({
-                method: "get",
+                method: "post",
                 url: "http://192.168.0.13:3000/api/makeSchema"
               })
               .then(response => {
