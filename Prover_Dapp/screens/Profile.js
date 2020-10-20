@@ -45,7 +45,7 @@ export default class Profile extends Component {
                 </View> 
 
                 <View style={styles.view3} >
-                <Text>2020.10.5</Text>
+                <Text>2020.10.7</Text>
             </View>  
         </View>
         <View style={styles.view1}  >
@@ -60,7 +60,7 @@ export default class Profile extends Component {
                 </View> 
 
                 <View style={styles.view3} >
-                <Text>2020.10.5</Text>
+                <Text>2020.10.11</Text>
             </View>  
         </View>
        

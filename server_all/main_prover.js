@@ -21,5 +21,5 @@ app.use(express.static("public"));
 require("./routes/prover")(app);
 
 app.listen(3001, function(){
-    console.log("포트 3001번으로 서버 실행 ! 완 료 오오! 크크");
+    console.log("포트 3001번으로 사용자 서버 실행 완료!");
 });

@@ -21,5 +21,5 @@ app.use(express.static("public"));
 require("./routes/verifier")(app);
 
 app.listen(3002, function(){
-    console.log("포트 3002번으로 서버 실행 ! 완 료 오오! 크크");
+    console.log("포트 3002번으로 편의점 점주서버 실행 완료!");
 });

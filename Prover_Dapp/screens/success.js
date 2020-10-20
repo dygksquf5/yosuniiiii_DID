@@ -29,7 +29,7 @@ export default class HomeScreen extends Component {
         }}
       >
         <View style={{ marginBottom: 200 }}>
-          <Text style={styles.baseText}>본인 인증을 완료했어요 !</Text>
+          <Text style={styles.baseText}>신분증 저장을 완료했어요!</Text>
 
           <AppButton onPress={this.gotoHome} title={'확  인'} />
           {/* <Button onPress={this.gotoSecond} title="확인"></Button> */}
