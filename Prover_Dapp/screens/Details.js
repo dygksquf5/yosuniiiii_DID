@@ -68,7 +68,7 @@ state = {
           <TouchableOpacity onPress={this.Minor_Credential}>
             <Card style={styles.card2}>
               <View style={styles.information2}>
-                <Text > Minor Credential -> {this.state.name2}</Text>
+                <Text > Minor Credential {this.state.name2}</Text>
             
 
               </View>
