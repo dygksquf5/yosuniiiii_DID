@@ -67,7 +67,7 @@ crews / Front-end
    - 시스템 환경은 vitual-box 에서 ubuntu18 위에 프로젝트를 구성함.
    
 
-# 프로젝트 전체적인 구조
+# System architecture
 ![system-architecture](https://user-images.githubusercontent.com/66229916/98773513-6d8c3c00-242c-11eb-9392-2a8b371bc295.png)
 
 
