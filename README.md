@@ -32,7 +32,7 @@ crews / Front-end
  
  
  
-# PROJECT 전반적인 구조 
+# PROJECT simple flow 
   : TAP 
  
   
