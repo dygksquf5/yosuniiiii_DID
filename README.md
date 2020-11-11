@@ -36,7 +36,8 @@ crews / Front-end
  
 # PROJECT simple flow 
   : TAP 
- ![service_flow](https://user-images.githubusercontent.com/66229916/98773353-1be3b180-242c-11eb-89c5-655eeb3f8a51.png)
+<img width="1000" alt="image" src="https://user-images.githubusercontent.com/66229916/98774452-5bab9880-242e-11eb-8709-ea1ee7a32f8b.png">
+
   
 # Business aspect
 
