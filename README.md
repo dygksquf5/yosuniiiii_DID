@@ -1,5 +1,5 @@
 # Hyperledger-Indy DID/SSI 신원인증 [ TAP ] 프로젝트 
-<img width="916" alt="image" src="https://user-images.githubusercontent.com/66229916/98773064-80524100-242b-11eb-91ed-5ef833348303.png">
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/66229916/98773064-80524100-242b-11eb-91ed-5ef833348303.png">
 
 
 This is a Block-chain project which is coming up in these days as a DID. 
