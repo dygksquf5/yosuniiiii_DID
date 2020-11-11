@@ -1,18 +1,43 @@
-# yosuniiiii_DID
- DID/SSI project _ team 3  <  with Hyperledger-Indy >
+# Hyperledger-Indy DID/SSI 신원인증 [ TAP ] 프로젝트 
+
+This is a Block-chain project which is coming up in these days as a DID. 
+
+ Furthermore, our team focused on the common problem when they need to submit their ID card to buy some drinks. In my opinion, it couldn't limit just in Korea.
+ For instance, in order to verify, you should show up your ID card which has quite sensitive information. As appear your information in a convenience store or Bar etc, not only you would able to verify your ID but also you could be exposed your highly sensitive information to a stranger.
+ This exposure could cause another risky crime. 
+
+ Our team wanted to tackle this huge social problem with Block-chain technology. 
+Thus, we decided to use Hyperledger-Indy open project which is developed by Linux as a part of Block-chain DID project.
+
+we made 2 Clients Applications with React-Native(Expo), and 1 Client virtual Government web-page in order to issue a mobile ID card.
+
+we utilised Open source ( Hyperledger-Indy-SDK, Von-network).
+Thus, for using these Apps, first of all, you need an environment for Indy. Moreover need to reset new block-chain sandbox test network and replace a block-chain genesis file address to a suitable one. (as block-chain network IP address) 
+
+
+
+# TAP_BlockChain_Project
+
+ DID/SSI project _ team 3  < with Hyperledger-Indy >
  
+# 팀원
 PM/PL 
-- 김요한
+
+ - 김요한
 
 crews / Front-end
-- 이신애
-- 신은혜
+
+ - 이신애
+ - 신은혜
  
  
  
- PROJECT NAME 
+# PROJECT 전반적인 구조 
   : TAP 
+ 
   
+# Business aspect
+
  PROJECT Title_ 
   : 편의점 및 술집 등, 제품 판매시 미성년자 구분이 확실해야 하는 비즈니스를 대상으로 한 가상서비스 프로젝트. 
  
@@ -23,8 +48,9 @@ crews / Front-end
    - 블록체인 네트워크로 발급 받을 수 있는 모바일 신분증은, 자신의 개인 핸드폰에 발급받게 됨으로, 신분증 분실 등의 염려가 없으며, 언제든 핸드폰을 소지하고 다니는 시대상에 알맞게 신분증 소지의 편리함을 야기함.
  
  
- 
- About Our PROJECT
+
+
+# 프로젝트 details
    - Hyperledger-Indy open-source 를 이용한 블록체인 네트워크를 구성 (with Von-network) 
    - block-chain 네트워크는 docker를 이용하여 총 4개의 노드를 구성하여 네트워크를 구성하게 됨. open-source를 이용한 webserver가 트랜젝션 실시간 상황을 catch 할 수 있게 해줌.
    - Hyperledger-Indy open-source API (이번 프로젝트에서는 Node.js를 사용) 로 신원인증 전 과정 코드 작성 진행.
@@ -38,6 +64,11 @@ crews / Front-end
    - Database 는 SQLite3 를 이용함.
    - 시스템 환경은 vitual-box 에서 ubuntu18 위에 프로젝트를 구성함.
    
+
+# 프로젝트 전체적인 구조
+
+
+# 프로젝트 UI
    
  
 
