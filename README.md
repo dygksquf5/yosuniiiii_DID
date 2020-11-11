@@ -36,7 +36,7 @@ crews / Front-end
  
 # PROJECT simple flow 
   : TAP 
- 
+ ![service_flow](https://user-images.githubusercontent.com/66229916/98773353-1be3b180-242c-11eb-89c5-655eeb3f8a51.png)
   
 # Business aspect
 
@@ -68,9 +68,20 @@ crews / Front-end
    
 
 # 프로젝트 전체적인 구조
+![system-architecture](https://user-images.githubusercontent.com/66229916/98773513-6d8c3c00-242c-11eb-9392-2a8b371bc295.png)
 
 
 # 프로젝트 UI
+
+![for_github 001](https://user-images.githubusercontent.com/66229916/98773754-f7d4a000-242c-11eb-819e-e9cee7a6805b.jpeg)
+![for_github 002](https://user-images.githubusercontent.com/66229916/98773769-fc00bd80-242c-11eb-829c-9034645a7fca.jpeg)
+![for_github 003](https://user-images.githubusercontent.com/66229916/98773771-fd31ea80-242c-11eb-9ef5-1df0dcf63dc6.jpeg)
+![for_github 004](https://user-images.githubusercontent.com/66229916/98773773-fdca8100-242c-11eb-96bf-961bb10e39bb.jpeg)
+![for_github 005](https
+![git_2 003](https://user-images.githubusercontent.com/66229916/98773781-ff944480-242c-11eb-9c02-d7309966bbe9.jpeg)
+://user-images.githubusercontent.com/66229916/98773775-fe631780-242c-11eb-89d5-43c6d730e050.jpeg)
+![git_2 001](https://user-images.githubusercontent.com/66229916/98773777-fefbae00-242c-11eb-9dbd-ef8180a52eba.jpeg)
+![git_2 002](https://user-images.githubusercontent.com/66229916/98773780-fefbae00-242c-11eb-9ece-78f80749b470.jpeg)
    
  
 
