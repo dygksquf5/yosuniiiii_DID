@@ -33,7 +33,48 @@ crews / Front-end
  - 신은혜
  
  
- 
+
+
+# PROJECT Environment
+
+
+
+- OS (운영체제)
+ubuntu18.04
+Mac 10.15.6
+
+- Dev-Ops(데브옵스)
+docker 19.03.12v
+docker-compose 1.24.1v
+github
+Trello
+Slack
+
+- Library(라이브러리) / Framework(프레임워크)
+Axios 0.20.0v
+express 4.17.1v
+
+- Platform (플랫폼)
+Expo 3.27.4v
+React-Native 0.38.0v
+Node.js 10.22.0v
+
+- SDK (Software Development Kit)
+Hyperledger-Indy-SDK 1.15.0v
+
+- IDE (통합개발환경)
+Visual Studio 1.46.1v
+
+- 응용프로그램
+virtualbox VM 6.10.1v
+SQLite3 DB 3.28.0v
+
+- Languages (언어) 
+HTML 5 (마크업 언어) 
+CSS 3(style sheet 언어) 
+Javascript _ ECMAScript 6 ( main )
+
+
 # PROJECT simple flow 
   : TAP 
 ![service_flow](https://user-images.githubusercontent.com/66229916/98775452-872f8280-2430-11eb-83df-490fc9840348.png)
