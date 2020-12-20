@@ -46,8 +46,8 @@ export default class Home extends Component {
           <Content style={{marginTop:-30}}>
             <Card style={styles.card}>
             <TouchableOpacity onPress={this.gotoQR}>
-                <Text style={{marginLeft:18, marginTop: 9, fontSize: 16, flexDirection: 'row',
-                  color: "white"}}> <FontIcon name="qrcode-scan" size="30"></FontIcon> <Text>  </Text>
+                <Text style={{marginLeft:18, marginTop: 9, flexDirection: 'row',
+                  color: "white"}}> <FontIcon name="qrcode-scan" size={30}></FontIcon> <Text>  </Text>
                   SCAN CODE
                 </Text>
                 </TouchableOpacity>
