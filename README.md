@@ -1,3 +1,19 @@
+# This project received two awards from Ministry of Science and ICT in Korea
+
+SW Festival Second Prize(2)
+from Ministry of Science and ICT/ IITP
+2020년 12월 수상
+
+Korea Radio Promotion Association's pr oject presentation 1st prize
+Ministry of Science and ICT / Rapa
+2020년 10월 수상
+
+
+
+
+
+
+
 # Hyperledger-Indy DID/SSI 신원인증 [ TAP ] 프로젝트 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/66229916/98773064-80524100-242b-11eb-91ed-5ef833348303.png">
 
